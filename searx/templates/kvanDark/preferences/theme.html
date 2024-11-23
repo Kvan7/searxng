@@ -15,11 +15,11 @@
 </fieldset>{{- '' -}}
 
 <fieldset>{{- '' -}}
-	<legend id="pref_simple_style">{{- _('Theme style') -}}</legend>{{- '' -}}
+	<legend id="pref_kvanDark_style">{{- _('Theme style') -}}</legend>{{- '' -}}
 	<div class="value">{{- '' -}}
-		<select name="simple_style" aria-labelledby="pref_simple_style">
+		<select name="kvanDark_style" aria-labelledby="pref_kvanDark_style">
 			{%- for name in ['auto', 'light', 'dark', 'black'] -%}
-			<option value="{{ name }}" {%- if name==preferences.get_value('simple_style') %} selected="selected" {%-
+			<option value="{{ name }}" {%- if name==preferences.get_value('kvanDark_style') %} selected="selected" {%-
 				endif -%}>
 				{{- _(name) | capitalize -}}
 			</option>
@@ -31,4 +31,4 @@
 	</div>{{- '' -}}
 </fieldset>{{- '' -}}
 
-{%- include 'simple/preferences/center_alignment.html' -%}
+{%- include 'kvanDark/preferences/center_alignment.html' -%}
