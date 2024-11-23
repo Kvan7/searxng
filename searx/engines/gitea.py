@@ -50,7 +50,7 @@ about = {
     "results": 'JSON',
 }
 
-categories = ['it', 'repos']
+categories = ['it', 'repos', 'code']
 paging = True
 
 base_url: str = ''

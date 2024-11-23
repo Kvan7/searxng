@@ -11,6 +11,7 @@ Categories not listed here can still be searched with the :ref:`search-syntax`.
 
   categories_as_tabs:
     general:
+    code:
     images:
     videos:
     news:

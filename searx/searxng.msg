@@ -24,6 +24,7 @@ CONSTANT_NAMES = {
 
 CATEGORY_NAMES = {
     'FILES': 'files',
+    'CODE': 'code',
     'GENERAL': 'general',
     'MUSIC': 'music',
     'SOCIAL_MEDIA': 'social media',

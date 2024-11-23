@@ -159,6 +159,7 @@ article.result-images[data-vim-selected] {
 article[data-vim-selected].category-videos,
 article[data-vim-selected].category-news,
 article[data-vim-selected].category-map,
+article[data-vim-selected].category-code,
 article[data-vim-selected].category-music,
 article[data-vim-selected].category-files,
 article[data-vim-selected].category-social {
@@ -358,6 +359,7 @@ article[data-vim-selected].category-social {
 }
 
 .category-videos,
+.category-code,
 .category-news,
 .category-map,
 .category-music,
@@ -440,7 +442,7 @@ article[data-vim-selected].category-social {
   border: none !important;
   height: @results-image-row-height;
 
-  &>a {
+  & > a {
     position: relative;
   }
 
@@ -945,7 +947,6 @@ summary.title {
 @media screen and (max-width: 52rem) {
   body.results_endpoint {
     #links_on_top {
-
       .link_on_top_about,
       .link_on_top_donate {
         display: none;

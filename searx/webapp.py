@@ -131,9 +131,6 @@ from searx.search import SearchWithPlugins, initialize as search_initialize
 from searx.network import stream as http_stream, set_context_network_name
 from searx.search.checker import get_result as checker_get_result
 
-from gpt4all import GPT4All
-from pathlib import Path
-
 logger = logger.getChild('webapp')
 
 # check secret_key

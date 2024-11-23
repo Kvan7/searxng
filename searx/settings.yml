@@ -814,24 +814,6 @@ engines:
       require_api_key: false
       results: JSON
 
-  - name: encyclosearch
-    engine: json_engine
-    shortcut: es
-    categories: general
-    paging: true
-    search_url: https://encyclosearch.org/encyclosphere/search?q={query}&page={pageno}&resultsPerPage=15
-    results_query: Results
-    url_query: SourceURL
-    title_query: Title
-    content_query: Description
-    disabled: true
-    about:
-      website: https://encyclosearch.org
-      official_api_documentation: https://encyclosearch.org/docs/#/rest-api
-      use_official_api: true
-      require_api_key: false
-      results: JSON
-
   - name: erowid
     engine: xpath
     paging: true
@@ -1051,7 +1033,7 @@ engines:
     engine: gitea
     base_url: https://codeberg.org
     shortcut: cb
-    disabled: true
+    disabled: false
 
   - name: gitea.com
     engine: gitea
@@ -1835,27 +1817,6 @@ engines:
     shortcut: su
     api_site: 'superuser'
     categories: [it, q&a, code]
-
-  - name: discuss.python
-    engine: discourse
-    shortcut: dpy
-    base_url: 'https://discuss.python.org'
-    categories: [it, q&a]
-    disabled: true
-
-  - name: caddy.community
-    engine: discourse
-    shortcut: caddy
-    base_url: 'https://caddy.community'
-    categories: [it, q&a]
-    disabled: true
-
-  - name: pi-hole.community
-    engine: discourse
-    shortcut: pi
-    categories: [it, q&a]
-    base_url: 'https://discourse.pi-hole.net'
-    disabled: true
 
   - name: discuss.python
     engine: discourse

@@ -17,7 +17,7 @@ about = {
 }
 
 # engine dependent config
-categories = ['it', 'repos']
+categories = ['it', 'repos', 'code']
 
 # search-url
 search_url = 'https://api.github.com/search/repositories?sort=stars&order=desc&{query}'

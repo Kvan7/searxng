@@ -21,6 +21,7 @@ SXNG_LOCALE_TAGS = ['all', 'auto'] + list(l[0] for l in sxng_locales)
 SIMPLE_STYLE = ('auto', 'light', 'dark', 'black')
 CATEGORIES_AS_TABS = {
     'general': {},
+    'code': {},
     'images': {},
     'videos': {},
     'news': {},
