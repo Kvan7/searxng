@@ -167,6 +167,7 @@ class ResultContainer:
 
     __slots__ = (
         '_merged_results',
+        'chat_box',
         'infoboxes',
         'suggestions',
         'answers',
@@ -186,6 +187,7 @@ class ResultContainer:
         super().__init__()
         self._merged_results = []
         self.infoboxes = []
+        self.chat_box = []
         self.suggestions = set()
         self.answers = {}
         self.corrections = set()
