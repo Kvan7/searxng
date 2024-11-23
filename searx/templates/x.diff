@@ -1,0 +1,2491 @@
+diff --color -rN simple/404.html kvanDark/404.html
+1c1
+< {% extends "simple/base.html" %}
+---
+> {% extends "kvanDark/base.html" %}
+4,7c4,8
+<     <h1>{{ _('Page not found') }}</h1>
+<     {% autoescape false %}
+<     <p>{{ _('Go to %(search_page)s.', search_page='<a href="{}">{}</a>'.format(url_for('index'), _('search page'))) }}</p>
+<     {% endautoescape %}
+---
+> 	<h1>{{ _('Page not found') }}</h1>
+> 	{% autoescape false %}
+> 	<p>{{ _('Go to %(search_page)s.', search_page='<a href="{}">{}</a>'.format(url_for('index'), _('search page'))) }}
+> 	</p>
+> 	{% endautoescape %}
+9c10
+< {% endblock %}
+---
+> {% endblock %}
+\ No newline at end of file
+diff --color -rN simple/base.html kvanDark/base.html
+2c2,5
+< <html class="no-js theme-{{ preferences.get_value('simple_style') or 'auto' }} center-aligment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
+---
+> <html
+> 	class="no-js theme-{{ preferences.get_value('simple_style') or 'dark' }} center-aligment-{{ preferences.get_value('center_alignment') and 'yes' or 'no' }}"
+> 	lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl" {% endif %}>
+> 
+4,32c7,38
+<   <meta charset="UTF-8">
+<   <meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
+<   <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
+<   <meta name="generator" content="searxng/{{ searx_version }}">
+<   <meta name="referrer" content="no-referrer">
+<   <meta name="robots" content="noarchive">
+<   <meta name="viewport" content="width=device-width, initial-scale=1">
+<   <meta name="HandheldFriendly" content="True">
+<   <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<   <title>{% block title %}{% endblock %}{{ instance_name }}</title>
+<   {% block meta %}{% endblock %}
+<   {% if rtl %}
+<   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css" media="screen">
+<   {% else %}
+<   <link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css" media="screen">
+<   {% endif %}
+<   {% if get_setting('server.limiter') or get_setting('server.public_instance') %}
+<   <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css">
+<   {% endif %}
+<   {% block styles %}{% endblock %}
+<   <!--[if gte IE 9]>-->
+<   <script src="{{ url_for('static', filename='js/searxng.head.min.js') }}" client_settings="{{ client_settings }}"></script>
+<   <!--<![endif]-->
+<   {% block head %}
+<   <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}">
+<   {% endblock %}
+<   <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
+<   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+<   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+---
+> 	<meta charset="UTF-8" />
+> 	<meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
+> 	<meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
+> 	<meta name="generator" content="searxng/{{ searx_version }}">
+> 	<meta name="referrer" content="no-referrer">
+> 	<meta name="robots" content="noarchive">
+> 	<meta name="viewport" content="width=device-width, initial-scale=1">
+> 	<meta name="HandheldFriendly" content="True">
+> 	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+> 	<title>{% block title %}{% endblock %}{{ instance_name }}</title>
+> 	{% block meta %}{% endblock %}
+> 	{% if rtl %}
+> 	<link rel="stylesheet" href="{{ url_for('static', filename='css/searxng-rtl.min.css') }}" type="text/css"
+> 		media="screen" />
+> 	{% else %}
+> 	<link rel="stylesheet" href="{{ url_for('static', filename='css/searxng.min.css') }}" type="text/css"
+> 		media="screen" />
+> 	{% endif %}
+> 	{% if get_setting('server.limiter') %}
+> 	<link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css" />
+> 	{% endif %}
+> 	{% block styles %}{% endblock %}
+> 	<!--[if gte IE 9]>-->
+> 	<script src="{{ url_for('static', filename='js/searxng.head.min.js') }}"
+> 		client_settings="{{ client_settings }}"></script>
+> 	<!--<![endif]-->
+> 	{% block head %}
+> 	<link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search"
+> 		href="{{ opensearch_url }}" />
+> 	{% endblock %}
+> 	<link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
+> 	<link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+34,45d39
+< <body class="{{ endpoint }}_endpoint" >
+<   <main id="main_{{  self._TemplateReference__context.name|replace("simple/", "")|replace(".html", "") }}" class="{{body_class}}">
+<     {% if errors %}
+<         <div class="dialog-error" role="alert">
+<             <a href="#" class="close" aria-label="close" title="close">×</a>
+<             <ul>
+<             {% for message in errors %}
+<                 <li>{{ message }}</li>
+<             {% endfor %}
+<             </ul>
+<         </div>
+<     {% endif %}
+47,88c41,97
+<     <nav id="links_on_top">
+<       {%- from 'simple/icons.html' import icon_big -%}
+<       {%- block linkto_about -%}
+<         <a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{ icon_big('information-circle-outline') }}<span>{{ _('About') }}</span></a>
+<       {%- endblock -%}
+<       {%- block linkto_donate -%}
+<         {%- if donation_url -%}
+<         <a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart-outline') }}<span>{{ _('Donate') }}</span></a>
+<         {%- endif -%}
+<       {%- endblock -%}
+<       {%- block linkto_preferences -%}
+<         <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('menu-outline') }}<span>{{ _('Preferences') }}</span></a>
+<       {%- endblock -%}
+<     </nav>
+<     {% block header %}
+<     {% endblock %}
+<     {% block content %}
+<     {% endblock %}
+<   </main>
+<   <footer>
+<     <p>
+<     {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }} — {{ _('a privacy-respecting, open metasearch engine') }}<br>
+<         <a href="{{ searx_git_url }}">{{ _('Source code') }}</a>
+<         | <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
+<         {% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
+<         {% if get_setting('brand.public_instances') %}
+<         | <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
+<         {% endif %}
+<         {% if get_setting('general.privacypolicy_url') %}
+<         | <a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
+<         {% endif %}
+<         {% if get_setting('general.contact_url') %}
+<         | <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
+<         {% endif %}
+<         {% for title, link in get_setting('brand.custom.links').items() %}
+<         | <a href="{{ link }}">{{ _(title) }}</a>
+<         {% endfor %}
+<     </p>
+<   </footer>
+<   <!--[if gte IE 9]>-->
+<   <script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
+<   <!--<![endif]-->
+---
+> <body class="{{ endpoint }}_endpoint">
+> 	<main id="main_{{  self._TemplateReference__context.name|replace(" kvanDark/", "" )|replace(".html", "" ) }}"
+> 		class="{{body_class}}">
+> 		{% if errors %}
+> 		<div class="dialog-error" role="alert">
+> 			<a href="#" class="close" aria-label="close" title="close">×</a>
+> 			<ul>
+> 				{% for message in errors %}
+> 				<li>{{ message }}</li>
+> 				{% endfor %}
+> 			</ul>
+> 		</div>
+> 		{% endif %}
+> 
+> 		<nav id="links_on_top">
+> 			{%- from 'kvanDark/icons.html' import icon_big -%}
+> 			{%- block linkto_about -%}
+> 			<a href="{{ url_for('info', pagename='about') }}" class="link_on_top_about">{{
+> 				icon_big('information-circle-outline') }}<span>{{ _('About') }}</span></a>
+> 			{%- endblock -%}
+> 			{%- block linkto_donate -%}
+> 			{%- if donation_url -%}
+> 			<a href="{{ donation_url }}" class="link_on_top_donate">{{ icon_big('heart-outline') }}<span>{{ _('Donate')
+> 					}}</span></a>
+> 			{%- endif -%}
+> 			{%- endblock -%}
+> 			{%- block linkto_preferences -%}
+> 			<a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ icon_big('menu-outline')
+> 				}}<span>{{ _('Preferences') }}</span></a>
+> 			{%- endblock -%}
+> 		</nav>
+> 		{% block header %}
+> 		{% endblock %}
+> 		{% block content %}
+> 		{% endblock %}
+> 	</main>
+> 	<footer>
+> 		<p>
+> 			{{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">searxng</a> - {{ searx_version }}
+> 			<br />
+> 			<a href="{{ searx_git_url }}">{{ _('Source code') }}</a>
+> 			| <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
+> 			{% if enable_metrics %}| <a href="{{ url_for('stats') }}">{{ _('Engine stats') }}</a>{% endif %}
+> 			{% if get_setting('brand.public_instances') %}
+> 			| <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
+> 			{% endif %}
+> 			{% if get_setting('general.privacypolicy_url') %}
+> 			| <a href="{{ get_setting('general.privacypolicy_url') }}">{{ _('Privacy policy') }}</a>
+> 			{% endif %}
+> 			{% if get_setting('general.contact_url') %}
+> 			| <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
+> 			{% endif %}
+> 		</p>
+> 	</footer>
+> 	<!--[if gte IE 9]>-->
+> 	<script src="{{ url_for('static', filename='js/searxng.min.js') }}"></script>
+> 	<!--<![endif]-->
+90c99,100
+< </html>
+---
+> 
+> </html>
+\ No newline at end of file
+diff --color -rN simple/categories.html kvanDark/categories.html
+1c1
+< {% from 'simple/icons.html' import icon_big %}
+---
+> {% from 'kvanDark/icons.html' import icon_big %}
+3,14c3,14
+<     'general': 'search-outline',
+<     'code': 'code-outline',
+<     'images': 'image-outline',
+<     'videos': 'play-outline',
+<     'news': 'newspaper-outline',
+<     'map': 'location-outline',
+<     'music': 'musical-notes-outline',
+<     'it': 'layers-outline',
+<     'science': 'school-outline',
+<     'files': 'file-tray-full-outline',
+<     'social media': 'people-outline',
+< }  -%}
+---
+> 'general': 'search-outline',
+> 'code': 'code-outline',
+> 'images': 'image-outline',
+> 'videos': 'play-outline',
+> 'news': 'newspaper-outline',
+> 'map': 'location-outline',
+> 'music': 'musical-notes-outline',
+> 'it': 'layers-outline',
+> 'science': 'school-outline',
+> 'files': 'file-tray-full-outline',
+> 'social media': 'people-outline',
+> } -%}
+16,38c16,40
+<     <div id="categories_container">
+<         {%- if not search_on_category_select or not display_tooltip -%}
+<             {%- for category in categories -%}
+<                 <div class="category category_checkbox">{{- '' -}}
+<                     <input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}"{% if category in selected_categories %} checked="checked"{% endif %}>
+<                     <label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
+<                         {{- icon_big(category_icons[category]) if category in category_icons  else icon_big('globe-outline') -}}
+<                         <div class="category_name">{{- _(category) -}}</div>
+<                     </label>
+<                 </div>
+<             {%- endfor -%}
+<             {%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
+<         {%- else -%}
+<             {%- for category in categories -%}{{- '\n' -}}
+<                 <button type="submit" name="category_{{ category }}" class="category category_button {% if category in selected_categories %}selected{% endif %}">
+<                     {{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
+<                     <div class="category_name">{{- _(category) -}}</div>{{- '' -}}
+<                 </button>{{- '' -}}
+<             {%- endfor -%}
+<             {{- '\n' -}}
+<         {%- endif -%}
+<     </div>{{- '' -}}
+< </div>
+---
+> 	<div id="categories_container">
+> 		{%- if not search_on_category_select or not display_tooltip -%}
+> 		{%- for category in categories_as_tabs -%}
+> 		<div class="category category_checkbox">{{- '' -}}
+> 			<input type="checkbox" id="checkbox_{{ category|replace(' ', '_') }}" name="category_{{ category }}" {% if
+> 				category in selected_categories %} checked="checked" {% endif %} />
+> 			<label for="checkbox_{{ category|replace(' ', '_') }}" class="tooltips">
+> 				{{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
+> 				<div class="category_name">{{- _(category) -}}</div>
+> 			</label>
+> 		</div>
+> 		{%- endfor -%}
+> 		{%- if display_tooltip %}<div class="help">{{ _('Click on the magnifier to perform search') }}</div>{% endif -%}
+> 		{%- else -%}
+> 		{%- for category in categories_as_tabs -%}{{- '\n' -}}
+> 		<button type="submit" name="category_{{ category }}"
+> 			class="category category_button {% if category in selected_categories %}selected{% endif %}">
+> 			{{- icon_big(category_icons[category]) if category in category_icons else icon_big('globe-outline') -}}
+> 			<div class="category_name">{{- _(category) -}}</div>{{- '' -}}
+> 		</button>{{- '' -}}
+> 		{%- endfor -%}
+> 		{{- '\n' -}}
+> 		{%- endif -%}
+> 	</div>{{- '' -}}
+> </div>
+\ No newline at end of file
+diff --color -rN simple/elements/engines_msg.html kvanDark/elements/engines_msg.html
+2c2
+<   {% if (not results and not answers) or not max_response_time %}
+---
+>   {% if not results and not answers %}
+4d3
+<     <summary class="title" id="engines_msg-title">{{ _('Messages from the search engines') }}</summary>
+7d5
+<     <summary class="title" id="engines_msg-title">{{ _('Response time') }}: {{ max_response_time | round(1) }} {{ _('seconds') }}</summary>
+9,32c7,25
+<     <table class="engine-stats" id="engines_msg-table">
+<       {%- for engine_name, error_type in unresponsive_engines -%}
+<       <tr>
+<         <td class="engine-name">
+<           <a href="{{ url_for('stats', engine=engine_name|e) }}"
+<              title="{{ _('View error logs and submit a bug report') }}">
+<              {{- engine_name -}}
+<           </a>
+<         </td>
+<         <td class="response-error">{{- error_type -}}</td>
+<       </tr>
+<       {%- endfor -%}
+<       {%- for engine_name, response_time in timings -%}
+<       <tr>
+<         <td class="engine-name"><a href="{{ url_for('stats', engine=engine_name|e) }}">{{ engine_name }}</a></td>
+<         <td class="response-time">
+<           <div class="bar-chart-value">{{- response_time | round(1) -}}</div>
+<           <div class="bar-chart-graph" aria-labelledby="{{engine_name}}_time" aria-hidden="true">
+<             <div class="bar-chart-bar bar{{ (100 * response_time / max_response_time) | round | int }}"></div>
+<           </div>
+<         </td>
+<       </tr>
+<       {%- endfor -%}
+<     </table>
+---
+>     <summary class="title" id="engines_msg-title">{{ _('Messages from the search engines') }}</summary>
+>     <div class="dialog-error" role="alert">
+>       {{ icon_big('warning') }}
+>       <div>
+>         <p>
+>           <strong>{{ _('Error!') }}</strong>
+>           {{ _('Engines cannot retrieve results') }}:
+>         </p>
+>         {%- for engine_name, error_type in unresponsive_engines -%}
+>           <p>{{- engine_name }} (
+>             <a href="{{ url_for('stats', engine=engine_name|e) }}"
+>                title="{{ _('View error logs and submit a bug report') }}">
+>                {{- error_type -}}
+>             </a>
+>             ){{- '' -}}
+>           </p>
+>         {%- endfor -%}
+>       </div>
+>     </div>
+diff --color -rN simple/elements/infobox.html kvanDark/elements/infobox.html
+41c41
+<               <input type="submit" value="{{ suggestion }}">
+---
+>               <input type="submit" value="{{ suggestion }}" />
+diff --color -rN simple/elements/search_url.html kvanDark/elements/search_url.html
+4d3
+<     <button id="copy_url" type="submit" data-copied-text="{{ _('Copied') }}">{{ _('Copy') }}</button>
+diff --color -rN simple/filters/languages.html kvanDark/filters/languages.html
+2,17c2,11
+<   <option value="all"
+<           {%- if current_language == 'all' %} selected="selected" {%- endif -%}>
+<           {{- _('Default language') }} [all] {{- '' -}}
+<   </option>{{- '' -}}
+<   <option value="auto"
+<           {%- if current_language == 'auto' %} selected="selected" {%- endif -%}>
+<           {{- _('Auto-detect') }} ({{ search_language }})  {{- '' -}}
+<   </option>{{- '' -}}
+<   {% for sxng_tag,lang_name,country_name,english_name,flag in sxng_locales | sort(attribute=1) -%}
+<     <option value="{{ sxng_tag }}"
+<             {%- if sxng_tag == current_language %} selected="selected" {%- endif -%}>
+<             {{ lang_name }}{%- if country_name -%}-{{ country_name }}{%- endif -%}
+<             {{- ' ' -}}[{{sxng_tag}}]{{- ' ' -}}
+<             {%- if flag -%}{{ flag }}{%- endif -%}
+<     </option>
+<   {%- endfor -%}
+---
+> 	<option value="all" {% if current_language == 'all' %}selected="selected"{% endif %}>{{ _('Default language') }} [all]</option>
+> 	<option value="auto" {% if current_language == 'auto' %}selected="selected"{% endif %}>
+> 		{{- _('Auto-detect') -}}
+> 		{%- if current_language == 'auto' %} ({{ search_language }}){%- endif -%}
+> 	</option>
+> 	{%- for sxng_tag,lang_name,country_name,english_name,flag in sxng_locales | sort(attribute=1) -%}
+> 	<option value="{{ sxng_tag }}" {% if sxng_tag == current_language %}selected="selected"{% endif %}>
+> 		{% if flag %}{{ flag }} {% endif%} {{- lang_name }} {% if country_name %} - {{ country_name }} {% endif %} [{{sxng_tag}}]
+> 	</option>
+> 	{%- endfor -%}
+diff --color -rN simple/icons.html kvanDark/icons.html
+1c1
+< {# this file was generated by searx/static/themes/simple/gruntfile.js #}
+---
+> {# this file was generated by searx/static/themes/kvanDark/gruntfile.js #}
+3,22c3,22
+<   'warning':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M256 80c-8.66 0-16.58 7.36-16 16l8 216a8 8 0 008 8h0a8 8 0 008-8l8-216c.58-8.64-7.34-16-16-16z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><circle cx="256" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+<   'close':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>',
+<   'chevron-up-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 328l144-144 144 144"/></svg>',
+<   'chevron-right':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144"/></svg>',
+<   'chevron-left':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M328 112L184 256l144 144"/></svg>',
+<   'menu-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M262.29 192.31a64 64 0 1057.4 57.4 64.13 64.13 0 00-57.4-57.4zM416.39 256a154.34 154.34 0 01-1.53 20.79l45.21 35.46a10.81 10.81 0 012.45 13.75l-42.77 74a10.81 10.81 0 01-13.14 4.59l-44.9-18.08a16.11 16.11 0 00-15.17 1.75A164.48 164.48 0 01325 400.8a15.94 15.94 0 00-8.82 12.14l-6.73 47.89a11.08 11.08 0 01-10.68 9.17h-85.54a11.11 11.11 0 01-10.69-8.87l-6.72-47.82a16.07 16.07 0 00-9-12.22 155.3 155.3 0 01-21.46-12.57 16 16 0 00-15.11-1.71l-44.89 18.07a10.81 10.81 0 01-13.14-4.58l-42.77-74a10.8 10.8 0 012.45-13.75l38.21-30a16.05 16.05 0 006-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 00-6.07-13.94l-38.19-30A10.81 10.81 0 0149.48 186l42.77-74a10.81 10.81 0 0113.14-4.59l44.9 18.08a16.11 16.11 0 0015.17-1.75A164.48 164.48 0 01187 111.2a15.94 15.94 0 008.82-12.14l6.73-47.89A11.08 11.08 0 01213.23 42h85.54a11.11 11.11 0 0110.69 8.87l6.72 47.82a16.07 16.07 0 009 12.22 155.3 155.3 0 0121.46 12.57 16 16 0 0015.11 1.71l44.89-18.07a10.81 10.81 0 0113.14 4.58l42.77 74a10.8 10.8 0 01-2.45 13.75l-38.21 30a16.05 16.05 0 00-6.05 14.08c.33 4.14.55 8.3.55 12.47z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+<   'ellipsis-vertical-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>',
+<   'magnet-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M421.83 293.82A144 144 0 00218.18 90.17M353.94 225.94a48 48 0 00-67.88-67.88" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M192 464v-48M90.18 421.82l33.94-33.94M48 320h48"/><path d="M286.06 158.06L172.92 271.19a32 32 0 01-45.25 0L105 248.57a32 32 0 010-45.26L218.18 90.17M421.83 293.82L308.69 407a32 32 0 01-45.26 0l-22.62-22.63a32 32 0 010-45.26l113.13-113.17M139.6 169.98l67.88 67.89M275.36 305.75l67.89 67.88" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/></svg>',
+<   'globe-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M256 48C141.13 48 48 141.13 48 256s93.13 208 208 208 208-93.13 208-208S370.87 48 256 48z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M256 48c-58.07 0-112.67 93.13-112.67 208S197.93 464 256 464s112.67-93.13 112.67-208S314.07 48 256 48z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M117.33 117.33c38.24 27.15 86.38 43.34 138.67 43.34s100.43-16.19 138.67-43.34M394.67 394.67c-38.24-27.15-86.38-43.34-138.67-43.34s-100.43 16.19-138.67 43.34" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M256 48v416M464 256H48"/></svg>',
+<   'search-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>',
+<   'image-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><rect x="48" y="80" width="416" height="352" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="336" cy="176" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M304 335.79l-90.66-90.49a32 32 0 00-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0143.11-2L464 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+<   'play-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M112 111v290c0 17.44 17 28.52 31 20.16l247.9-148.37c12.12-7.25 12.12-26.33 0-33.58L143 90.84c-14-8.36-31 2.72-31 20.16z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>',
+<   'newspaper-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M368 415.86V72a24.07 24.07 0 00-24-24H72a24.07 24.07 0 00-24 24v352a40.12 40.12 0 0040 40h328" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M416 464h0a48 48 0 01-48-48V128h72a24 24 0 0124 24v264a48 48 0 01-48 48z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M240 128h64M240 192h64M112 256h192M112 320h192M112 384h192"/><path d="M176 208h-64a16 16 0 01-16-16v-64a16 16 0 0116-16h64a16 16 0 0116 16v64a16 16 0 01-16 16z"/></svg>',
+<   'location-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M256 48c-79.5 0-144 61.39-144 137 0 87 96 224.87 131.25 272.49a15.77 15.77 0 0025.5 0C304 409.89 400 272.07 400 185c0-75.61-64.5-137-144-137z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><circle cx="256" cy="192" r="48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+<   'musical-notes-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M192 218v-6c0-14.84 10-27 24.24-30.59l174.59-46.68A20 20 0 01416 154v22" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M416 295.94v80c0 13.91-8.93 25.59-22 30l-22 8c-25.9 8.72-52-10.42-52-38h0a33.37 33.37 0 0123-32l51-18.15c13.07-4.4 22-15.94 22-29.85V58a10 10 0 00-12.6-9.61L204 102a16.48 16.48 0 00-12 16v226c0 13.91-8.93 25.6-22 30l-52 18c-13.88 4.68-22 17.22-22 32h0c0 27.58 26.52 46.55 52 38l22-8c13.07-4.4 22-16.08 22-30v-80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+<   'layers-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M434.8 137.65l-149.36-68.1c-16.19-7.4-42.69-7.4-58.88 0L77.3 137.65c-17.6 8-17.6 21.09 0 29.09l148 67.5c16.89 7.7 44.69 7.7 61.58 0l148-67.5c17.52-8 17.52-21.1-.08-29.09zM160 308.52l-82.7 37.11c-17.6 8-17.6 21.1 0 29.1l148 67.5c16.89 7.69 44.69 7.69 61.58 0l148-67.5c17.6-8 17.6-21.1 0-29.1l-79.94-38.47" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M160 204.48l-82.8 37.16c-17.6 8-17.6 21.1 0 29.1l148 67.49c16.89 7.7 44.69 7.7 61.58 0l148-67.49c17.7-8 17.7-21.1.1-29.1L352 204.48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+<   'school-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M32 192L256 64l224 128-224 128L32 192z"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M112 240v128l144 80 144-80V240M480 368V192M256 320v128"/></svg>',
+<   'file-tray-full-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M384 80H128c-26 0-43 14-48 40L48 272v112a48.14 48.14 0 0048 48h320a48.14 48.14 0 0048-48V272l-32-152c-5-27-23-40-48-40z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M48 272h144M320 272h144M192 272a64 64 0 00128 0M144 144h224M128 208h256"/></svg>',
+<   'people-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M402 168c-2.93 40.67-33.1 72-66 72s-63.12-31.32-66-72c-3-42.31 26.37-72 66-72s69 30.46 66 72z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M336 304c-65.17 0-127.84 32.37-143.54 95.41-2.08 8.34 3.15 16.59 11.72 16.59h263.65c8.57 0 13.77-8.25 11.72-16.59C463.85 335.36 401.18 304 336 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M200 185.94c-2.34 32.48-26.72 58.06-53 58.06s-50.7-25.57-53-58.06C91.61 152.15 115.34 128 147 128s55.39 24.77 53 57.94z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M206 306c-18.05-8.27-37.93-11.45-59-11.45-52 0-102.1 25.85-114.65 76.2-1.65 6.66 2.53 13.25 9.37 13.25H154" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"/></svg>',
+<   'heart-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+---
+>   'warning':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M256 80c-8.66 0-16.58 7.36-16 16l8 216a8 8 0 008 8h0a8 8 0 008-8l8-216c.58-8.64-7.34-16-16-16z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><circle cx="256" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+>   'close':'<svg viewBox="0 0 512 512" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>',
+>   'chevron-up-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 328l144-144 144 144"/></svg>',
+>   'chevron-right':'<svg viewBox="0 0 512 512" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144"/></svg>',
+>   'chevron-left':'<svg viewBox="0 0 512 512" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M328 112L184 256l144 144"/></svg>',
+>   'menu-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M262.29 192.31a64 64 0 1057.4 57.4 64.13 64.13 0 00-57.4-57.4zM416.39 256a154.34 154.34 0 01-1.53 20.79l45.21 35.46a10.81 10.81 0 012.45 13.75l-42.77 74a10.81 10.81 0 01-13.14 4.59l-44.9-18.08a16.11 16.11 0 00-15.17 1.75A164.48 164.48 0 01325 400.8a15.94 15.94 0 00-8.82 12.14l-6.73 47.89a11.08 11.08 0 01-10.68 9.17h-85.54a11.11 11.11 0 01-10.69-8.87l-6.72-47.82a16.07 16.07 0 00-9-12.22 155.3 155.3 0 01-21.46-12.57 16 16 0 00-15.11-1.71l-44.89 18.07a10.81 10.81 0 01-13.14-4.58l-42.77-74a10.8 10.8 0 012.45-13.75l38.21-30a16.05 16.05 0 006-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 00-6.07-13.94l-38.19-30A10.81 10.81 0 0149.48 186l42.77-74a10.81 10.81 0 0113.14-4.59l44.9 18.08a16.11 16.11 0 0015.17-1.75A164.48 164.48 0 01187 111.2a15.94 15.94 0 008.82-12.14l6.73-47.89A11.08 11.08 0 01213.23 42h85.54a11.11 11.11 0 0110.69 8.87l6.72 47.82a16.07 16.07 0 009 12.22 155.3 155.3 0 0121.46 12.57 16 16 0 0015.11 1.71l44.89-18.07a10.81 10.81 0 0113.14 4.58l42.77 74a10.8 10.8 0 01-2.45 13.75l-38.21 30a16.05 16.05 0 00-6.05 14.08c.33 4.14.55 8.3.55 12.47z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+>   'ellipsis-vertical-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>',
+>   'magnet-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M421.83 293.82A144 144 0 00218.18 90.17M353.94 225.94a48 48 0 00-67.88-67.88" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M192 464v-48M90.18 421.82l33.94-33.94M48 320h48"/><path d="M286.06 158.06L172.92 271.19a32 32 0 01-45.25 0L105 248.57a32 32 0 010-45.26L218.18 90.17M421.83 293.82L308.69 407a32 32 0 01-45.26 0l-22.62-22.63a32 32 0 010-45.26l113.13-113.17M139.6 169.98l67.88 67.89M275.36 305.75l67.89 67.88" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/></svg>',
+>   'globe-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M256 48C141.13 48 48 141.13 48 256s93.13 208 208 208 208-93.13 208-208S370.87 48 256 48z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M256 48c-58.07 0-112.67 93.13-112.67 208S197.93 464 256 464s112.67-93.13 112.67-208S314.07 48 256 48z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M117.33 117.33c38.24 27.15 86.38 43.34 138.67 43.34s100.43-16.19 138.67-43.34M394.67 394.67c-38.24-27.15-86.38-43.34-138.67-43.34s-100.43 16.19-138.67 43.34" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M256 48v416M464 256H48"/></svg>',
+>   'search-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>',
+>   'image-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><rect x="48" y="80" width="416" height="352" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="336" cy="176" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M304 335.79l-90.66-90.49a32 32 0 00-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0143.11-2L464 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+>   'play-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M112 111v290c0 17.44 17 28.52 31 20.16l247.9-148.37c12.12-7.25 12.12-26.33 0-33.58L143 90.84c-14-8.36-31 2.72-31 20.16z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>',
+>   'newspaper-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M368 415.86V72a24.07 24.07 0 00-24-24H72a24.07 24.07 0 00-24 24v352a40.12 40.12 0 0040 40h328" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M416 464h0a48 48 0 01-48-48V128h72a24 24 0 0124 24v264a48 48 0 01-48 48z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M240 128h64M240 192h64M112 256h192M112 320h192M112 384h192"/><path d="M176 208h-64a16 16 0 01-16-16v-64a16 16 0 0116-16h64a16 16 0 0116 16v64a16 16 0 01-16 16z"/></svg>',
+>   'location-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M256 48c-79.5 0-144 61.39-144 137 0 87 96 224.87 131.25 272.49a15.77 15.77 0 0025.5 0C304 409.89 400 272.07 400 185c0-75.61-64.5-137-144-137z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><circle cx="256" cy="192" r="48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+>   'musical-notes-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M192 218v-6c0-14.84 10-27 24.24-30.59l174.59-46.68A20 20 0 01416 154v22" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M416 295.94v80c0 13.91-8.93 25.59-22 30l-22 8c-25.9 8.72-52-10.42-52-38h0a33.37 33.37 0 0123-32l51-18.15c13.07-4.4 22-15.94 22-29.85V58a10 10 0 00-12.6-9.61L204 102a16.48 16.48 0 00-12 16v226c0 13.91-8.93 25.6-22 30l-52 18c-13.88 4.68-22 17.22-22 32h0c0 27.58 26.52 46.55 52 38l22-8c13.07-4.4 22-16.08 22-30v-80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+>   'layers-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M434.8 137.65l-149.36-68.1c-16.19-7.4-42.69-7.4-58.88 0L77.3 137.65c-17.6 8-17.6 21.09 0 29.09l148 67.5c16.89 7.7 44.69 7.7 61.58 0l148-67.5c17.52-8 17.52-21.1-.08-29.09zM160 308.52l-82.7 37.11c-17.6 8-17.6 21.1 0 29.1l148 67.5c16.89 7.69 44.69 7.69 61.58 0l148-67.5c17.6-8 17.6-21.1 0-29.1l-79.94-38.47" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M160 204.48l-82.8 37.16c-17.6 8-17.6 21.1 0 29.1l148 67.49c16.89 7.7 44.69 7.7 61.58 0l148-67.49c17.7-8 17.7-21.1.1-29.1L352 204.48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+>   'school-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M32 192L256 64l224 128-224 128L32 192z"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M112 240v128l144 80 144-80V240M480 368V192M256 320v128"/></svg>',
+>   'file-tray-full-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M384 80H128c-26 0-43 14-48 40L48 272v112a48.14 48.14 0 0048 48h320a48.14 48.14 0 0048-48V272l-32-152c-5-27-23-40-48-40z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M48 272h144M320 272h144M192 272a64 64 0 00128 0M144 144h224M128 208h256"/></svg>',
+>   'people-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M402 168c-2.93 40.67-33.1 72-66 72s-63.12-31.32-66-72c-3-42.31 26.37-72 66-72s69 30.46 66 72z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M336 304c-65.17 0-127.84 32.37-143.54 95.41-2.08 8.34 3.15 16.59 11.72 16.59h263.65c8.57 0 13.77-8.25 11.72-16.59C463.85 335.36 401.18 304 336 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M200 185.94c-2.34 32.48-26.72 58.06-53 58.06s-50.7-25.57-53-58.06C91.61 152.15 115.34 128 147 128s55.39 24.77 53 57.94z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M206 306c-18.05-8.27-37.93-11.45-59-11.45-52 0-102.1 25.85-114.65 76.2-1.65 6.66 2.53 13.25 9.37 13.25H154" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"/></svg>',
+>   'heart-outline':'<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+23a24
+>   'code-outline':'<svg class="ion-icon-big" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 8l-4 4l4 4"/><path d="M17 8l4 4l-4 4"/><path d="M14 4l-4 16"/></svg>',
+diff --color -rN simple/index.html kvanDark/index.html
+1,2c1,2
+< {% extends "simple/base.html" %}
+< {% from 'simple/icons.html' import icon_big %}
+---
+> {% extends "kvanDark/base.html" %}
+> {% from 'kvanDark/icons.html' import icon_big %}
+5,6c5,8
+<     <div class="title"><h1>SearXNG</h1></div>
+<     {% include 'simple/simple_search.html' %}
+---
+> 	<div class="title">
+> 		<h1>SearXNG</h1>
+> 	</div>
+> 	{% include 'kvanDark/kvanDark_search.html' %}
+8c10
+< {% endblock %}
+---
+> {% endblock %}
+\ No newline at end of file
+diff --color -rN simple/info.html kvanDark/info.html
+1c1
+< {% extends 'simple/page_with_header.html' %}
+---
+> {% extends 'kvanDark/page_with_header.html' %}
+7,11c7,12
+< {% for pagename, locale, page in all_pages %}
+<   <li>
+<     <a href="{{ url_for('info', pagename=pagename, locale=locale) }}" {% if pagename == active_pagename %}class="active"{% endif %}>{{page.title}}</a>
+<   </li>
+< {% endfor %}
+---
+> 	{% for pagename, locale, page in all_pages %}
+> 	<li>
+> 		<a href="{{ url_for('info', pagename=pagename, locale=locale) }}" {% if pagename==active_pagename
+> 			%}class="active" {% endif %}>{{page.title}}</a>
+> 	</li>
+> 	{% endfor %}
+14c15
+<   {{- active_page.html | safe -}}
+---
+> 	{{- active_page.html | safe -}}
+16c17
+< {% endblock %}
+---
+> {% endblock %}
+\ No newline at end of file
+diff --color -rN simple/kvanDark_search.html kvanDark/kvanDark_search.html
+0a1,19
+> <form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="search">
+>   <div id="search_header">
+>     <div id="search_view">
+>       <div class="search_box">
+>         <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
+>         <button id="clear_search" type="reset" aria-label="{{ _('clear') }}"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+>         <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+>       </div>
+>     </div>
+>   </div>
+>   {% for category in selected_categories %}
+>   <input type="hidden" name="category_{{ category }}" value="1" >
+>   {% endfor %}
+>   <input type="hidden" name="language" value="{{ current_language }}" >
+>   <input type="hidden" name="time_range" value="{{ time_range }}" >
+>   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+>   <input type="hidden" name="theme" value="{{ theme }}" >
+>   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+> </form>
+diff --color -rN simple/macros.html kvanDark/macros.html
+1c1
+< {% from 'simple/icons.html' import icon_small %}
+---
+> {% from 'kvanDark/icons.html' import icon_small %}
+5c5,6
+<     <img width="14" height="14" class="favicon" src="{{ url_for('static', filename='themes/simple/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}">
+---
+> <img width="14" height="14" class="favicon"
+> 	src="{{ url_for('static', filename='themes/kvanDark/img/icons/' + favicon + '.png') }}" alt="{{ favicon }}">
+9,10c10,12
+<     <a href="{{ url }}" {% if classes %}class="{{ classes }}" {% endif %}{% if results_on_new_tab %}target="_blank" rel="noopener noreferrer"{% else %}rel="noreferrer"{% endif %}>
+< {%- endmacro %}
+---
+> <a href="{{ url }}" {% if classes %}class="{{ classes }}" {% endif %}{% if results_on_new_tab %}target="_blank"
+> 	rel="noopener noreferrer" {% else %}rel="noreferrer" {% endif %}>
+> 	{%- endmacro %}
+12,13c14,15
+< {%- macro result_close_link() -%}
+<     </a>
+---
+> 	{%- macro result_close_link() -%}
+> </a>
+17c19
+<     {{ result_open_link(url, classes) }}{{ title }}{{ result_close_link() }}
+---
+> {{ result_open_link(url, classes) }}{{ title }}{{ result_close_link() }}
+22,44c24,58
+< <article class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% for e in result.engines %} {{ e }}{% endfor %}">
+<   {{- result_open_link(result.url, "url_header") -}}
+<   {%- if favicon_resolver != "" %}
+<   <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
+<   {%- endif -%}
+<   <div class="url_wrapper">
+<     {%- for part in get_pretty_url(result.parsed_url) -%}
+<     <span class="url_o{{loop.index}}"><span class="url_i{{loop.index}}">{{- part -}}</span></span>
+<     {%- endfor %}
+<   </div>
+<   {{- result_close_link() -}}
+<   {%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail" src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy">{{ result_close_link() }}{% endif -%}
+<   <h3>{{ result_link(result.url, result.title|safe) }}</h3>
+< {%- endmacro -%}
+< 
+< <!-- Draw result sub header -->
+< {%- macro result_sub_header(result) -%}
+<   {%- if result.publishedDate %}<time class="published_date" datetime="{{ result.pubdate }}" >{{ result.publishedDate }}</time>{% endif -%}
+<   {%- if result.length %}<div class="result_length">{{ _('Length') }}: {{ result.length }}</div>{% endif -%}
+<   {%- if result.views %}<div class="result_views">{{ _('Views') }}: {{ result.views }}</div>{% endif -%}
+<   {%- if result.author %}<div class="result_author">{{ _('Author') }}: {{ result.author }}</div>{% endif -%}
+<   {%- if result.metadata %}<div class="highlight">{{ result.metadata|safe }}</div>{% endif -%}
+< {%- endmacro -%}
+---
+> <article
+> 	class="result {% if result['template'] %}result-{{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}{% for e in result.engines %} {{ e }}{% endfor %}">
+> 	{{- result_open_link(result.url, "url_wrapper") -}}
+> 	{%- for part in get_pretty_url(result.parsed_url) -%}
+> 	<span class="url_o{{loop.index}}"><span class="url_i{{loop.index}}">{{- part -}}</span></span>
+> 	{%- endfor %}
+> 	{{- result_close_link() -}}
+> 	{%- if result.img_src %}{{ result_open_link(result.url) }}<img class="image"
+> 		src="{{ image_proxify(result.img_src) }}" title="{{ result.title|striptags }}" loading="lazy" width="200"
+> 		height="200">{{ result_close_link() }}{% endif -%}
+> 	{%- if result.thumbnail %}{{ result_open_link(result.url) }}<img class="thumbnail"
+> 		src="{{ image_proxify(result.thumbnail) }}" title="{{ result.title|striptags }}" loading="lazy" width="200"
+> 		height="200">{{ result_close_link() }}{% endif -%}
+> 	<h3>{{ result_link(result.url, result.title|safe) }}</h3>
+> 	{%- endmacro -%}
+> 
+> 	<!-- Draw result sub header -->
+> 	{%- macro result_sub_header(result) -%}
+> 	{%- if result.publishedDate %}<time class="published_date" datetime="{{ result.pubdate }}">{{ result.publishedDate
+> 		}}</time>{% endif -%}
+> 	{%- if result.length %}<div class="result_length">{{ _('Length') }}: {{ result.length }}</div>{% endif -%}
+> 	{%- if result.author %}<div class="result_author">{{ _('Author') }}: {{ result.author }}</div>{% endif -%}
+> 	{%- if result.metadata %}<div class="highlight">{{ result.metadata|safe }}</div>{% endif -%}
+> 	{%- endmacro -%}
+> 
+> 	<!-- Draw result sub footer -->
+> 	{%- macro result_sub_footer(result, proxify) -%}
+> 	<div class="engines">
+> 		{% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
+> 		{{ result_link(cache_url + result.url, icon_small('ellipsis-vertical-outline') + _('cached'), "cache_link")
+> 		}}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), icon('link') + _('proxied'),
+> 		"proxyfied_link") }} {% endif %}
+> 	</div>{{- '' -}}
+> 	<div class="break"></div>{{- '' -}}
+> 	{%- endmacro -%}
+46,56c60,61
+< <!-- Draw result sub footer -->
+< {%- macro result_sub_footer(result, proxify) -%}
+< <div class="engines">
+<   {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
+<   {{ icon_small('ellipsis-vertical-outline') + result_link(cache_url + result.url, _('cached'), "cache_link") }}&lrm; {% if proxify and proxify_results %} {{ result_link(proxify(result.url), _('proxied'), "proxyfied_link") }} {% endif %}
+< </div>{{- '' -}}
+< <div class="break"></div>{{- '' -}}
+< {%- endmacro -%}
+< 
+< <!-- Draw result footer -->
+< {%- macro result_footer(result) -%}
+---
+> 	<!-- Draw result footer -->
+> 	{%- macro result_footer(result) -%}
+62,68c67,70
+<   <input type="checkbox" {{- ' ' -}}
+<          name="{{ name }}" {{- ' ' -}}
+<          id="{{ name }}" {{- ' ' -}}
+<          aria-labelledby="pref_{{ name }}"{{- ' ' -}}
+<          class="checkbox-onoff"{{- ' ' -}}
+<          {%- if checked -%} checked{%- endif -%}/>
+< {%- endmacro -%}
+---
+> <input type="checkbox" {{- ' ' -}} name="{{ name }}" {{- ' ' -}} id="{{ name }}" {{- ' ' -}}
+> 	aria-labelledby="pref_{{ name }}" {{- ' ' -}} class="checkbox-onoff" {{- ' ' -}} {%- if checked -%} checked{%- endif
+> 	-%} />
+> {%- endmacro -%}
+\ No newline at end of file
+diff --color -rN simple/messages/no_cookies.html kvanDark/messages/no_cookies.html
+1c1
+< {% from 'simple/icons.html' import icon %}
+---
+> {% from 'kvanDark/icons.html' import icon %}
+3,5c3,5
+<     <strong class="lead">{{ icon('info-sign') }} {{ _('Information!') }}</strong>
+<     {{ _('currently, there are no cookies defined.') }}
+< </div>
+---
+> 	<strong class="lead">{{ icon('info-sign') }} {{ _('Information!') }}</strong>
+> 	{{ _('currently, there are no cookies defined.') }}
+> </div>
+\ No newline at end of file
+diff --color -rN simple/messages/no_results.html kvanDark/messages/no_results.html
+1,28c1,11
+< {% from 'simple/icons.html' import icon_big %}
+< <div class="dialog-error-block" role="alert">{{- '' -}}
+<   <p>{{- '' -}}
+<     <strong>
+<       {%- if pageno == 1 -%}
+<         {{ _('Sorry!') }}
+<       {%- endif -%}
+<     </strong>{{- '' -}}
+<   </p>{{- '' -}}
+<   <p>
+<     {%- if pageno == 1 -%}
+<       {{ _("No results were found. You can try to:") }}
+<     {%- else -%}
+<       {{ _("There are no more results. You can try to:") }}
+<     {%- endif -%}
+<   </p>{{- '' -}}
+<   <ul>
+<     {%- if pageno == 1 -%}
+<       <li>{{ _("Refresh the page.") }}</li>{{- '' -}}
+<       <li>{{ _("Search for another query or select another category (above).") }}</li>{{- '' -}}
+<       <li>{{ _("Change the search engine used in the preferences:") }} <a href="/preferences">/preferences</a></li>{{- '' -}}
+<       <li>{{ _("Switch to another instance:") }} <a href="https://searx.space">https://searx.space</a></li>{{- '' -}}
+<     {%- else -%}
+<       <li>{{ _("Search for another query or select another category.") }}</li>{{- '' -}}
+<       <li>{{ _("Go back to the previous page using the previous page button.") }}</li>{{- '' -}}
+<     {%- endif -%}
+<   </ul>
+< </div>
+---
+> {% from 'kvanDark/icons.html' import icon_big %}
+> <div class="dialog-error-block" role="alert">
+> 	<p><strong>{{ _('Sorry!') }}</strong></p>
+> 	<p>{{ _("No results were found. You can try to:") }}</p>
+> 	<ul>
+> 		<li>{{ _("Refresh the page.") }}</li>
+> 		<li>{{ _("Search for another query or select another category (above).") }}</li>
+> 		<li>{{ _("Change the search engine used in the preferences:") }} <a href="/preferences">/preferences</a></li>
+> 		<li>{{ _("Switch to another instance:") }} <a href="https://searx.space">https://searx.space</a></li>
+> 	</ul>
+> </div>
+\ No newline at end of file
+diff --color -rN simple/new_issue.html kvanDark/new_issue.html
+66c66
+<         <p><a href="{{ get_setting('brand.issue_url') }}?q=is%3Aissue+Bug:%20{{ engine_name }} {{ technical_report }}" target="_blank" rel="noreferrer noreferrer">{{ _('Please check for existing bugs about this engine on GitHub') }}</a></p>
+---
+>         <p><a href="{{ get_setting('brand.issue_url') }}?q=is%3Aissue+Bug:%20{{ engine_name }}" target="_blank" rel="noreferrer noreferrer">{{ _('Please check for existing bugs about this engine on GitHub') }}</a></p>
+72c72
+<         <button type="submit" class="github-issue-button button" title="{{ get_setting('brand.new_issue_url') }}">{{ _('Submit a new issue on Github including the above information') }}</button>
+---
+>         <button type="submit" class="github-issue-button" title="{{ get_setting('brand.new_issue_url') }}">{{ _('Submit a new issue on Github including the above information') }}</button>
+diff --color -rN simple/opensearch.xml kvanDark/opensearch.xml
+18c18
+<   <Url rel="self" type="application/opensearchdescription+xml"  method="{{ opensearch_method }}" template="{{ url_for('opensearch', _external=True) }}" />
+---
+>   <Url rel="self" type="application/opensearchdescription+xml"  method="{{ opensearch_method }}" template="{{ opensearch_url }}" />
+diff --color -rN simple/page_with_header.html kvanDark/page_with_header.html
+2c2
+< {%- extends "simple/base.html" -%}
+---
+> {%- extends "kvanDark/base.html" -%}
+4,7c4,7
+<   <a href="{{ url_for('index') }}">{{- '' -}}
+<     <img class="logo" src="{{ url_for('static', filename='img/searxng.png') }}" alt="SearXNG">{{- '' -}}
+<   </a>{{- '' -}}
+< {%- endblock -%}
+---
+> <a href="{{ url_for('index') }}">{{- '' -}}
+> 	<img class="logo" src="{{ url_for('static', filename='img/searxng.png') }}" alt="SearXNG">{{- '' -}}
+> </a>{{- '' -}}
+> {%- endblock -%}
+\ No newline at end of file
+diff --color -rN simple/preferences/answerers.html kvanDark/preferences/answerers.html
+36c36
+<           <td class="checkbox-col">{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins, 'plugin_labelledby' + plugin.id) -}}</td>{{- '' -}}
+---
+>           <td class="checkbox-col">{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}</td>{{- '' -}}
+39c39
+<           <td id="{{ 'plugin_labelledby' + plugin.id }}">{{ _(plugin.description) }}</td>{{- '' -}}
+---
+>           <td>{{ _(plugin.description) }}</td>{{- '' -}}
+diff --color -rN simple/preferences/center_alignment.html kvanDark/preferences/center_alignment.html
+11c11
+<            >{{- '' -}}
+---
+>            />{{- '' -}}
+diff --color -rN simple/preferences/cookies.html kvanDark/preferences/cookies.html
+2,4c2,4
+<   {{- _('This is the list of cookies and their values SearXNG is storing on your computer.') }}
+<   <br>{{- _('With that list, you can assess SearXNG transparency.') -}}
+<   <br>{{- '' -}}
+---
+> 	{{- _('This is the list of cookies and their values SearXNG is storing on your computer.') }}
+> 	<br />{{- _('With that list, you can assess SearXNG transparency.') -}}
+> 	<br />{{- '' -}}
+7,18c7,18
+<   <table class="cookies">
+<     <tr>{{- '' -}}
+<       <th>{{ _('Cookie name') }}</th>{{- '' -}}
+<       <th>{{ _('Value') }}</th>{{- '' -}}
+<     </tr>
+<     {%- for cookie in cookies -%}
+<       <tr>{{- '' -}}
+<         <td>{{ cookie }}</td>{{- '' -}}
+<         <td>{{ cookies[cookie] }}</td>{{- '' -}}
+<       </tr>
+<     {%- endfor -%}
+<   </table>
+---
+> <table class="cookies">
+> 	<tr>{{- '' -}}
+> 		<th>{{ _('Cookie name') }}</th>{{- '' -}}
+> 		<th>{{ _('Value') }}</th>{{- '' -}}
+> 	</tr>
+> 	{%- for cookie in cookies -%}
+> 	<tr>{{- '' -}}
+> 		<td>{{ cookie }}</td>{{- '' -}}
+> 		<td>{{ cookies[cookie] }}</td>{{- '' -}}
+> 	</tr>
+> 	{%- endfor -%}
+> </table>
+20c20
+<   {% include 'simple/messages/no_cookies.html' %}
+---
+> {% include 'kvanDark/messages/no_cookies.html' %}
+23c23
+<   {{- _('Search URL of the currently saved preferences') -}}:{{- '' -}}
+---
+> 	{{- _('Search URL of the currently saved preferences') -}}:{{- '' -}}
+26c26
+<   <pre>
+---
+> 	<pre>
+32c32,33
+<   {{- _('Note: specifying custom settings in the search URL can reduce privacy by leaking data to the clicked result sites.') -}}
+---
+> 	{{- _('Note: specifying custom settings in the search URL can reduce privacy by leaking data to the clicked result
+> 	sites.') -}}
+35c36
+<   {{- _('URL to restore your preferences in another browser') -}}:{{- '' -}}
+---
+> 	{{- _('URL to restore your preferences in another browser') -}}:{{- '' -}}
+38,39c39,41
+<   <pre>
+<     {{- url_for('preferences', _external=True) -}}?preferences={{- preferences_url_params|e -}}{{- '' -}}
+---
+> 	<pre>
+>     {{- url_for('preferences', _external=True) -}}?preferences={{- preferences_url_params|e -}}
+>     &amp;save=1{{- '' -}}
+43,59c45,46
+<   {{- _('Specifying custom settings in the preferences URL can be used to sync preferences across devices.') -}}
+< </p>
+< <h4>
+<   {{- _('Copy preferences hash') -}}:{{- '' -}}
+< </h4>{{- '' -}}
+< <div id="copy-hash-container">{{- '' -}}
+<   <div class="selectable_url">{{- '' -}}
+<     <pre>
+<       {{- preferences_url_params|e }}
+<     </pre>{{- '' -}}
+<   </div>
+<   <button id="copy-hash" class="button" data-hash="{{- preferences_url_params|e -}}" data-copied-text="{{- _('Copied') -}}">{{- _('Copy') -}}</button>
+< </div>
+< <h4>
+<   {{- _('Insert copied preferences hash (without URL) to restore') -}}:{{- '' -}}
+< </h4>{{- '' -}}
+< <input type="text" id="pref-hash-input" name="preferences" placeholder="{{- _('Preferences hash') -}}">{{- '' -}}
+---
+> 	{{- _('Specifying custom settings in the preferences URL can be used to sync preferences across devices.') -}}
+> </p>
+\ No newline at end of file
+diff --color -rN simple/preferences/engines.html kvanDark/preferences/engines.html
+13,18d12
+< 
+<   <div class="hide_if_nojs" id="toggle-all-engines-container">
+<     <button type="button" class="button enable-all-engines">{{ _("Enable all") }}</button>
+<     <button type="button" class="button disable-all-engines">{{ _("Disable all") }}</button>
+<   </div>
+< 
+diff --color -rN simple/preferences/favicon.html kvanDark/preferences/favicon.html
+1,17d0
+< <fieldset>{{- '' -}}
+<   <legend id="pref_favicon_resolver">{{- _('Favicon Resolver') -}}</legend>{{- '' -}}
+<   <div class="value">{{- '' -}}
+<     <select name="favicon_resolver" aria-labelledby="pref_favicon_resolver">{{- '' -}}
+<       <option value=""> - </option>
+<       {%- for backend in favicon_resolver_names -%}
+<         <option value="{{ backend }}"
+<           {%- if backend == favicon_resolver %} selected="selected" {%- endif -%}>
+<           {{- backend -}}
+<         </option>
+<       {%- endfor -%}
+<     </select>{{- '' -}}
+<   </div>{{- '' -}}
+<   <div class="description">
+<     {{- _('Display favicons near search results') -}}
+<   </div>{{- '' -}}
+< </fieldset>{{- '' -}}
+diff --color -rN simple/preferences/footer.html kvanDark/preferences/footer.html
+3c3
+<   <br>{{- _("These cookies serve your sole convenience, we don't use these cookies to track you.") -}}
+---
+>   <br />{{- _("These cookies serve your sole convenience, we don't use these cookies to track you.") -}}
+6c6
+< <input type="submit" value="{{ _('Save') }}">{{- '' -}}
+---
+> <input type="submit" value="{{ _('Save') }}" />{{- '' -}}
+diff --color -rN simple/preferences/image_proxy.html kvanDark/preferences/image_proxy.html
+11c11
+<            >{{- '' -}}
+---
+>            />{{- '' -}}
+diff --color -rN simple/preferences/infinite_scroll.html kvanDark/preferences/infinite_scroll.html
+11c11
+<            >{{- '' -}}
+---
+>            />{{- '' -}}
+13c13
+<   <div class="description" id="pref_infinite_scroll">
+---
+>   <div class="description">
+diff --color -rN simple/preferences/language.html kvanDark/preferences/language.html
+15a16
+>                 {%- if flag -%}{{ flag }} {% endif -%}
+17,18c18
+<                 {{- ' ' -}}[{{sxng_tag}}]{{- ' ' -}}
+<                 {%- if flag -%}{{ flag }}{%- endif -%}
+---
+>                 {{- ' ' -}}[{{sxng_tag}}]{{- '' -}}
+diff --color -rN simple/preferences/query_in_title.html kvanDark/preferences/query_in_title.html
+11c11
+<            >{{- '' -}}
+---
+>            />{{- '' -}}
+diff --color -rN simple/preferences/results_on_new_tab.html kvanDark/preferences/results_on_new_tab.html
+11c11
+<            >{{- ' ' -}}
+---
+>            />{{- ' ' -}}
+diff --color -rN simple/preferences/search_on_category_select.html kvanDark/preferences/search_on_category_select.html
+11c11
+<            >{{- '' -}}
+---
+>            />{{- '' -}}
+13c13
+<   <div class="description" id="pref_search_on_category_select">
+---
+>   <div class="description">
+diff --color -rN simple/preferences/theme.html kvanDark/preferences/theme.html
+7c7
+< 				{{- name | capitalize -}}
+---
+> 				{{- name -}}
+21c21
+< 			{%- for name in ['auto', 'light', 'dark', 'black'] -%}
+---
+> 			{%- for name in ['auto', 'light', 'dark'] -%}
+24c24
+< 				{{- _(name) | capitalize -}}
+---
+> 				{{- _(name) -}}
+34c34
+< {%- include 'simple/preferences/center_alignment.html' -%}
+\ No newline at end of file
+---
+> {%- include 'kvanDark/preferences/center_alignment.html' -%}
+\ No newline at end of file
+diff --color -rN simple/preferences/tokens.html kvanDark/preferences/tokens.html
+6c6
+<            value='{{ preferences.tokens.get_value() }}'>{{- '' -}}
+---
+>            value='{{ preferences.tokens.get_value() }}'/>{{- '' -}}
+diff --color -rN simple/preferences.html kvanDark/preferences.html
+1,2c1,2
+< {%- from 'simple/icons.html' import icon_small, icon_big -%}
+< {%- extends "simple/page_with_header.html" -%}
+---
+> {%- from 'kvanDark/icons.html' import icon_small, icon_big -%}
+> {%- extends "kvanDark/page_with_header.html" -%}
+6,12c6
+< {%- endmacro -%}
+< 
+< {%- macro tab_header(name, id, label, checked) -%}
+< <input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked"{% endif %}>
+< <label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label }}</label>
+< <section id="tab-content-{{ id }}" role="tabpanel" aria-hidden="false">
+< {%- endmacro -%}
+---
+> 	{%- endmacro -%}
+14,16c8,18
+< {%- macro tab_footer() -%}
+< </section>
+< {%- endmacro -%}
+---
+> 	{%- macro tab_header(name, id, label, checked) -%}
+> 	<input type="radio" name="{{ name }}" id="tab-{{ id }}" {% if checked is sameas true %}checked="checked" {% endif
+> 		%} />
+> 	<label id="tab-label-{{ id }}" for="tab-{{ id }}" role="tab" aria-controls="tab-content-{{ id }}">{{ label
+> 		}}</label>
+> 	<section id="tab-content-{{ id }}" role="tabpanel" aria-labelledby="tab-label-{{ id }}" aria-hidden="false">
+> 		{%- endmacro -%}
+> 
+> 		{%- macro tab_footer() -%}
+> 	</section>
+> 	{%- endmacro -%}
+18c20
+< {%- macro tabs_close() -%}
+---
+> 	{%- macro tabs_close() -%}
+23,27c25,30
+<   {%- if checked == '?' -%}
+<     {{- icon_small('warning') -}}
+<   {%- else -%}
+<     <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif -%}{%- if disabled %} disabled {%- endif -%}>
+<   {%- endif -%}
+---
+> {%- if checked == '?' -%}
+> {{- icon_small('warning') -}}
+> {%- else -%}
+> <input type="checkbox" {%- if name %} name="{{ name }}" {%- endif %} value="None" {%- if checked %} checked {%- endif
+> 	-%}{%- if disabled %} disabled {%- endif -%} />
+> {%- endif -%}
+30,36c33,36
+< {%- macro checkbox_onoff_reversed(name, checked, labelledby) -%}
+<   <input type="checkbox" {{- ' ' -}}
+<          name="{{ name }}" {{- ' ' -}}
+<          id="{{ name }}" {{- ' ' -}}
+<          {%- if labelledby -%} aria-labelledby="{{ labelledby }}"{{- ' ' -}}{%- endif -%}
+<          class="checkbox-onoff reversed-checkbox"{{- ' ' -}}
+<          {%- if checked -%} checked{%- endif -%}>
+---
+> {%- macro checkbox_onoff_reversed(name, checked) -%}
+> <input type="checkbox" {{- ' ' -}} name="{{ name }}" {{- ' ' -}} id="{{ name }}" {{- ' ' -}}
+> 	aria-labelledby="pref_{{ name }}" {{- ' ' -}} class="checkbox-onoff reversed-checkbox" {{- ' ' -}} {%- if checked
+> 	-%} checked{%- endif -%} />
+43,49c43,49
+<     <legend>{{ _(plugin.name) }}</legend>{{- '' -}}
+<     <div class="value">
+<       {{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins, 'plugin_labelledby' + plugin.id) -}}
+<     </div>{{- '' -}}
+<     <div class="description" id="{{ 'plugin_labelledby' + plugin.id }}">
+<       {{- _(plugin.description) -}}
+<     </div>{{- '' -}}
+---
+> 	<legend>{{ _(plugin.name) }}</legend>{{- '' -}}
+> 	<div class="value">
+> 		{{- checkbox_onoff_reversed('plugin_' + plugin.id, plugin.id not in allowed_plugins) -}}
+> 	</div>{{- '' -}}
+> 	<div class="description">
+> 		{{- _(plugin.description) -}}
+> 	</div>{{- '' -}}
+57,85c57,86
+<   {%- set about = search_engine.about -%}
+<   <div class="engine-tooltip" role="tooltip">{{- '' -}}
+<     <p class="engine-description"></p>{{- '' -}}
+<     <p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>{{- '' -}}
+<     {%- if about.wikidata_id -%}
+<       <p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}" rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>
+<     {%- endif -%}
+<     {%- if search_engine.enable_http -%}
+<       <p>{{- icon_big('exclamation-sign', 'No HTTPS') -}}{{- _('No HTTPS')-}}</p>
+<     {% endif -%}
+<     {%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
+<       <a href="{{ url_for('stats', engine=search_engine.name|e) }}" {{- ' ' -}}
+<          title="{{ _('View error logs and submit a bug report') }}">
+<       {{- _('View error logs and submit a bug report') -}}
+<       </a>
+<     {%- endif -%}
+<     <p>{{- '' -}}
+<       <span class="right">{{ _("!bang for this engine") }}</span>{{- '' -}}
+<       {%- for bang in [search_engine.name] + [search_engine.shortcut] -%}
+<         <span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>
+<       {%- endfor -%}
+<     </p>{{- '' -}}
+<     <p>{{- '' -}}
+<       <span class="right">{{ _("!bang for its categories") }}</span>
+<       {%- for bang in search_engine.categories -%}
+<         <span class="bang">{{ '!' + bang.replace(' ', '_') }}</span>
+<       {%- endfor -%}
+<     </p>{{- '' -}}
+<   </div>
+---
+> {%- set about = search_engine.about -%}
+> <div class="engine-tooltip" role="tooltip">{{- '' -}}
+> 	<p class="engine-description"></p>{{- '' -}}
+> 	<p><a href="{{about.website}}" rel="noreferrer">{{about.website}}</a></p>{{- '' -}}
+> 	{%- if about.wikidata_id -%}
+> 	<p><a href="https://www.wikidata.org/wiki/{{about.wikidata_id}}"
+> 			rel="noreferrer">wikidata.org/wiki/{{about.wikidata_id}}</a></p>
+> 	{%- endif -%}
+> 	{%- if search_engine.enable_http -%}
+> 	<p>{{- icon_big('exclamation-sign', 'No HTTPS') -}}{{- _('No HTTPS')-}}</p>
+> 	{% endif -%}
+> 	{%- if reliabilities.get(search_engine.name, {}).errors or reliabilities.get(search_engine.name, {}).checker -%}
+> 	<a href="{{ url_for('stats', engine=search_engine.name|e) }}" {{- ' ' -}}
+> 		title="{{ _('View error logs and submit a bug report') }}">
+> 		{{- _('View error logs and submit a bug report') -}}
+> 	</a>
+> 	{%- endif -%}
+> 	<p>{{- '' -}}
+> 		<span class="right">{{ _("!bang for this engine") }}</span>{{- '' -}}
+> 		{%- for bang in [search_engine.name] + [search_engine.shortcut] -%}
+> 		<span class="bang"> {{ '!' + bang.replace(' ', '_') }}</span>
+> 		{%- endfor -%}
+> 	</p>{{- '' -}}
+> 	<p>{{- '' -}}
+> 		<span class="right">{{ _("!bang for its categories") }}</span>
+> 		{%- for bang in search_engine.categories -%}
+> 		<span class="bang">{{ '!' + bang.replace(' ', '_') }}</span>
+> 		{%- endfor -%}
+> 	</p>{{- '' -}}
+> </div>
+90,107c91,113
+<   <td class="{{ label }}">{{- '' -}}
+<     {%- if stats[engine_name].time != None -%}
+<     <span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- '' -}}
+<     <span class="stacked-bar-chart" aria-hidden="true">
+<         {%- if max_rate95 is not none and max_rate95 > 0 -%}
+<         <div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- '' -}}
+<         <div class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}"></div>{{- '' -}}
+<         <div class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}"></div>{{- '' -}}
+<         <span class="stacked-bar-chart-rate100"></span>
+<         {%- endif -%}
+<     </span>{{- '' -}}
+<     <div class="engine-tooltip text-left" role="tooltip" id="{{engine_name}}_graph">{{- '' -}}
+<         <p>{{ _('Median') }}: {{ stats[engine_name].time }}</p>{{- '' -}}
+<         <p>{{ _('P80') }}: {{ stats[engine_name].rate80 }}</p>{{- '' -}}
+<         <p>{{ _('P95') }}: {{ stats[engine_name].rate95 }}</p>{{- '' -}}
+<     </div>
+<   {%- endif -%}
+<   </td>
+---
+> <td class="{{ label }}">{{- '' -}}
+> 	{%- if stats[engine_name].time != None -%}
+> 	<span class="stacked-bar-chart-value">{{- stats[engine_name].time -}}</span>{{- '' -}}
+> 	<span class="stacked-bar-chart" aria-labelledby="{{engine_name}}_chart" aria-hidden="true">
+> 		{%- if max_rate95 is not none and max_rate95 > 0 -%}
+> 		<div class="stacked-bar-chart-median bar{{ (100 * (stats[engine_name].time / max_rate95))|round }}"></div>{{- ''
+> 		-}}
+> 		<div
+> 			class="stacked-bar-chart-rate80 bar{{ (100 * ((stats[engine_name].rate80 - stats[engine_name].time) / max_rate95))|round }}">
+> 		</div>{{- '' -}}
+> 		<div
+> 			class="stacked-bar-chart-rate95 bar{{ (100 * ((stats[engine_name].rate95 - stats[engine_name].rate80) / max_rate95))|round }}">
+> 		</div>{{- '' -}}
+> 		<span class="stacked-bar-chart-rate100"></span>
+> 		{%- endif -%}
+> 	</span>{{- '' -}}
+> 	<div class="engine-tooltip text-left" role="tooltip" id="{{engine_name}}_graph">{{- '' -}}
+> 		<p>{{ _('Median') }}: {{ stats[engine_name].time }}</p>{{- '' -}}
+> 		<p>{{ _('P80') }}: {{ stats[engine_name].rate80 }}</p>{{- '' -}}
+> 		<p>{{ _('P95') }}: {{ stats[engine_name].rate95 }}</p>{{- '' -}}
+> 	</div>
+> 	{%- endif -%}
+> </td>
+111,242c117,234
+<   {%- set r = reliabilities.get(engine_name, {}).get('reliability', None) -%}
+<   {%- set checker_result = reliabilities.get(engine_name, {}).get('checker', []) -%}
+<   {%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
+<   {%- if r != None -%}
+<     {%- if r <= 50 -%}
+<       {% set label = 'danger' -%}
+<     {%- elif r < 80 -%}
+<       {%- set label = 'warning' -%}
+<     {%- elif r < 90 %}
+<       {%- set label = '' -%}
+<     {%- else -%}
+<       {%- set label = 'success' -%}
+<     {%- endif -%}
+<   {% else %}
+<     {%- set r = '' -%}
+<   {%- endif -%}
+<   {%- if checker_result or errors -%}
+<     <td class="{{ label }} column-reliability">{{- '' -}}
+<       <a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
+<         <span>
+<           {{- icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
+<         </span>{{- '' -}}
+<       </a>{{- '' -}}
+<       <div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
+<         {%- if checker_result -%}
+<           <p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
+<         {%- endif -%}
+<         {%- if errors -%}<p>{{ _('Errors:') }}</p>{%- endif -%}
+<         {%- for error in errors -%}
+<           <p>{{ error }}</p>{{- '' -}}
+<         {%- endfor -%}
+<       </div>{{- '' -}}
+<     </td>
+<   {%- else -%}
+<     <td class="{{ label }}">{% if r %}<span>{{ r }}</span>
+<   {%- endif -%}
+<     </td>
+<   {%- endif -%}
+< {%- endmacro -%}
+< 
+< {%- block head -%}{%- endblock -%}
+< {%- block linkto_preferences -%}{%- endblock -%}
+< 
+< {%- block content -%}
+< 
+<   <h1>{{ _('Preferences') }}</h1>
+< 
+<   <form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
+<     {{- tabs_open() -}}
+< 
+< 
+<     {{- tab_header('maintab', 'general', _('General'), True) -}}
+<     {%- if 'categories' not in locked_preferences -%}
+<       <fieldset>
+<         <legend>{{- _('Default categories') -}}</legend>
+<         {% set display_tooltip = false %}
+<         {% include 'simple/categories.html' %}
+<       </fieldset>
+<     {%- endif -%}
+<     {%- if 'language' not in locked_preferences -%}
+<       {%- include 'simple/preferences/language.html' -%}
+<     {% endif %}
+<     {%- if 'autocomplete' not in locked_preferences -%}
+<       {%- include 'simple/preferences/autocomplete.html' -%}
+<     {%- endif -%}
+<     {%- if 'favicon' not in locked_preferences -%}
+<       {%- include 'simple/preferences/favicon.html' -%}
+<     {%- endif -%}
+<     {% if 'safesearch' not in locked_preferences %}
+<       {%- include 'simple/preferences/safesearch.html' -%}
+<     {%- endif -%}
+<     {{- plugin_preferences('general') -}}
+<     {%- if 'doi_resolver' not in locked_preferences %}
+<       {%- include 'simple/preferences/doi_resolver.html' -%}
+<     {%- endif -%}
+<     {%- include 'simple/preferences/tokens.html' -%}
+<     {{- tab_footer() -}}
+< 
+< 
+<     {{- tab_header('maintab', 'ui', _('User interface')) -}}
+<     {%- if 'locale' not in locked_preferences -%}
+<       {%- include 'simple/preferences/ui_locale.html' -%}
+<     {%- endif -%}
+<     {%- if 'theme' not in locked_preferences -%}
+<       {%- include 'simple/preferences/theme.html' -%}
+<     {%- endif -%}
+<     {%- if 'results_on_new_tab' not in locked_preferences -%}
+<       {%- include 'simple/preferences/results_on_new_tab.html' -%}
+<     {%- endif -%}
+<     {%- if 'infinite_scroll' not in locked_preferences -%}
+<       {%- include 'simple/preferences/infinite_scroll.html' -%}
+<     {%- endif -%}
+<     {%- if 'search_on_category_select' not in locked_preferences -%}
+<       {%- include 'simple/preferences/search_on_category_select.html' -%}
+<     {%- endif -%}
+<     {%- include 'simple/preferences/hotkeys.html' -%}
+<     {{- plugin_preferences('ui') -}}
+<     {{- tab_footer() -}}
+< 
+< 
+<     {{- tab_header('maintab', 'privacy', _('Privacy')) -}}
+<     {%- if 'method' not in locked_preferences -%}
+<       {%- include 'simple/preferences/method.html' -%}
+<     {%- endif -%}
+<     {%- if 'image_proxy' not in locked_preferences -%}
+<       {%- include 'simple/preferences/image_proxy.html' -%}
+<     {%- endif -%}
+<     {%- if 'query_in_title' not in locked_preferences -%}
+<       {%- include 'simple/preferences/query_in_title.html' -%}
+<     {%- endif -%}
+<     {{- plugin_preferences('privacy') -}}
+<     {{- tab_footer() -}}
+< 
+<     {{- tab_header('maintab', 'engines', _('Engines')) -}}
+<     <p>
+<       {{- _('Currently used search engines') -}}
+<     </p>
+<     {{- tabs_open() -}}
+<     {%- include 'simple/preferences/engines.html' -%}
+<     {{- tabs_close() -}}
+<     {{- tab_footer() -}}
+< 
+< 
+<     {{- tab_header('maintab', 'query', _('Special Queries')) -}}
+<     {%- if answerers -%}
+<       {%- include 'simple/preferences/answerers.html' -%}
+<     {%- endif -%}
+<     {{- tab_footer() -}}
+< 
+<     {{- tab_header('maintab', 'cookies', _('Cookies')) -}}
+<     {%- include 'simple/preferences/cookies.html' -%}
+<     {{- tab_footer() -}}
+---
+> {%- set r = reliabilities.get(engine_name, {}).get('reliability', None) -%}
+> {%- set checker_result = reliabilities.get(engine_name, {}).get('checker', []) -%}
+> {%- set errors = reliabilities.get(engine_name, {}).get('errors', []) -%}
+> {%- if r != None -%}
+> {%- if r <= 50 -%} {% set label='danger' -%} {%- elif r < 80 -%} {%- set label='warning' -%} {%- elif r < 90 %} {%- set
+> 	label='' -%} {%- else -%} {%- set label='success' -%} {%- endif -%} {% else %} {%- set r='' -%} {%- endif -%} {%- if
+> 	checker_result or errors -%} <td class="{{ label }} column-reliability">{{- '' -}}
+> 	<a href="{{ url_for('stats', engine=engine_name|e) }}">{{- '' -}}
+> 		<span aria-labelledby="{{engine_name}}_reliability">
+> 			{{- icon_big('warning', 'The engine is not reliabled') }} {{ r -}}
+> 		</span>{{- '' -}}
+> 	</a>{{- '' -}}
+> 	<div class="engine-tooltip" role="tooltip" id="{{engine_name}}_reliability">
+> 		{%- if checker_result -%}
+> 		<p>{{ _("Failed checker test(s): ") }} {{ ', '.join(checker_result) }}</p>
+> 		{%- endif -%}
+> 		{%- if errors -%}<p>{{ _('Errors:') }}</p>{%- endif -%}
+> 		{%- for error in errors -%}
+> 		<p>{{ error }}</p>{{- '' -}}
+> 		{%- endfor -%}
+> 	</div>{{- '' -}}
+> 	</td>
+> 	{%- else -%}
+> 	<td class="{{ label }}">{% if r %}<span>{{ r }}</span>
+> 		{%- endif -%}
+> 	</td>
+> 	{%- endif -%}
+> 	{%- endmacro -%}
+> 
+> 	{%- block head -%}{%- endblock -%}
+> 	{%- block linkto_preferences -%}{%- endblock -%}
+> 
+> 	{%- block content -%}
+> 
+> 	<h1>{{ _('Preferences') }}</h1>
+> 
+> 	<form id="search_form" method="post" action="{{ url_for('preferences') }}" autocomplete="off">
+> 		{{- tabs_open() -}}
+> 
+> 
+> 		{{- tab_header('maintab', 'general', _('General'), True) -}}
+> 		{%- if 'categories' not in locked_preferences -%}
+> 		<fieldset>
+> 			<legend>{{- _('Default categories') -}}</legend>
+> 			{% set display_tooltip = false %}
+> 			{% include 'kvanDark/categories.html' %}
+> 		</fieldset>
+> 		{%- endif -%}
+> 		{%- if 'language' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/language.html' -%}
+> 		{% endif %}
+> 		{%- if 'autocomplete' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/autocomplete.html' -%}
+> 		{%- endif -%}
+> 		{% if 'safesearch' not in locked_preferences %}
+> 		{%- include 'kvanDark/preferences/safesearch.html' -%}
+> 		{%- endif -%}
+> 		{{- plugin_preferences('general') -}}
+> 		{%- if 'doi_resolver' not in locked_preferences %}
+> 		{%- include 'kvanDark/preferences/doi_resolver.html' -%}
+> 		{%- endif -%}
+> 		{%- include 'kvanDark/preferences/tokens.html' -%}
+> 		{{- tab_footer() -}}
+> 
+> 
+> 		{{- tab_header('maintab', 'ui', _('User interface')) -}}
+> 		{%- if 'locale' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/ui_locale.html' -%}
+> 		{%- endif -%}
+> 		{%- if 'theme' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/theme.html' -%}
+> 		{%- endif -%}
+> 		{%- if 'results_on_new_tab' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/results_on_new_tab.html' -%}
+> 		{%- endif -%}
+> 		{%- if 'infinite_scroll' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/infinite_scroll.html' -%}
+> 		{%- endif -%}
+> 		{%- if 'search_on_category_select' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/search_on_category_select.html' -%}
+> 		{%- endif -%}
+> 		{%- include 'kvanDark/preferences/hotkeys.html' -%}
+> 		{{- plugin_preferences('ui') -}}
+> 		{{- tab_footer() -}}
+> 
+> 
+> 		{{- tab_header('maintab', 'privacy', _('Privacy')) -}}
+> 		{%- if 'method' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/method.html' -%}
+> 		{%- endif -%}
+> 		{%- if 'image_proxy' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/image_proxy.html' -%}
+> 		{%- endif -%}
+> 		{%- if 'query_in_title' not in locked_preferences -%}
+> 		{%- include 'kvanDark/preferences/query_in_title.html' -%}
+> 		{%- endif -%}
+> 		{{- plugin_preferences('privacy') -}}
+> 		{{- tab_footer() -}}
+> 
+> 		{{- tab_header('maintab', 'engines', _('Engines')) -}}
+> 		<p>
+> 			{{- _('Currently used search engines') -}}
+> 		</p>
+> 		{{- tabs_open() -}}
+> 		{%- include 'kvanDark/preferences/engines.html' -%}
+> 		{{- tabs_close() -}}
+> 		{{- tab_footer() -}}
+> 
+> 
+> 		{{- tab_header('maintab', 'query', _('Special Queries')) -}}
+> 		{%- if answerers -%}
+> 		{%- include 'kvanDark/preferences/answerers.html' -%}
+> 		{%- endif -%}
+> 		{{- tab_footer() -}}
+> 
+> 		{{- tab_header('maintab', 'cookies', _('Cookies')) -}}
+> 		{%- include 'kvanDark/preferences/cookies.html' -%}
+> 		{{- tab_footer() -}}
+244,245c236,237
+<     {{- tabs_close() -}}
+<     {%- include 'simple/preferences/footer.html' -%}
+---
+> 		{{- tabs_close() -}}
+> 		{%- include 'kvanDark/preferences/footer.html' -%}
+247,248c239,240
+<   </form>{{- '' -}}
+< {%- endblock -%}
+---
+> 	</form>{{- '' -}}
+> 	{%- endblock -%}
+\ No newline at end of file
+diff --color -rN simple/results.html kvanDark/results.html
+1,2c1,2
+< {% extends "simple/base.html" %}
+< {% from 'simple/icons.html' import icon, icon_big, icon_small %}
+---
+> {% extends "kvanDark/base.html" %}
+> {% from 'kvanDark/icons.html' import icon, icon_big, icon_small %}
+4,8c4,8
+<     {% for engine_name, kv_data in engine_data.items() %}
+<         {% for k, v in kv_data.items() %}
+<             <input type="hidden" name="engine_data-{{ engine_name }}-{{ k|e }}" value="{{ v|e }}">
+<         {% endfor %}
+<     {% endfor %}
+---
+> {% for engine_name, kv_data in engine_data.items() %}
+> {% for k, v in kv_data.items() %}
+> <input type="hidden" name="engine_data-{{ engine_name }}-{{ k|e }}" value="{{ v|e }}" />
+> {% endfor %}
+> {% endfor %}
+11c11,15
+< {% block meta %}<link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}" href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
+---
+> {% block meta %}
+> <link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}"
+>     href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(" ,") |
+>     replace(' ',' +') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language
+>     }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
+13c17
+< {% include 'simple/search.html' %}
+---
+> {% include 'kvanDark/search.html' %}
+16c20
+<   {% set only_template = 'only_template_' + results[0]['template']|default('default')|replace('.html', '') %}
+---
+> {% set only_template = 'only_template_' + results[0]['template']|default('default')|replace('.html', '') %}
+18c22
+<   {% set only_template = '' %}
+---
+> {% set only_template = '' %}
+23c27,28
+<     <div id="answers" role="complementary" aria-labelledby="answers-title"><h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
+---
+>     <div id="answers" role="complementary" aria-labelledby="answers-title">
+>         <h4 class="title" id="answers-title">{{ _('Answers') }} : </h4>
+26,33c31,34
+<         <span>{{ answer.answer }}</span>
+<           {%- if answer.url -%}
+<           <a href="{{ answer.url }}" class="answer-url"
+<              {%- if results_on_new_tab %} target="_blank" rel="noopener noreferrer"
+<              {%- else -%} rel="noreferrer"
+<              {%- endif -%}
+<              >{{ urlparse(answer.url).hostname }}</a>
+<           {% endif -%}
+---
+>             <span>{{ answer.answer }}</span>
+>             {% if answer.url -%}
+>             <a href="{{ answer.url }}" class="answer-url">{{ urlparse(answer.url).hostname }}</a>
+>             {% endif -%}
+46c47
+<           <div id="infoboxes">
+---
+>         <div id="infoboxes">
+48,51c49,52
+<               <summary class="title">{{ _('Info') }}</summary>
+<               {%- for infobox in infoboxes -%}
+<                 {%- include 'simple/elements/infobox.html' -%}
+<               {%- endfor -%}
+---
+>                 <summary class="title">{{ _('Info') }}</summary>
+>                 {%- for infobox in infoboxes -%}
+>                 {%- include 'kvanDark/elements/infobox.html' -%}
+>                 {%- endfor -%}
+53c54
+<           </div>
+---
+>         </div>
+57c58
+<           {%- include 'simple/elements/suggestions.html' -%}
+---
+>         {%- include 'kvanDark/elements/suggestions.html' -%}
+60,61d60
+<         {%- include 'simple/elements/engines_msg.html' -%}
+< 
+63c62,66
+<           {%- include 'simple/elements/search_url.html' -%}
+---
+>         {%- include 'kvanDark/elements/search_url.html' -%}
+>         {%- endif -%}
+> 
+>         {%- if unresponsive_engines -%}
+>         {%- include 'kvanDark/elements/engines_msg.html' -%}
+67c70
+<           {%- include 'simple/elements/apis.html' -%}
+---
+>         {%- include 'kvanDark/elements/apis.html' -%}
+75,91c78,94
+<       <h4 id="corrections-title">{{ _('Try searching for:') }}</h4>
+<       {% for correction in corrections %}
+<       <div class="left">
+< 	      <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation">
+<           {% for category in selected_categories %}
+<           <input type="hidden" name="category_{{ category }}" value="1">
+<           {% endfor %}
+<           <input type="hidden" name="q" value="{{ correction.url }}">
+<           <input type="hidden" name="language" value="{{ current_language }}">
+<           <input type="hidden" name="time_range" value="{{ time_range }}">
+<           <input type="hidden" name="safesearch" value="{{ safesearch }}">
+<           <input type="hidden" name="theme" value="{{ theme }}">
+<           {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit }}" >{% endif %}
+<           <input type="submit" role="link" value="{{ correction.title }}">
+< 	      </form>
+<       </div>
+<       {% endfor %}
+---
+>         <h4 id="corrections-title">{{ _('Try searching for:') }}</h4>
+>         {% for correction in corrections %}
+>         <div class="left">
+>             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="navigation">
+>                 {% for category in selected_categories %}
+>                 <input type="hidden" name="category_{{ category }}" value="1">
+>                 {% endfor %}
+>                 <input type="hidden" name="q" value="{{ correction.url }}">
+>                 <input type="hidden" name="language" value="{{ current_language }}">
+>                 <input type="hidden" name="time_range" value="{{ time_range }}">
+>                 <input type="hidden" name="safesearch" value="{{ safesearch }}">
+>                 <input type="hidden" name="theme" value="{{ theme }}">
+>                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit }}">{% endif %}
+>                 <input type="submit" role="link" value="{{ correction.title }}">
+>             </form>
+>         </div>
+>         {% endfor %}
+96,104c99,108
+<     {% for result in results %}
+<         {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
+<         {% set index = loop.index %}
+<         {% include get_result_template('simple', result['template']) %}
+<         {% if result.close_group and not only_template %}</div>{% endif %}
+<     {% endfor %}
+<     {% if not results and not answers %}
+<         {% include 'simple/messages/no_results.html' %}
+<     {% endif %}
+---
+>         {% for result in results %}
+>         {% if result.open_group and not only_template %}<div
+>             class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
+>             {% set index = loop.index %}
+>             {% include get_result_template('kvanDark', result['template']) %}
+>             {% if result.close_group and not only_template %}</div>{% endif %}
+>         {% endfor %}
+>         {% if not results and not answers %}
+>         {% include 'kvanDark/messages/no_results.html' %}
+>         {% endif %}
+107c111
+<       <a href="#" aria-label="{{ _('Back to top') }}">{{ icon_small('chevron-up-outline') }}</a>
+---
+>         <a href="#" aria-label="{{ _('Back to top') }}">{{ icon_small('chevron-up-outline') }}</a>
+112,127c116,132
+<             <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="previous_page">
+<                 <div class="{% if rtl %}right{% else %}left{% endif %}">
+<                   <input type="hidden" name="q" value="{{ q|e }}" >
+<                   {% for category in selected_categories %}
+<                   <input type="hidden" name="category_{{ category }}" value="1" >
+<                   {% endfor %}
+<                   <input type="hidden" name="pageno" value="{{ pageno-1 }}" >
+<                   <input type="hidden" name="language" value="{{ current_language }}" >
+<                   <input type="hidden" name="time_range" value="{{ time_range }}" >
+<                   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+<                   <input type="hidden" name="theme" value="{{ theme }}" >
+<                   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+<                   {{- engine_data_form(engine_data) -}}
+<                   <button role="link" type="submit">{{ icon_small('chevron-left') }} {{ _('Previous page') }}</button>
+<                 </div>
+<             </form>
+---
+>         <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="previous_page">
+>             <div class="{% if rtl %}right{% else %}left{% endif %}">
+>                 <input type="hidden" name="q" value="{{ q|e }}">
+>                 {% for category in selected_categories %}
+>                 <input type="hidden" name="category_{{ category }}" value="1">
+>                 {% endfor %}
+>                 <input type="hidden" name="pageno" value="{{ pageno-1 }}">
+>                 <input type="hidden" name="language" value="{{ current_language }}">
+>                 <input type="hidden" name="time_range" value="{{ time_range }}">
+>                 <input type="hidden" name="safesearch" value="{{ safesearch }}">
+>                 <input type="hidden" name="theme" value="{{ theme }}">
+>                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}">{% endif
+>                 %}
+>                 {{- engine_data_form(engine_data) -}}
+>                 <button role="link" type="submit">{{ icon_small('chevron-left') }} {{ _('Previous page') }}</button>
+>             </div>
+>         </form>
+129,132c134,136
+<         {%- if results | count > 0 -%}
+<           <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
+<               <div class="{% if rtl %}left{% else %}right{% endif %}">
+<                 <input type="hidden" name="q" value="{{ q|e }}" >
+---
+>         <form method="{{ method or 'POST' }}" action="{{ url_for('search') }}" class="next_page">
+>             <div class="{% if rtl %}left{% else %}right{% endif %}">
+>                 <input type="hidden" name="q" value="{{ q|e }}">
+134c138
+<                 <input type="hidden" name="category_{{ category }}" value="1" >
+---
+>                 <input type="hidden" name="category_{{ category }}" value="1">
+136,141c140,146
+<                 <input type="hidden" name="pageno" value="{{ pageno+1 }}" >
+<                 <input type="hidden" name="language" value="{{ current_language }}" >
+<                 <input type="hidden" name="time_range" value="{{ time_range }}" >
+<                 <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+<                 <input type="hidden" name="theme" value="{{ theme }}" >
+<                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+---
+>                 <input type="hidden" name="pageno" value="{{ pageno+1 }}">
+>                 <input type="hidden" name="language" value="{{ current_language }}">
+>                 <input type="hidden" name="time_range" value="{{ time_range }}">
+>                 <input type="hidden" name="safesearch" value="{{ safesearch }}">
+>                 <input type="hidden" name="theme" value="{{ theme }}">
+>                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}">{% endif
+>                 %}
+143,146c148,150
+<                 <button role="link"  type="submit">{{ _('Next page') }} {{ icon_small('chevron-right') }}</button>
+<               </div>
+<           </form>
+<         {%- endif -%}
+---
+>                 <button role="link" type="submit">{{ _('Next page') }} {{ icon_small('chevron-right') }}</button>
+>             </div>
+>         </form>
+150,151c154,155
+<             {% set pstart = pageno - 4 %}
+<             {% set pend = pageno + 6 %}
+---
+>         {% set pstart = pageno - 4 %}
+>         {% set pend = pageno + 6 %}
+155c159
+<         {% for x in range(pstart, pend) %}
+---
+>             {% for x in range(pstart, pend) %}
+157c161
+<                 <input type="hidden" name="q" value="{{ q|e }}" >
+---
+>                 <input type="hidden" name="q" value="{{ q|e }}">
+159c163
+<                 <input type="hidden" name="category_{{ category }}" value="1" >
+---
+>                 <input type="hidden" name="category_{{ category }}" value="1">
+161,166c165,171
+<                 <input type="hidden" name="pageno" value="{{ x }}" >
+<                 <input type="hidden" name="language" value="{{ current_language }}" >
+<                 <input type="hidden" name="time_range" value="{{ time_range }}" >
+<                 <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+<                 <input type="hidden" name="theme" value="{{ theme }}" >
+<                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+---
+>                 <input type="hidden" name="pageno" value="{{ x }}">
+>                 <input type="hidden" name="language" value="{{ current_language }}">
+>                 <input type="hidden" name="time_range" value="{{ time_range }}">
+>                 <input type="hidden" name="safesearch" value="{{ safesearch }}">
+>                 <input type="hidden" name="theme" value="{{ theme }}">
+>                 {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}">{% endif
+>                 %}
+174c179
+<         {% endfor %}
+---
+>             {% endfor %}
+179c184
+< {% endblock %}
+---
+> {% endblock %}
+\ No newline at end of file
+diff --color -rN simple/result_templates/code.html kvanDark/result_templates/code.html
+1c1
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+---
+> {% from 'kvanDark/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+7,9c7,9
+<   <p class="content">
+<     {{- result.content|safe -}}
+<   </p>
+---
+> <p class="content">
+> 	{{- result.content|safe -}}
+> </p>
+12,24c12,18
+<   <p class="content">{{- '' -}}
+<     {{ _('repo') }}: {{- ' ' -}}
+<     <a href="{{ result.repository|safe }}"{{- ' ' -}}
+<        {% if results_on_new_tab %}
+<          target="_blank" {{- ' ' -}}
+<          rel="noopener noreferrer"
+<        {%- else -%}
+<          rel="noreferrer"
+<        {%- endif -%}
+<        >
+<        {{- result.repository -}}
+<     </a>{{- '' -}}
+<   </p>
+---
+> <p class="content">{{- '' -}}
+> 	{{ _('repo') }}: {{- ' ' -}}
+> 	<a href="{{ result.repository|safe }}" {{- ' ' -}} {% if results_on_new_tab %} target="_blank" {{- ' ' -}}
+> 		rel="noopener noreferrer" {%- else -%} rel="noreferrer" {%- endif -%}>
+> 		{{- result.repository -}}
+> 	</a>{{- '' -}}
+> </p>
+28c22
+<     {{- result.codelines|code_highlighter(result.code_language)|safe -}}
+---
+> 	{{- result.codelines|code_highlighter(result.code_language)|safe -}}
+32c26
+< {{- result_footer(result) -}}
+---
+> {{- result_footer(result) -}}
+\ No newline at end of file
+diff --color -rN simple/result_templates/default.html kvanDark/result_templates/default.html
+1c1
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+---
+> {% from 'kvanDark/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+6c6,8
+< <p class="altlink"><a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-media-{{ index }}" data-btn-text-collapsed="{{ _('show media') }}" data-btn-text-not-collapsed="{{ _('hide media') }}">{{ icon('music-note') }} {{ _('show media') }}</a></p>
+---
+> <p class="altlink"><a class="btn-collapse collapsed media-loader disabled_if_nojs"
+> 		data-target="#result-media-{{ index }}" data-btn-text-collapsed="{{ _('show media') }}"
+> 		data-btn-text-not-collapsed="{{ _('hide media') }}">{{ icon('music-note') }} {{ _('show media') }}</a></p>
+9,11c11,13
+<   <p class="content">
+<     {{ result.content|safe }}
+<   </p>
+---
+> <p class="content">
+> 	{{ result.content|safe }}
+> </p>
+13,15c15,17
+<   <p class="content empty_element">
+<     {{ _('This site did not provide any description.')|safe }}
+<   </p>
+---
+> <p class="content empty_element">
+> 	{{ _('This site did not provide any description.')|safe }}
+> </p>
+20c22
+<   <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
+---
+> 	<iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
+25c27,29
+<   <audio controls><source src="{{result.audio_src}}"></audio>
+---
+> 	<audio controls>
+> 		<source src="{{result.audio_src}}">
+> 	</audio>
+28c32
+< {{- result_footer(result) }}
+---
+> {{- result_footer(result) }}
+\ No newline at end of file
+diff --color -rN simple/result_templates/files.html kvanDark/result_templates/files.html
+1,45d0
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
+< {% from 'simple/icons.html' import icon_small %}
+< 
+< {{- result_header(result, favicons, image_proxify) -}}
+< {{- result_sub_header(result) -}}
+< 
+< {%- if result.embedded -%}
+<     <small> &bull; <a class="text-info btn-collapse collapsed cursor-pointer media-loader disabled_if_nojs" data-toggle="collapse" data-target="#result-media-{{ index }}" data-btn-text-collapsed="{{ _('show media') }}" data-btn-text-not-collapsed="{{ _('hide media') }}">
+<     {%- if result.mtype == 'audio' %}{{ icon_small('musical-notes-outline') -}}
+<     {%- elif result.mtype == 'video' %} {{ icon_small('play-outline') -}}
+<     {%- endif %} {{ _('show media') }}</a></small>
+< {%- endif -%}
+< 
+< {%- if result.embedded -%}
+< <div id="result-media-{{ index }}" class="collapse invisible">
+<    {{- result.embedded|safe -}}
+< </div>
+< {%- endif -%}
+< 
+< {%- if result.abstract %}<p class="result-content result-abstract">{{ result.abstract|safe }}</p>{% endif -%}
+< 
+< {%- if result.img_src -%}
+< <div class="container-fluid">
+<     <div class="row">
+< <img src="{{ image_proxify(result.img_src) }}" alt="{{ result.title|striptags }}" title="{{ result.title|striptags }}" style="width: auto; max-height: 60px; min-height: 60px;" class="col-xs-2 col-sm-4 col-md-4 result-content">
+< {%- if result.content %}<p class="result-content col-xs-8 col-sm-8 col-md-8">{{ result.content|safe }}</p>{% endif -%}
+<     </div>
+< </div>
+< {%- else -%}
+< {%- if result.content %}<p class="result-content">{{ result.content|safe }}</p>{% endif -%}
+< {%- endif -%}
+< 
+< <table class="result-metadata result-content">
+< {%- if result.author %}<tr><td>{{ _('Author') }}</td><td>{{ result.author|safe }}</td></tr>{% endif -%}
+< 
+< {%- if result.filename %}<tr><td>{{ _('Filename') }}</td><td>{{ result.filename|safe }}</td></tr>{% endif -%}
+< 
+< {%- if result.size %}<tr><td>{{ _('Filesize') }}</td><td>{{ result.size|safe }}</td></tr>{%- endif -%}
+< 
+< {%- if result.time %}<tr><td>{{ _('Date') }}</td><td>{{ result.time|safe }}</td></tr>{% endif -%}
+< 
+< {%- if result.mtype %}<tr><td>{{ _('Type') }}</td><td>{{ result.mtype|safe }}/{{ result.subtype|safe }}</td></tr>{% endif -%}
+< </table>
+< 
+< {{ result_footer(result) }}
+diff --color -rN simple/result_templates/images.html kvanDark/result_templates/images.html
+4,6c4,5
+< 		{%- if result.resolution %} <span class="image_resolution">{{ result.resolution }}</span> {%- endif -%}
+< 		<span class="title">{{ result.title|striptags }}</span>{{- "" -}}
+<                 <span class="source">{{- result.parsed_url.netloc -}}</span>{{- "" -}}
+---
+>                 <span class="title">{{ result.title|striptags }}</span>{{- "" -}}
+>                 <span class="source">{{ result.parsed_url.netloc }}</span>{{- "" -}}
+20d18
+<                         <p class="result-resolution">{%- if result.resolution %}<span>{{ _('Resolution') }}:</span>{{ result.resolution }}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
+22d19
+<                         <p class="result-filesize">{%- if result.filesize %}<span>{{ _('Filesize') }}:</span>{{ result.filesize}}{% else %}&nbsp;{% endif -%}</p>{{- "" -}}
+diff --color -rN simple/result_templates/map.html kvanDark/result_templates/map.html
+1,2c1,2
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+< {% from 'simple/icons.html' import icon_small %}
+---
+> {% from 'kvanDark/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+> {% from 'kvanDark/icons.html' import icon_small %}
+10,39c10,46
+<     {%- if result.address -%}
+<     <tr>
+<         <th scope="row">{{ result.address_label or _('address') }}</th>
+<         <td itemscope itemtype="http://schema.org/PostalAddress">
+<             {%- if result.address.name -%}
+<                 <strong itemprop="name" class="hidden">{{ result.address.name }}</strong>
+<             {%- endif -%}
+<             {% if result.address.road -%}
+<                 <span itemprop="streetAddress">
+<                     {%- if result.address.house_number -%}{{- result.address.house_number -}}, {% endif %}
+<                     {{- result.address.road -}}
+<                 </span><br>
+<             {%- endif %}
+<             {%- if result.address.locality -%}
+<                 <span itemprop="addressLocality">{{- result.address.locality -}}</span>
+<                 {%- if result.address.postcode -%}, <span itemprop="postalCode">{{- result.address.postcode -}}</span>{% endif %}
+<                 <br>
+<             {%- endif -%}
+<             {%- if result.address.country -%}
+<                 <span itemprop="addressCountry">{{- result.address.country -}}</span>
+<             {%- endif -%}
+<         </td>
+<     </tr>
+<     {%- endif %}
+<     {%- for info in result.data -%}
+<     <tr><th scope="row">{{ info.label }}</th><td>{{ info.value|safe }}</td></tr>
+<     {%- endfor -%}
+<     {%- for link in result.links -%}
+<     <tr><th scope="row">{{ link.label }}</th><td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url_label|safe }}</a></td></tr>
+<     {%- endfor -%}
+---
+> 	{%- if result.address -%}
+> 	<tr>
+> 		<th scope="row">{{ result.address_label or _('address') }}</th>
+> 		<td itemscope itemtype="http://schema.org/PostalAddress">
+> 			{%- if result.address.name -%}
+> 			<strong itemprop="name" class="hidden">{{ result.address.name }}</strong>
+> 			{%- endif -%}
+> 			{% if result.address.road -%}
+> 			<span itemprop="streetAddress">
+> 				{%- if result.address.house_number -%}{{- result.address.house_number -}}, {% endif %}
+> 				{{- result.address.road -}}
+> 			</span><br />
+> 			{%- endif %}
+> 			{%- if result.address.locality -%}
+> 			<span itemprop="addressLocality">{{- result.address.locality -}}</span>
+> 			{%- if result.address.postcode -%}, <span itemprop="postalCode">{{- result.address.postcode -}}</span>{%
+> 			endif %}
+> 			<br />
+> 			{%- endif -%}
+> 			{%- if result.address.country -%}
+> 			<span itemprop="addressCountry">{{- result.address.country -}}</span>
+> 			{%- endif -%}
+> 		</td>
+> 	</tr>
+> 	{%- endif %}
+> 	{%- for info in result.data -%}
+> 	<tr>
+> 		<th scope="row">{{ info.label }}</th>
+> 		<td>{{ info.value|safe }}</td>
+> 	</tr>
+> 	{%- endfor -%}
+> 	{%- for link in result.links -%}
+> 	<tr>
+> 		<th scope="row">{{ link.label }}</th>
+> 		<td><a class="text-info cursor-pointer" href="{{ link.url }}">{{ link.url_label|safe }}</a></td>
+> 	</tr>
+> 	{%- endfor -%}
+43c50,56
+<     <small> <a class="btn-collapse collapsed searxng_init_map hide_if_nojs" data-target="#result-map-{{ index }}" data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}" data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}" data-map-lat="{{ result.latitude }}" {% if result.boundingbox %}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}'{% endif %} {% if result.geojson %}data-map-geojson='{{ result.geojson|tojson|safe }}'{% endif %}>{{ icon_small( 'globe-outline') }} {{ _('show map') }}</a></small>
+---
+> <small> <a class="btn-collapse collapsed searxng_init_map hide_if_nojs" data-target="#result-map-{{ index }}"
+> 		data-btn-text-collapsed="{{ _('show map') }}" data-btn-text-not-collapsed="{{ _('hide map') }}"
+> 		data-leaflet-target="osm-map-{{ index }}" data-map-lon="{{ result.longitude }}"
+> 		data-map-lat="{{ result.latitude }}" {% if result.boundingbox
+> 		%}data-map-boundingbox='{{ result.boundingbox|tojson|safe }}' {% endif %} {% if result.geojson
+> 		%}data-map-geojson='{{ result.geojson|tojson|safe }}' {% endif %}>{{ icon_small( 'globe-outline') }} {{ _('show
+> 		map') }}</a></small>
+49c62,64
+<     <div id="result-map-{{ index }}" class="invisible"><div id="osm-map-{{ index }}" class="osm-map-box"></div></div>
+---
+> <div id="result-map-{{ index }}" class="invisible">
+> 	<div id="osm-map-{{ index }}" class="osm-map-box"></div>
+> </div>
+52c67
+< {{- result_footer(result) }}
+---
+> {{- result_footer(result) }}
+\ No newline at end of file
+diff --color -rN simple/result_templates/packages.html kvanDark/result_templates/packages.html
+1,75d0
+< {%- from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context -%}
+< {{ result_header(result, favicons, image_proxify) -}}
+< 
+< {%- if result.content -%}<p class="content">{{- result.content|safe -}}</p>{%- endif -%}
+< <div class="attributes">{{- '' -}}
+<   <div class="result_package_name">{{- '' -}}
+<     <span>{{ _('Name') }}:</span>{{- '' -}}
+<     <span><code>{{- result.package_name -}}</code></span>{{- '' -}}
+<   </div>
+<   {%- if result.version -%}
+<     <div class="result_version">{{- '' -}}
+<       <span>{{- _('Version') }}:</span>{{- '' -}}
+<       <span><strong>{{ result.version }}</strong></span>{{- '' -}}
+<     </div>
+<   {%- endif -%}
+<   {%- if result.maintainer -%}
+<     <div class="result_maintainer">{{- '' -}}
+<       <span>{{ _('Maintainer') }}:</span>{{- '' -}}
+<       <span>{{ result.maintainer }}</span>{{- '' -}}
+<     </div>
+<   {%- endif -%}
+<   {%- if result.publishedDate -%}
+<     <div class="result_pubdate">{{- '' -}}
+<       <span>{{ _('Updated at') }}:</span>{{- '' -}}
+<       <span><time datetime="{{ result.pubdate }}">{{ result.publishedDate }}</time></span>{{- '' -}}
+<     </div>
+<   {%- endif -%}
+<   {%- if result.tags -%}
+<     <div class="result_tags">{{- '' -}}
+<       <span>{{ _('Tags') }}:</span>{{- '' -}}
+<       <span>{{ result.tags|join(', ') }}</span>{{- '' -}}
+<     </div>
+<   {%- endif -%}
+<   {%- if result.popularity -%}
+<     <div class="result_popularity">{{- '' -}}
+<       <span>{{ _('Popularity') }}:</span>{{- '' -}}
+<       <span>{{ result.popularity }}</span>{{- '' -}}
+<     </div>
+<   {%- endif -%}
+<   {%- if result.license_name -%}
+<     <div class="result_license">{{- '' -}}
+<       <span>{{- _('License') -}}:</span>
+<       {%- if result.license_url -%}
+<         <span><a href="{{ result.license_url }}" target="_blank">{{ result.license_name }}</a></span>
+<       {%- else -%}
+<         <span>{{ result.license_name }}</span>
+<       {%- endif -%}
+<     </div>
+<   {%- endif -%}
+<   {%- if result.homepage or result.source_code_url or result.links -%}
+<     <div class="result_project">{{- '' -}}
+<       <span>{{ _('Project') }}</span>
+<       <span>{{- '' -}}
+<         {%- if result.homepage -%}
+<           <a href="{{ result.homepage }}" target="_blank">{{ _('Project homepage') }}</a>
+<         {%- endif -%}
+<         {%- if result.homepage and result.source_code_url %} | {% endif -%}
+<         {%- if result.source_code_url -%}
+<           <a href="{{ result.source_code_url }}" target="_blank">{{ _('Source code') }}</a>
+<         {%- endif -%}
+<         {%- if result.links %}
+<           {%- for name, link in result.links.items() -%}
+<             {% if not loop.first or result.homepage or result.source_code_url %} | {% endif %}
+<             <a href="{{ link }}" target="_blank">
+<               {{- _(name) -}}
+<             </a>
+<           {%- endfor -%}
+<         {%- endif -%}
+<       </span>{{- '' -}}
+<     </div>
+<   {%- endif -%}
+< </div>{{- '' -}}
+< <div class="break"></div>
+< 
+< {{- result_footer(result) }}
+diff --color -rN simple/result_templates/paper.html kvanDark/result_templates/paper.html
+1c1,2
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
+---
+> {% from 'kvanDark/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link
+> with context %}
+5,28c6,39
+<   {%- if result.publishedDate %}<div class="result_publishedDate"><span>{{ _("Published date") }}:</span><span><time class="published_date" datetime="{{ result.pubdate }}" >{{ result.publishedDate }}</time></span></div>{% endif -%}
+<   {%- if result.authors %}<div class="result_authors"><span>{{ _("Author") }}:</span><span>{{ result.authors | join(", ") }}</span></div>{% endif -%}
+<   {%- if result.journal -%}
+<     <div class="result_journal">
+<       <span>{{- _("Journal") }}:</span><span>{{ result.journal -}}
+<       {%- if result.volume -%}
+<         &nbsp;{{- result.volume -}}
+<         {%- if result.number -%}
+<           .{{- result.number -}}
+<         {%- endif -%}
+<       {%- endif -%}
+<       {%- if result.pages -%}
+<         &nbsp;{{- result.pages -}}
+<       {%- endif -%}
+<       </span>
+<     </div>
+<   {%- endif %}
+<   {%- if result.editor %}<div class="result_editor"><span>{{ _("Editor") }}:</span><span>{{ result.editor }}</span></div>{% endif -%}
+<   {%- if result.publisher %}<div class="result_publisher"><span>{{ _("Publisher") }}:</span><span>{{ result.publisher }}</span></div>{% endif -%}
+<   {%- if result.type %}<div class="result_type"><span>{{ _("Type") }}:</span><span>{{ result.type }}</span></div>{% endif -%}
+<   {%- if result.tags %}<div class="result_tags"><span>{{ _("Tags") }}:</span><span>{{ result.tags | join(", ")}}</span></div>{%- endif -%}
+<   {%- if result.doi %}<div class="result_doi"><span>{{ _("DOI") }}:</span><span>{{ result_link(doi_resolver + result.doi, result.doi) }}</span></div>{% endif -%}
+<   {%- if result.issn %}<div class="result_issn"><span>{{ _("ISSN") }}:</span><span>{{ result.issn | join(", ") }}</span></div>{% endif -%}
+<   {%- if result.isbn %}<div class="result_isbn"><span>{{ _("ISBN") }}:</span><span>{{ result.isbn | join(", ") }}</span></div>{% endif -%}
+---
+> 	{%- if result.publishedDate %}<div class="result_publishedDate"><span>{{ _("Published date") }}:</span><span><time
+> 				class="published_date" datetime="{{ result.pubdate }}">{{ result.publishedDate }}</time></span></div>{%
+> 	endif -%}
+> 	{%- if result.authors %}<div class="result_authors"><span>{{ _("Author") }}:</span><span>{{ result.authors | join(",
+> 			") }}</span></div>{% endif -%}
+> 	{%- if result.journal -%}
+> 	<div class="result_journal">
+> 		<span>{{- _("Journal") }}:</span><span>{{ result.journal -}}
+> 			{%- if result.volume -%}
+> 			&nbsp;{{- result.volume -}}
+> 			{%- if result.number -%}
+> 			.{{- result.number -}}
+> 			{%- endif -%}
+> 			{%- endif -%}
+> 			{%- if result.pages -%}
+> 			&nbsp;{{- result.pages -}}
+> 			{%- endif -%}
+> 		</span>
+> 	</div>
+> 	{%- endif %}
+> 	{%- if result.editor %}<div class="result_editor"><span>{{ _("Editor") }}:</span><span>{{ result.editor }}</span>
+> 	</div>{% endif -%}
+> 	{%- if result.publisher %}<div class="result_publisher"><span>{{ _("Publisher") }}:</span><span>{{ result.publisher
+> 			}}</span></div>{% endif -%}
+> 	{%- if result.type %}<div class="result_type"><span>{{ _("Type") }}:</span><span>{{ result.type }}</span></div>{%
+> 	endif -%}
+> 	{%- if result.tags %}<div class="result_tags"><span>{{ _("Tags") }}:</span><span>{{ result.tags | join(",
+> 			")}}</span></div>{%- endif -%}
+> 	{%- if result.doi %}<div class="result_doi"><span>{{ _("DOI") }}:</span><span>{{ result_link(doi_resolver +
+> 			result.doi, result.doi) }}</span></div>{% endif -%}
+> 	{%- if result.issn %}<div class="result_issn"><span>{{ _("ISSN") }}:</span><span>{{ result.issn | join(", ")
+> 			}}</span></div>{% endif -%}
+> 	{%- if result.isbn %}<div class="result_isbn"><span>{{ _("ISBN") }}:</span><span>{{ result.isbn | join(", ")
+> 			}}</span></div>{% endif -%}
+33,35c44,47
+<   {%- if result.pdf_url -%}{{ result_link(result.pdf_url, _('PDF')) }}{%- endif -%}
+<   {%- if result.html_url -%}{{ result_link(result.html_url, _('HTML')) }}{%- endif -%}
+<   {%- if result.doi %}{{ result_link('https://www.altmetric.com/details/doi/' + result.doi, 'Altmetric') }}{% endif -%}
+---
+> 	{%- if result.pdf_url -%}{{ result_link(result.pdf_url, _('PDF')) }}{%- endif -%}
+> 	{%- if result.html_url -%}{{ result_link(result.html_url, _('HTML')) }}{%- endif -%}
+> 	{%- if result.doi %}{{ result_link('https://www.altmetric.com/details/doi/' + result.doi, 'Altmetric') }}{% endif
+> 	-%}
+38c50
+< {{- result_footer(result) }}
+---
+> {{- result_footer(result) }}
+\ No newline at end of file
+diff --color -rN simple/result_templates/products.html kvanDark/result_templates/products.html
+1c1
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+---
+> {% from 'kvanDark/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+9,11c9,11
+<   <p class="content">
+<     {{ result.content|safe }}
+<   </p>
+---
+> <p class="content">
+> 	{{ result.content }}
+> </p>
+14c14
+< {{- result_footer(result) }}
+---
+> {{- result_footer(result) }}
+\ No newline at end of file
+diff --color -rN simple/result_templates/torrent.html kvanDark/result_templates/torrent.html
+1c1,2
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
+---
+> {% from 'kvanDark/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link
+> with context %}
+6,7c7,23
+< {% if result.magnetlink %}<p class="altlink"> &bull; {{ result_link(result.magnetlink, icon_big('magnet-outline') + _('magnet link'), "magnetlink") }}</p>{% endif %}
+< {% if result.torrentfile %}<p class="altlink"> &bull; {{ result_link(result.torrentfile, icon_big('download-alt') + _('torrent file'), "torrentfile") }}</p>{% endif %}
+---
+> {% if result.magnetlink %}<p class="altlink"> &bull; {{ result_link(result.magnetlink, icon_big('magnet-outline') +
+> 	_('magnet link'), "magnetlink") }}</p>{% endif %}
+> {% if result.torrentfile %}<p class="altlink"> &bull; {{ result_link(result.torrentfile, icon_big('download-alt') +
+> 	_('torrent file'), "torrentfile") }}</p>{% endif %}
+> 
+> {% if result.seed is defined %}<p class="stat"> &bull; {{ icon_big('arrow-swap') }} {{ _('Seeder') }} <span
+> 		class="badge">{{ result.seed }}</span> &bull; {{ _('Leecher') }} <span class="badge">{{ result.leech }}</span>
+> </p>{% endif %}
+> 
+> {%- if result.filesize %}<p class="stat">{{ icon_big('floppy-disk') }} {{ _('Filesize') }}<span class="badge">
+> 		{%- if result.filesize < 1024 %}{{ result.filesize }} {{ _('Bytes') }} {%- elif result.filesize < 1024*1024
+> 			%}{{ '{0:0.2f}' .format(result.filesize/1024) }} {{ _('kiB') }} {%- elif result.filesize < 1024*1024*1024
+> 			%}{{ '{0:0.2f}' .format(result.filesize/1024/1024) }} {{ _('MiB') }} {%- elif result.filesize <
+> 			1024*1024*1024*1024 %}{{ '{0:0.2f}' .format(result.filesize/1024/1024/1024) }} {{ _('GiB') }} {%- else
+> 			%}{{ '{0:0.2f}' .format(result.filesize/1024/1024/1024/1024) }} {{ _('TiB') }}{% endif -%} </span>
+> </p>
+> {%- endif -%}
+9,13c25,26
+< {% if result.seed is defined %}<p class="stat"> &bull; {{ icon_big('arrow-swap') }} {{ _('Seeder') }} <span class="badge">{{ result.seed }}</span> &bull; {{ _('Leecher') }} <span class="badge">{{ result.leech }}</span></p>{% endif %}
+< 
+< {%- if result.filesize %}<p class="stat">{{ icon_big('floppy-disk') }} {{ _('Filesize') }}<span class="badge">{{ result.filesize }}</span></p>{%- endif -%}
+< 
+< {%- if result.files %}<p class="stat">{{ icon_big('file') }} {{ _('Number of Files') }} <span class="badge">{{ result.files }}</span></p>{% endif -%}
+---
+> {%- if result.files %}<p class="stat">{{ icon_big('file') }} {{ _('Number of Files') }} <span class="badge">{{
+> 		result.files }}</span></p>{% endif -%}
+17c30
+< {{- result_footer(result) }}
+---
+> {{- result_footer(result) }}
+\ No newline at end of file
+diff --color -rN simple/result_templates/videos.html kvanDark/result_templates/videos.html
+1c1
+< {% from 'simple/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+---
+> {% from 'kvanDark/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+6c6,8
+< <p class="altlink"> <a class="btn-collapse collapsed media-loader disabled_if_nojs" data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}" data-btn-text-not-collapsed="{{ _('hide video') }}">{{ icon('film-outline') }} {{ _('show video') }}</a></p>
+---
+> <p class="altlink"> <a class="btn-collapse collapsed media-loader disabled_if_nojs"
+> 		data-target="#result-video-{{ index }}" data-btn-text-collapsed="{{ _('show video') }}"
+> 		data-btn-text-not-collapsed="{{ _('hide video') }}">{{ icon('film-outline') }} {{ _('show video') }}</a></p>
+9,11c11,13
+<   <p class="content">
+<     {{ result.content|safe }}
+<   </p>
+---
+> <p class="content">
+> 	{{ result.content|safe }}
+> </p>
+13,15c15,17
+<   <p class="content empty_element">
+<     {{ _('This site did not provide any description.')|safe }}
+<   </p>
+---
+> <p class="content empty_element">
+> 	{{ _('This site did not provide any description.')|safe }}
+> </p>
+21c23
+<   <iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
+---
+> 	<iframe data-src="{{result.iframe_src}}" frameborder="0" allowfullscreen></iframe>
+24c26
+< {{ result_footer(result) }}
+---
+> {{ result_footer(result) }}
+\ No newline at end of file
+diff --color -rN simple/search.html kvanDark/search.html
+2,24c2,30
+<   <div id="search_header">
+<     <a id="search_logo" href="{{ url_for('index') }}" tabindex="0" title="{{ _('Display the front page') }}">
+<       <span hidden>SearXNG</span>
+<       {% include 'simple/searxng-wordmark.min.svg' without context %}
+<     </a>
+<     <div id="search_view">
+<       <div class="search_box">
+<         <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" tabindex="1" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
+<         <button id="clear_search" type="reset" aria-label="{{ _('clear') }}" class="hide_if_nojs"><span>{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+<         <button id="send_search" type="submit" {%- if search_on_category_select -%}name="category_{{ selected_categories[0]|replace(' ', '_') }}"{%- endif -%} aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+<       </div>
+<     </div>
+<     {% set display_tooltip = true %}
+<     {% include 'simple/categories.html' %}
+<   </div>
+<   <div class="search_filters">
+<     {% include 'simple/filters/languages.html' %}
+<     {% include 'simple/filters/time_range.html' %}
+<     {% include 'simple/filters/safesearch.html' %}
+<   </div>
+<   <input type="hidden" name="theme" value="{{ theme }}" >
+<   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+< </form>
+---
+> 	<div id="search_header">
+> 		<a id="search_logo" href="{{ url_for('index') }}" tabindex="0" title="{{ _('Display the front page') }}">
+> 			<span hidden>SearXNG</span>
+> 			{% include 'kvanDark/searxng-wordmark.min.svg' without context %}
+> 		</a>
+> 		<div id="search_view">
+> 			<div class="search_box">
+> 				<input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" tabindex="1"
+> 					autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto"
+> 					value="{{ q or '' }}">
+> 				<button id="clear_search" type="reset" aria-label="{{ _('clear') }}" class="hide_if_nojs"><span>{{
+> 						icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+> 				<button id="send_search" type="submit" {%- if search_on_category_select
+> 					-%}name="category_{{ selected_categories[0]|replace(' ', '_') }}" {%- endif -%}
+> 					aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline')
+> 						}}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+> 			</div>
+> 		</div>
+> 		{% set display_tooltip = true %}
+> 		{% include 'kvanDark/categories.html' %}
+> 	</div>
+> 	<div class="search_filters">
+> 		{% include 'kvanDark/filters/languages.html' %}
+> 		{% include 'kvanDark/filters/time_range.html' %}
+> 		{% include 'kvanDark/filters/safesearch.html' %}
+> 	</div>
+> 	<input type="hidden" name="theme" value="{{ theme }}">
+> 	{% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}">{% endif %}
+> </form>
+\ No newline at end of file
+diff --color -rN simple/simple_search.html kvanDark/simple_search.html
+1,19d0
+< <form id="search" method="{{ method or 'POST' }}" action="{{ url_for('search') }}" role="search">
+<   <div id="search_header">
+<     <div id="search_view">
+<       <div class="search_box">
+<         <input id="q" name="q" type="text" placeholder="{{ _('Search for...') }}" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="{{ q or '' }}">
+<         <button id="clear_search" type="reset" aria-label="{{ _('clear') }}"><span class="hide_if_nojs">{{ icon_big('close') }}</span><span class="show_if_nojs">{{ _('clear') }}</span></button>
+<         <button id="send_search" type="submit" aria-label="{{ _('search') }}"><span class="hide_if_nojs">{{ icon_big('search-outline') }}</span><span class="show_if_nojs">{{ _('search') }}</span></button>
+<       </div>
+<     </div>
+<   </div>
+<   {% for category in selected_categories %}
+<   <input type="hidden" name="category_{{ category }}" value="1" >
+<   {% endfor %}
+<   <input type="hidden" name="language" value="{{ current_language }}" >
+<   <input type="hidden" name="time_range" value="{{ time_range }}" >
+<   <input type="hidden" name="safesearch" value="{{ safesearch }}" >
+<   <input type="hidden" name="theme" value="{{ theme }}" >
+<   {% if timeout_limit %}<input type="hidden" name="timeout_limit" value="{{ timeout_limit|e }}" >{% endif %}
+< </form>
+diff --color -rN simple/stats.html kvanDark/stats.html
+1,2c1,2
+< {% from 'simple/icons.html' import icon_big %}
+< {% from 'simple/new_issue.html' import new_issue with context %}
+---
+> {% from 'kvanDark/icons.html' import icon_big %}
+> {% from 'kvanDark/new_issue.html' import new_issue with context %}
+4c4
+< {% extends "simple/page_with_header.html" %}
+---
+> {% extends "kvanDark/page_with_header.html" %}
+7,13c7,13
+<     {% if selected_engine_name %}
+<         {{ column_name }}
+<     {% elif column_order==sort_order %}
+<         {{ column_name }} {{ icon_big('arrow-dropdown') }}
+<     {% else %}
+<         <a href="{{ url_for('stats', sort=column_order) }}">{{ column_name }}</a>
+<     {% endif %}
+---
+> {% if selected_engine_name %}
+> {{ column_name }}
+> {% elif column_order==sort_order %}
+> {{ column_name }} {{ icon_big('arrow-dropdown') }}
+> {% else %}
+> <a href="{{ url_for('stats', sort=column_order) }}">{{ column_name }}</a>
+> {% endif %}
+18c18,19
+< <h1>{% if selected_engine_name %}<a href="{{ url_for('stats') }}">{% endif %}{{ _('Engine stats') }}{% if selected_engine_name %}</a> - {{ selected_engine_name }}{% endif %}</h1>
+---
+> <h1>{% if selected_engine_name %}<a href="{{ url_for('stats') }}">{% endif %}{{ _('Engine stats') }}{% if
+> 		selected_engine_name %}</a> - {{ selected_engine_name }}{% endif %}</h1>
+24,87c25,95
+<     <tr>
+<         <th scope="col" class="engine-name">{{ th_sort('name', _("Engine name")) }}</th>
+<         <th scope="col" class="engine-score">{{ th_sort('score', _('Scores')) }}</th>
+<         <th scope="col" class="result-count">{{ th_sort('result_count', _('Result count')) }}</th>
+<         <th scope="col" class="response-time">{{ th_sort('time', _('Response time')) }}</th>
+<         <th scope="col" class="engine-reliability">{{ th_sort('reliability', _('Reliability')) }}</th>
+<     </tr>
+<     {% for engine_stat in engine_stats.get('time', []) %}
+<     <tr>
+<         <td class="engine-name"><a href="{{ url_for('stats', engine=engine_stat.name|e) }}">{{ engine_stat.name }}</a></td>
+<         <td class="engine-score">
+<             {% if engine_stat.score %}
+<             <span>{{ engine_stat.score_per_result|round(1) }}</span>
+<             {% endif %}
+<         </td>
+<         <td class="engine-result-count">
+<             {%- if engine_stat.result_count -%}
+< 
+<             <div class="bar-chart-value">{{- engine_stat.result_count | int -}}</div>{{- "" -}}
+<         <div class="bar-chart-graph" aria-hidden="true">
+<           <div class="bar-chart-bar bar{{ (100 * engine_stat.result_count / engine_stats.max_result_count)|round }}"></div>{{- "" -}}
+<         </div>
+<             {%- endif -%}
+<         </td>
+<         <td class="response-time">
+<             {%- if engine_stat.total is not none -%}
+<             <div class="bar-chart-value">{{- engine_stat.total | round(1) -}}</div>{{- "" -}}
+<         <div class="bar-chart-graph" aria-labelledby="{{engine_stat.name}}_time" aria-hidden="true">
+<               {% if engine_stat.http is not none and engine_stats.max_time %}<div class="bar-chart-serie1 bar{{ (100 * engine_stat.http / engine_stats.max_time)|round }}"></div>{%- endif -%}
+<               {% if engine_stat.processing is not none and engine_stats.max_time %}<div class="bar-chart-serie2 bar{{ (100 * engine_stat.processing / engine_stats.max_time)|round }}"></div>{%- endif -%}
+<         </div>
+<             <div class="engine-tooltip" role="tooltip" id="{{engine_stat.name}}_time">{{- "" -}}
+<                 <table>
+<                     <tr>
+<                         <th scope="col"></th>
+<                         <th scope="col">{{ _('Total') }}</th>
+<                         <th scope="col">{{ _('HTTP') }}</th>
+<                         <th scope="col">{{ _('Processing') }}</th>
+<                     </tr>
+<                     <tr>
+<                         <th scope="col">{{ _('Median') }}</th>
+<                         <td>{{ engine_stat.total }}</td>
+<                         <td>{{ engine_stat.http or ''}}</td>
+<                         <td>{{ engine_stat.processing }}</td>
+<                     </tr>
+<                     <tr>
+<                         <th scope="col">{{ _('P80') }}</th>
+<                         <td>{{ engine_stat.total_p80 }}</td>
+<                         <td>{{ engine_stat.http_p80 or '' }}</td>
+<                         <td>{{ engine_stat.processing_p80 }}</td>
+<                     </tr>
+<                     <tr>
+<                         <th scope="col">{{ _('P95') }}</th>
+<                         <td>{{ engine_stat.total_p95 }}</td>
+<                         <td>{{ engine_stat.http_p95 or '' }}</td>
+<                         <td>{{ engine_stat.processing_p95 }}</td>
+<                     </tr>
+<                 </table>
+<             </div>
+<             {%- endif -%}
+<         </td>
+<         <td class="engine-reliability"> {{ engine_reliabilities.get(engine_stat.name, {}).get('reliability') }}</td>
+<     </tr>
+<     {% endfor %}
+---
+> 	<tr>
+> 		<th scope="col" class="engine-name">{{ th_sort('name', _("Engine name")) }}</th>
+> 		<th scope="col" class="engine-score">{{ th_sort('score', _('Scores')) }}</th>
+> 		<th scope="col" class="result-count">{{ th_sort('result_count', _('Result count')) }}</th>
+> 		<th scope="col" class="response-time">{{ th_sort('time', _('Response time')) }}</th>
+> 		<th scope="col" class="engine-reliability">{{ th_sort('reliability', _('Reliability')) }}</th>
+> 	</tr>
+> 	{% for engine_stat in engine_stats.get('time', []) %}
+> 	<tr>
+> 		<td class="engine-name"><a href="{{ url_for('stats', engine=engine_stat.name|e) }}">{{ engine_stat.name }}</a>
+> 		</td>
+> 		<td class="engine-score">
+> 			{% if engine_stat.score %}
+> 			<span>{{ engine_stat.score_per_result|round(1) }}</span>
+> 			{% endif %}
+> 		</td>
+> 		<td class="engine-result-count">
+> 			{%- if engine_stat.result_count -%}
+> 
+> 			<div class="bar-chart-value">{{- engine_stat.result_count | int -}}</div>{{- "" -}}
+> 			<div class="bar-chart-graph" aria-hidden="true">
+> 				<div
+> 					class="bar-chart-bar bar{{ (100 * engine_stat.result_count / engine_stats.max_result_count)|round }}">
+> 				</div>{{- "" -}}
+> 			</div>
+> 			{%- endif -%}
+> 		</td>
+> 		<td class="response-time">
+> 			{%- if engine_stat.total is not none -%}
+> 			<div class="bar-chart-value">{{- engine_stat.total | round(1) -}}</div>{{- "" -}}
+> 			<div class="bar-chart-graph" aria-labelledby="{{engine_stat.name}}_time" aria-hidden="true">
+> 				{% if engine_stat.http is not none and engine_stats.max_time %}<div
+> 					class="bar-chart-serie1 bar{{ (100 * engine_stat.http / engine_stats.max_time)|round }}"></div>{%-
+> 				endif -%}
+> 				{% if engine_stat.processing is not none and engine_stats.max_time %}<div
+> 					class="bar-chart-serie2 bar{{ (100 * engine_stat.processing / engine_stats.max_time)|round }}">
+> 				</div>{%- endif -%}
+> 			</div>
+> 			<div class="engine-tooltip" role="tooltip" id="{{engine_stat.name}}_time">{{- "" -}}
+> 				<table>
+> 					<tr>
+> 						<th scope="col"></th>
+> 						<th scope="col">{{ _('Total') }}</th>
+> 						<th scope="col">{{ _('HTTP') }}</th>
+> 						<th scope="col">{{ _('Processing') }}</th>
+> 					</tr>
+> 					<tr>
+> 						<th scope="col">{{ _('Median') }}</th>
+> 						<td>{{ engine_stat.total }}</td>
+> 						<td>{{ engine_stat.http or ''}}</td>
+> 						<td>{{ engine_stat.processing }}</td>
+> 					</tr>
+> 					<tr>
+> 						<th scope="col">{{ _('P80') }}</th>
+> 						<td>{{ engine_stat.total_p80 }}</td>
+> 						<td>{{ engine_stat.http_p80 or '' }}</td>
+> 						<td>{{ engine_stat.processing_p80 }}</td>
+> 					</tr>
+> 					<tr>
+> 						<th scope="col">{{ _('P95') }}</th>
+> 						<td>{{ engine_stat.total_p95 }}</td>
+> 						<td>{{ engine_stat.http_p95 or '' }}</td>
+> 						<td>{{ engine_stat.processing_p95 }}</td>
+> 					</tr>
+> 				</table>
+> 			</div>
+> 			{%- endif -%}
+> 		</td>
+> 		<td class="engine-reliability"> {{ engine_reliabilities.get(engine_stat.name, {}).get('reliability') }}</td>
+> 	</tr>
+> 	{% endfor %}
+92,145c100,166
+<     <div class="engine-errors">
+<         {% for secondary in [False, True] %}
+<             {% set ns = namespace(first=true) %}
+<             {% for error in engine_reliabilities[selected_engine_name].errors %}
+<                 {% if secondary == error.secondary %}
+<                     {% if ns.first %}
+<                         {% set ns.first = false %}
+<                         <h2>{% if secondary %}{{ _('Warnings') }}{% else %}{{ _('Errors and exceptions') }}{% endif %}</h2>
+<                     {% endif %}
+<                     <table class="engine-error">
+<                         <tbody>
+<                             <tr>
+<                                 {%- if error.exception_classname -%}
+<                                     <th scope="row" class="engine-error-type">{{ _('Exception') }}</th><td>{{ error.exception_classname }}</td>
+<                                 {%- elif error.log_message -%}
+<                                     <th scope="row" class="engine-error-type">{{ _('Message') }}</th><td>{{ error.log_message }}</td>
+<                                 {%- endif -%}
+<                                 <th scope="row" class="engine-error-type">{{ _('Percentage') }}</th><td class="engine-error-type">{{ error.percentage }}</td>
+<                             </tr>
+<                             {% if error.log_parameters and error.log_parameters != (None, None, None) %}<tr><th scope="row">{{ _('Parameter') }}</th>{{- '' -}}
+<                                 <td colspan="3">
+<                                     {%- for param in error.log_parameters -%}
+<                                         <span class="log_parameters">{{ param }}</span>
+<                                     {%- endfor -%}
+<                                 </td>
+<                             </tr>
+<                             {% endif %}
+<                             <tr><th scope="row">{{ _('Filename') }}</th><td colspan="3">{{ error.filename }}:{{ error.line_no }}</td></tr>
+<                             <tr><th scope="row">{{ _('Function') }}</th><td colspan="3">{{ error.function }}</td></tr>
+<                             <tr><th scope="row">{{ _('Code') }}</th><td colspan="3">{{ error.code }}</td></tr>
+<                         </tbody>
+<                     </table>
+<                 {% endif %}
+<             {% endfor %}
+<         {% endfor %}
+<         {% if engine_reliabilities[selected_engine_name].checker %}
+<             <h3>{{ _('Checker') }}</h3>
+<             <table>
+<                 <tr>
+<                     <th scope="col" class="failed-test">{{ _('Failed test') }}</th>
+<                     <th scope="col">{{ _('Comment(s)') }}</th>
+<                 </tr>
+<                 {% for test_name, results in engine_reliabilities[selected_engine_name].checker.items() %}
+<                 <tr>
+<                     <td>{{ test_name }}</td>
+<                     <td>
+<                         {% for r in results %}<p>{{ r }}</p>{% endfor %}
+<                     </td>
+<                 </tr>
+<                 {% endfor %}
+<             </table>
+<         {% endif %}
+<         {{ new_issue(selected_engine_name, engine_reliabilities[selected_engine_name]) }}
+<     </div>
+---
+> <div class="engine-errors">
+> 	{% for secondary in [False, True] %}
+> 	{% set ns = namespace(first=true) %}
+> 	{% for error in engine_reliabilities[selected_engine_name].errors %}
+> 	{% if secondary == error.secondary %}
+> 	{% if ns.first %}
+> 	{% set ns.first = false %}
+> 	<h2>{% if secondary %}{{ _('Warnings') }}{% else %}{{ _('Errors and exceptions') }}{% endif %}</h2>
+> 	{% endif %}
+> 	<table class="engine-error">
+> 		<tbody>
+> 			<tr>
+> 				{%- if error.exception_classname -%}
+> 				<th scope="row" class="engine-error-type">{{ _('Exception') }}</th>
+> 				<td>{{ error.exception_classname }}</td>
+> 				{%- elif error.log_message -%}
+> 				<th scope="row" class="engine-error-type">{{ _('Message') }}</th>
+> 				<td>{{ error.log_message }}</td>
+> 				{%- endif -%}
+> 				<th scope="row" class="engine-error-type">{{ _('Percentage') }}</th>
+> 				<td class="engine-error-type">{{ error.percentage }}</td>
+> 			</tr>
+> 			{% if error.log_parameters and error.log_parameters != (None, None, None) %}<tr>
+> 				<th scope="row">{{ _('Parameter') }}</th>{{- '' -}}
+> 				<td colspan="3">
+> 					{%- for param in error.log_parameters -%}
+> 					<span class="log_parameters">{{ param }}</span>
+> 					{%- endfor -%}
+> 				</td>
+> 			</tr>
+> 			{% endif %}
+> 			<tr>
+> 				<th scope="row">{{ _('Filename') }}</th>
+> 				<td colspan="3">{{ error.filename }}:{{ error.line_no }}</td>
+> 			</tr>
+> 			<tr>
+> 				<th scope="row">{{ _('Function') }}</th>
+> 				<td colspan="3">{{ error.function }}</td>
+> 			</tr>
+> 			<tr>
+> 				<th scope="row">{{ _('Code') }}</th>
+> 				<td colspan="3">{{ error.code }}</td>
+> 			</tr>
+> 		</tbody>
+> 	</table>
+> 	{% endif %}
+> 	{% endfor %}
+> 	{% endfor %}
+> 	{% if engine_reliabilities[selected_engine_name].checker %}
+> 	<h3>{{ _('Checker') }}</h3>
+> 	<table>
+> 		<tr>
+> 			<th scope="col" class="failed-test">{{ _('Failed test') }}</th>
+> 			<th scope="col">{{ _('Comment(s)') }}</th>
+> 		</tr>
+> 		{% for test_name, results in engine_reliabilities[selected_engine_name].checker.items() %}
+> 		<tr>
+> 			<td>{{ test_name }}</td>
+> 			<td>
+> 				{% for r in results %}<p>{{ r }}</p>{% endfor %}
+> 			</td>
+> 		</tr>
+> 		{% endfor %}
+> 	</table>
+> 	{% endif %}
+> 	{{ new_issue(selected_engine_name, engine_reliabilities[selected_engine_name]) }}
+> </div>
+148c169
+< {% endblock %}
+---
+> {% endblock %}
+\ No newline at end of file
