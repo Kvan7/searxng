@@ -260,6 +260,7 @@ hostnames:
     '(.*\.)?genius\.com$': 'intellectual.insprill.net'
     '(.*\.)?tiktok.com$': 'proxitok.pabloferreiro.es'
     '(.*\.)?imgur.com$': 'rimgo.us.projectsegfau.lt'
+    '(.*\.)?reuters.com$': 'neuters.de'
 
 checker:
   # disable checker when in debug mode
