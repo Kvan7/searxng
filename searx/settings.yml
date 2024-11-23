@@ -40,7 +40,7 @@ search:
   favicon_resolver: ""
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
-  default_lang: "auto"
+  default_lang: "en"
   # max_page: 0  # if engine supports paging, 0 means unlimited numbers of pages
   # Available languages
   # languages:
@@ -235,29 +235,31 @@ outgoing:
 
 # Configuration of the "Hostnames plugin":
 #
-# hostnames:
-#   replace:
-#     '(.*\.)?youtube\.com$': 'invidious.example.com'
-#     '(.*\.)?youtu\.be$': 'invidious.example.com'
-#     '(.*\.)?reddit\.com$': 'teddit.example.com'
-#     '(.*\.)?redd\.it$': 'teddit.example.com'
-#     '(www\.)?twitter\.com$': 'nitter.example.com'
-#   remove:
-#     - '(.*\.)?facebook.com$'
-#   low_priority:
-#     - '(.*\.)?google(\..*)?$'
-#   high_priority:
-#     - '(.*\.)?wikipedia.org$'
-#
-# Alternatively you can use external files for configuring the "Hostnames plugin":
-#
-# hostnames:
-#  replace: 'rewrite-hosts.yml'
-#
-# Content of 'rewrite-hosts.yml' (place the file in the same directory as 'settings.yml'):
-# '(.*\.)?youtube\.com$': 'invidious.example.com'
-# '(.*\.)?youtu\.be$': 'invidious.example.com'
-#
+hostnames:
+  replace:
+    # '(.*\.)?youtube\.com$': 'piped.video'
+    # '(.*\.)?youtu\.be$': 'piped.video'
+    # '(www\.)?medium\.com$': 'scribe.rip'
+  #   '(.*\.)?youtube-noocookie\.com$': 'yotter.example.com'
+  #   '(.*\.)?reddit\.com$': 'teddit.example.com'
+  #   '(.*\.)?redd\.it$': 'teddit.example.com'
+    # '(www\.)?twitter\.com$': 'nitter.1d4.us'
+  #   # to remove matching host names from result list, set value to false
+  #   'spam\.example\.com': false
+    '(.*\.)?youtube\.com$': 'piped.video'
+    '(.*\.)?youtu\.be$': 'piped.video'
+    '(.*\.)?stackoverflow\.com$': 'code.whatever.social'
+    'translate\.google\.com$': 'libretranslate.com'
+    '(.*\.)?twitter\.com$': 'nitter.1d4.us'
+    '(.*\.)?x\.com$': 'nitter.1d4.us'
+    # '(.*\.)?wikipedia.org$': 'wikiless.whateveritworks.org'
+    '(.*\.)?quora.com$': 'quetre.iket.me'
+    '(.*\.)?imdb\.com$': 'libremdb.iket.me'
+    '(.*\.)?medium\.com$': 'scribe.rip'
+    '(.*\.)?fandom\.com$': 'breezewiki.com'
+    '(.*\.)?genius\.com$': 'intellectual.insprill.net'
+    '(.*\.)?tiktok.com$': 'proxitok.pabloferreiro.es'
+    '(.*\.)?imgur.com$': 'rimgo.us.projectsegfau.lt'
 
 checker:
   # disable checker when in debug mode
