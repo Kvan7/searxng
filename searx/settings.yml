@@ -863,6 +863,7 @@ engines:
 
   - name: github
     engine: github
+    categories: [it, repos, code]
     shortcut: gh
 
   - name: codeberg
