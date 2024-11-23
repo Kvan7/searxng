@@ -2,7 +2,7 @@ general:
   # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
   debug: false
   # displayed name
-  instance_name: "SearXNG"
+  instance_name: "KSearch"
   # For example: https://example.com/privacy
   privacypolicy_url: false
   # use true to use your own donation page written in searx/info/en/donate.md
@@ -32,7 +32,7 @@ search:
   # Existing autocomplete backends: "dbpedia", "duckduckgo", "google", "yandex", "mwmbl",
   # "seznam", "startpage", "stract", "swisscows", "qwant", "wikipedia" - leave blank to turn it off
   # by default.
-  autocomplete: ""
+  autocomplete: "duckduckgo"
   # minimun characters to type before autocompleter starts
   autocomplete_min: 4
   # backend for the favicon near URL in search results.
@@ -123,7 +123,7 @@ ui:
   # infinite_scroll: When true, automatically loads the next page when scrolling to bottom of the current page.
   infinite_scroll: false
   # ui theme
-  default_theme: simple
+  default_theme: kvanDark
   # center the results ?
   center_alignment: false
   # URL prefix of the internet archive, don't forget trailing slash (if needed).
@@ -135,7 +135,7 @@ ui:
   # results_on_new_tab: false
   theme_args:
     # style of simple theme: auto, light, dark
-    simple_style: auto
+    simple_style: dark
   # Perform search immediately if a category selected.
   # Disable to select multiple categories at once and start the search manually.
   search_on_category_select: true
@@ -309,6 +309,7 @@ checker:
 
 categories_as_tabs:
   general:
+  code:
   images:
   videos:
   news:
@@ -370,7 +371,7 @@ engines:
     url_xpath: ./td/h5/a[last()]/@href
     title_xpath: ./td/h5
     content_xpath: ./td[h5]/text()
-    categories: it
+    categories: [it, code]
     timeout: 6.0
     shortcut: conda
     disabled: true
@@ -441,7 +442,7 @@ engines:
     url_xpath: //article[@class="repo-summary"]//a[@class="repo-link"]/@href
     title_xpath: //article[@class="repo-summary"]//a[@class="repo-link"]
     content_xpath: //article[@class="repo-summary"]/p
-    categories: [it, repos]
+    categories: [it, repos, code]
     timeout: 4.0
     disabled: true
     shortcut: bb
@@ -611,7 +612,26 @@ engines:
   - name: docker hub
     engine: docker_hub
     shortcut: dh
-    categories: [it, packages]
+    categories: [it, packages, code]
+    disabled: true
+
+  - name: encyclosearch
+    engine: json_engine
+    shortcut: es
+    categories: general
+    paging: true
+    search_url: https://encyclosearch.org/encyclosphere/search?q={query}&page={pageno}&resultsPerPage=15
+    results_query: Results
+    url_query: SourceURL
+    title_query: Title
+    content_query: Description
+    disabled: true
+    about:
+      website: https://encyclosearch.org
+      official_api_documentation: https://encyclosearch.org/docs/#/rest-api
+      use_official_api: true
+      require_api_key: false
+      results: JSON
 
   - name: encyclosearch
     engine: json_engine
@@ -925,7 +945,7 @@ engines:
     url_xpath: .//a[@class="tm-title__link"]/@href
     title_xpath: .//a[@class="tm-title__link"]
     content_xpath: .//div[contains(@class, "article-formatted-body")]
-    categories: it
+    categories: [it, code]
     timeout: 4.0
     disabled: true
     shortcut: habr
@@ -964,7 +984,7 @@ engines:
     url_xpath: './/div[@class="ans"]//a/@href'
     content_xpath: './/div[@class="from"]'
     page_size: 20
-    categories: [it, packages]
+    categories: [it, packages, code]
     shortcut: ho
     about:
       website: https://hoogle.haskell.org/
@@ -1101,7 +1121,7 @@ engines:
     url_xpath: .//a[@class="u-url"]/@href
     title_xpath: .//a[@class="u-url"]
     content_xpath: .//a[@class="domain"]
-    categories: it
+    categories: [it, code]
     shortcut: lo
     timeout: 5.0
     disabled: true
@@ -1217,7 +1237,7 @@ engines:
     url_query: url
     title_query: name
     content_query: description
-    categories: it
+    categories: [it, code]
     shortcut: man
     about:
       website: https://www.mankier.com/
@@ -1327,7 +1347,7 @@ engines:
     url_query: url
     title_query: name
     content_query: description
-    categories: [it, packages]
+    categories: [it, packages, code]
     disabled: true
     timeout: 5.0
     shortcut: pack
@@ -1467,7 +1487,7 @@ engines:
     url_xpath: ./div/h3/a/@href
     title_xpath: ./div/h3/a
     content_xpath: ./div/div/div[contains(@class,"packages-description")]/span
-    categories: [packages, it]
+    categories: [packages, it, code]
     timeout: 3.0
     disabled: true
     first_page_num: 1
@@ -1614,7 +1634,7 @@ engines:
     engine: stackexchange
     shortcut: st
     api_site: 'stackoverflow'
-    categories: [it, q&a]
+    categories: [it, q&a, code]
 
   - name: askubuntu
     engine: stackexchange
@@ -1622,11 +1642,37 @@ engines:
     api_site: 'askubuntu'
     categories: [it, q&a]
 
+  - name: internetarchivescholar
+    engine: internet_archive_scholar
+    shortcut: ias
+    timeout: 5.0
+
   - name: superuser
     engine: stackexchange
     shortcut: su
     api_site: 'superuser'
+    categories: [it, q&a, code]
+
+  - name: discuss.python
+    engine: discourse
+    shortcut: dpy
+    base_url: 'https://discuss.python.org'
     categories: [it, q&a]
+    disabled: true
+
+  - name: caddy.community
+    engine: discourse
+    shortcut: caddy
+    base_url: 'https://caddy.community'
+    categories: [it, q&a]
+    disabled: true
+
+  - name: pi-hole.community
+    engine: discourse
+    shortcut: pi
+    categories: [it, q&a]
+    base_url: 'https://discourse.pi-hole.net'
+    disabled: true
 
   - name: discuss.python
     engine: discourse
@@ -2125,7 +2171,7 @@ engines:
     content_xpath: ./span/p
     suggestion_xpath: /html/body/main/div/div[@class="search__suggestions"]/p/a
     first_page_num: 1
-    categories: [it, packages]
+    categories: [it, packages, code]
     disabled: true
     about:
       website: https://rubygems.org/
@@ -2362,7 +2408,7 @@ engines:
     title_xpath: ./h4/a[2]
     content_xpath: ./p
     first_page_num: 1
-    categories: [it, repos]
+    categories: [it, repos, code]
     disabled: true
     about:
       website: https://sr.ht
