@@ -396,6 +396,7 @@ article[data-vim-selected].category-social {
 }
 
 @supports not (aspect-ratio: 1 / 1) {
+
   // support older browsers which do not have aspect-ratio
   // https://caniuse.com/?search=aspect-ratio
   .result-videos .embedded-video iframe {
@@ -439,7 +440,7 @@ article[data-vim-selected].category-social {
   border: none !important;
   height: @results-image-row-height;
 
-  & > a {
+  &>a {
     position: relative;
   }
 
@@ -548,8 +549,7 @@ article[data-vim-selected].category-social {
 }
 
 #suggestions,
-#infoboxes,
-#chat_box {
+#infoboxes {
   input {
     padding: 0;
     margin: 3px;
@@ -565,8 +565,7 @@ article[data-vim-selected].category-social {
   }
 
   input[type="submit"],
-  .infobox .url a,
-  .chat_box .url a {
+  .infobox .url a {
     color: var(--color-result-link-font);
     text-decoration: none;
     font-size: 0.9rem;
@@ -597,7 +596,6 @@ article[data-vim-selected].category-social {
 }
 
 #infoboxes .title,
-#chat_box .title,
 #suggestions .title,
 #search_url .title,
 #engines_msg .title,
@@ -651,8 +649,7 @@ summary.title {
   }
 }
 
-#infoboxes,
-#chat_box {
+#infoboxes {
   form {
     min-width: 210px;
   }
@@ -663,8 +660,7 @@ summary.title {
   word-wrap: break-word;
   color: var(--color-sidebar-font);
 
-  .infobox,
-  .chat_box {
+  .infobox {
     margin: 10px 0 10px;
     border: 1px solid var(--color-sidebar-border);
     padding: 1rem;
@@ -848,13 +844,11 @@ summary.title {
     width: auto;
   }
 
-  #infoboxes,
-  #chat_box {
+  #infoboxes {
     position: inherit;
     max-width: inherit;
 
-    .infobox,
-    .chat_box {
+    .infobox {
       clear: both;
 
       img {
@@ -951,6 +945,7 @@ summary.title {
 @media screen and (max-width: 52rem) {
   body.results_endpoint {
     #links_on_top {
+
       .link_on_top_about,
       .link_on_top_donate {
         display: none;
@@ -960,6 +955,7 @@ summary.title {
 }
 
 @media screen and (min-width: @phone) and (max-width: @tablet) {
+
   // when .center-aligment-yes, see style-center.less
   // the media query includes "min-width: @phone"
   // because the phone layout includes the tablet layout unconditionally.
@@ -1063,8 +1059,7 @@ summary.title {
     background: var(--color-base-background-mobile);
   }
 
-  .infobox,
-  .chat_box {
+  .infobox {
     border: none !important;
     background-color: var(--color-sidebar-background);
   }

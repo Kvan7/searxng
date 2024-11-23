@@ -54,15 +54,6 @@
         </div>
         {%- endif -%}
 
-        {%- if chat_box -%}
-        <div id="chat_box">
-            <details open class="sidebar-collapsable">
-                <summary class="title">{{ _('Chat') }}</summary>
-                {%- include 'kvanDark/elements/chat_box.html' -%}
-            </details>
-        </div>
-        {%- endif -%}
-
         {%- if suggestions -%}
         {%- include 'kvanDark/elements/suggestions.html' -%}
         {%- endif -%}

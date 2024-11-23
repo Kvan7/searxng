@@ -94,7 +94,6 @@ from searx.utils import (
 from searx.version import VERSION_STRING, GIT_URL, GIT_BRANCH
 from searx.query import RawTextQuery
 from searx.plugins import Plugin, plugins, initialize as plugin_initialize
-import searx.plugins.chat as chat
 from searx.plugins.oa_doi_rewrite import get_doi_resolver
 from searx.preferences import (
     Preferences,
@@ -789,7 +788,6 @@ def search():
         answers = result_container.answers,
         corrections = correction_urls,
         infoboxes = result_container.infoboxes,
-        chat_box = result_container.chat_box,
         engine_data = result_container.engine_data,
         paging = result_container.paging,
         unresponsive_engines = webutils.get_translated_errors(
@@ -1331,17 +1329,6 @@ def config():
             'public_instance': settings['server']['public_instance'],
         }
     )
-
-@app.route('/generate-chat-content', methods=['POST'])
-def generate_chat_content_endpoint():
-    if request.json is None:
-        return jsonify({'chat_box': 'GPT4ALL', 'code':404, 'content': ''})
-    if not request.preferences.validate_token(chat):
-        return jsonify({'chat_box': 'GPT4ALL', 'code':401, 'content': ''})
-    query = request.json.get('query')
-    chat_content = chat.generate_chat_content(query)
-    return jsonify({'chat_box': 'GPT4ALL', 'code':200, 'content': chat_content})
-
 
 @app.errorhandler(404)
 def page_not_found(_e):
