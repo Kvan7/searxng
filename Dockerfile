@@ -6,11 +6,8 @@ VOLUME /etc/searxng
 ARG SEARXNG_GID=977
 ARG SEARXNG_UID=977
 
-# RUN addgroup -g ${SEARXNG_GID} searxng && \
-#     adduser -u ${SEARXNG_UID} -D -h /usr/local/searxng -s /bin/sh -G searxng searxng
-RUN groupadd -g ${SEARXNG_GID} searxng && \
-    useradd -u ${SEARXNG_UID} -d /usr/local/searxng -s /bin/bash -g searxng searxng
-
+RUN addgroup -g ${SEARXNG_GID} searxng && \
+    adduser -u ${SEARXNG_UID} -D -h /usr/local/searxng -s /bin/sh -G searxng searxng
 
 ENV INSTANCE_NAME=searxng \
     AUTOCOMPLETE= \
@@ -24,54 +21,28 @@ ENV INSTANCE_NAME=searxng \
 
 WORKDIR /usr/local/searxng
 
-# COPY requirements.txt ./requirements.txt
+COPY requirements.txt ./requirements.txt
 
-# RUN apk add --no-cache -t build-dependencies \
-#     build-base \
-#     py3-setuptools \
-#     python3-dev \
-#     libffi-dev \
-#     libxslt-dev \
-#     libxml2-dev \
-#     openssl-dev \
-#     tar \
-#     git \
-#     && apk add --no-cache \
-#     ca-certificates \
-#     su-exec \
-#     python3 \
-#     py3-pip \
-#     libxml2 \
-#     libxslt \
-#     openssl \
-#     tini \
-#     uwsgi \
-#     uwsgi-python3 \
-#     brotli \
-#     && pip3 install --no-cache -r requirements.txt \
-#     && apk del build-dependencies \
-#     && rm -rf /root/.cache
-
-# Install necessary packages
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    python3-setuptools \
+RUN apk add --no-cache -t build-dependencies \
+    build-base \
+    py3-setuptools \
     python3-dev \
     libffi-dev \
-    libxslt1-dev \
+    libxslt-dev \
     libxml2-dev \
-    libssl-dev \
+    openssl-dev \
     tar \
     git \
+    && apk add --no-cache \
     ca-certificates \
     python3 \
     py3-pip \
     libxml2 \
-    libxslt1.1 \
+    libxslt \
     openssl \
     tini \
     uwsgi \
-    uwsgi-plugin-python3 \
+    uwsgi-python3 \
     brotli \
     && pip3 install --break-system-packages --no-cache -r requirements.txt \
     && apk del build-dependencies \
@@ -84,17 +55,10 @@ ARG TIMESTAMP_SETTINGS=0
 ARG TIMESTAMP_UWSGI=0
 ARG VERSION_GITCOMMIT=unknown
 
-# RUN su searxng -c "/usr/bin/python3 -m compileall -q searx" \
-#     && touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
-#     && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini \
-#     && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
-#     -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
-#     -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
-
 RUN su searxng -c "/usr/bin/python3 -m compileall -q searx" \
     && touch -c --date=@${TIMESTAMP_SETTINGS} searx/settings.yml \
     && touch -c --date=@${TIMESTAMP_UWSGI} dockerfiles/uwsgi.ini \
-    && find /usr/local/searxng/searx/static \( -name '*.html' -o -name '*.css' -o -name '*.js' \
+    && find /usr/local/searxng/searx/static -a \( -name '*.html' -o -name '*.css' -o -name '*.js' \
     -o -name '*.svg' -o -name '*.ttf' -o -name '*.eot' \) \
     -type f -exec gzip -9 -k {} \+ -exec brotli --best {} \+
 
