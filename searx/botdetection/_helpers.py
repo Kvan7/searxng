@@ -8,17 +8,20 @@ from ipaddress import (
     IPv4Address,
     IPv6Address,
     ip_network,
+    ip_address,
 )
 import flask
 import werkzeug
 
 from searx import logger
+from searx.extended_types import SXNG_Request
+
 from . import config
 
 logger = logger.getChild('botdetection')
 
 
-def dump_request(request: flask.Request):
+def dump_request(request: SXNG_Request):
     return (
         request.path
         + " || X-Forwarded-For: %s" % request.headers.get('X-Forwarded-For')
@@ -31,6 +34,9 @@ def dump_request(request: flask.Request):
         + " || Content-Length: %s" % request.headers.get('Content-Length')
         + " || Connection: %s" % request.headers.get('Connection')
         + " || User-Agent: %s" % request.headers.get('User-Agent')
+        + " || Sec-Fetch-Site: %s" % request.headers.get('Sec-Fetch-Site')
+        + " || Sec-Fetch-Mode: %s" % request.headers.get('Sec-Fetch-Mode')
+        + " || Sec-Fetch-Dest: %s" % request.headers.get('Sec-Fetch-Dest')
     )
 
 
@@ -66,7 +72,7 @@ def _log_error_only_once(err_msg):
         _logged_errors.append(err_msg)
 
 
-def get_real_ip(request: flask.Request) -> str:
+def get_real_ip(request: SXNG_Request) -> str:
     """Returns real IP of the request.  Since not all proxies set all the HTTP
     headers and incoming headers can be faked it may happen that the IP cannot
     be determined correctly.
@@ -123,6 +129,9 @@ def get_real_ip(request: flask.Request) -> str:
     if real_ip and remote_addr and real_ip != remote_addr:
         logger.warning("IP from WSGI environment (%s) is not equal to IP from X-Real-IP (%s)", remote_addr, real_ip)
 
-    request_ip = forwarded_for or real_ip or remote_addr or '0.0.0.0'
+    request_ip = ip_address(forwarded_for or real_ip or remote_addr or '0.0.0.0')
+    if request_ip.version == 6 and request_ip.ipv4_mapped:
+        request_ip = request_ip.ipv4_mapped
+
     # logger.debug("get_real_ip() -> %s", request_ip)
-    return request_ip
+    return str(request_ip)

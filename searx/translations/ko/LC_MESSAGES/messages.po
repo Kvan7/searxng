@@ -7,17 +7,20 @@
 # Soochaehwa <Soochaehwa@shwa.space>, 2022.
 # mystery-z <07juwonc@kakao.com>, 2023.
 # return42 <markus.heiser@darmarit.de>, 2023.
-# return42 <return42@users.noreply.translate.codeberg.org>, 2024.
-# eaglclaws <eaglclaws@users.noreply.translate.codeberg.org>, 2024.
-# seonghobae <seonghobae@users.noreply.translate.codeberg.org>, 2024.
+# return42 <return42@users.noreply.translate.codeberg.org>, 2024, 2025.
+# eaglclaws <eaglclaws@users.noreply.translate.codeberg.org>, 2024, 2025.
+# seonghobae <seonghobae@users.noreply.translate.codeberg.org>, 2024, 2025.
+# Anonymous <anonymous@users.noreply.translate.codeberg.org>, 2025.
+# mystery-z <mystery-z@users.noreply.translate.codeberg.org>, 2025.
+# curtwheeler <curtwheeler@users.noreply.translate.codeberg.org>, 2025.
+# return42 <return42@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-05 06:24+0000\n"
-"PO-Revision-Date: 2024-07-03 17:18+0000\n"
-"Last-Translator: seonghobae "
-"<seonghobae@users.noreply.translate.codeberg.org>\n"
+"POT-Creation-Date: 2025-06-23 21:05+0000\n"
+"PO-Revision-Date: 2025-06-22 17:06+0000\n"
+"Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: ko\n"
 "Language-Team: Korean "
 "<https://translate.codeberg.org/projects/searxng/searxng/ko/>\n"
@@ -25,7 +28,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -68,7 +71,7 @@ msgid "videos"
 msgstr "비디오"
 
 #. CATEGORY_NAMES['RADIO']
-#: searx/engines/radio_browser.py:103 searx/searxng.msg
+#: searx/engines/radio_browser.py:151 searx/searxng.msg
 msgid "radio"
 msgstr "라디오"
 
@@ -165,7 +168,7 @@ msgstr "다크"
 #. STYLE_NAMES['BLACK']
 #: searx/searxng.msg
 msgid "black"
-msgstr ""
+msgstr "블랙"
 
 #. BRAND_CUSTOM_LINKS['UPTIME']
 #: searx/searxng.msg
@@ -173,7 +176,7 @@ msgid "Uptime"
 msgstr "가동 시간"
 
 #. BRAND_CUSTOM_LINKS['ABOUT']
-#: searx/searxng.msg searx/templates/simple/base.html:50
+#: searx/searxng.msg searx/templates/simple/base.html:49
 msgid "About"
 msgstr "정보"
 
@@ -183,7 +186,7 @@ msgid "Average temp."
 msgstr "평균 온도."
 
 #. WEATHER_TERMS['CLOUD COVER']
-#: searx/engines/open_meteo.py:91 searx/searxng.msg
+#: searx/searxng.msg
 msgid "Cloud cover"
 msgstr "운량"
 
@@ -205,14 +208,14 @@ msgid "Evening"
 msgstr "저녁"
 
 #. WEATHER_TERMS['FEELS LIKE']
-#: searx/engines/duckduckgo_weather.py:53 searx/engines/open_meteo.py:81
-#: searx/engines/wttr.py:59 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:53 searx/engines/wttr.py:59
+#: searx/searxng.msg
 msgid "Feels like"
 msgstr "체감"
 
 #. WEATHER_TERMS['HUMIDITY']
-#: searx/engines/duckduckgo_weather.py:64 searx/engines/open_meteo.py:93
-#: searx/engines/wttr.py:68 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:64 searx/engines/wttr.py:68
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:29
 msgid "Humidity"
 msgstr "습도"
 
@@ -244,7 +247,7 @@ msgid "Noon"
 msgstr "정오"
 
 #. WEATHER_TERMS['PRESSURE']
-#: searx/engines/open_meteo.py:95 searx/searxng.msg
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:25
 msgid "Pressure"
 msgstr "기압"
 
@@ -261,8 +264,8 @@ msgid "Sunset"
 msgstr "일몰"
 
 #. WEATHER_TERMS['TEMPERATURE']
-#: searx/engines/duckduckgo_weather.py:48 searx/engines/open_meteo.py:76
-#: searx/engines/wttr.py:55 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:48 searx/engines/wttr.py:55
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:17
 msgid "Temperature"
 msgstr "기온"
 
@@ -279,10 +282,215 @@ msgid "Visibility"
 msgstr "가시도"
 
 #. WEATHER_TERMS['WIND']
-#: searx/engines/duckduckgo_weather.py:58 searx/engines/open_meteo.py:86
-#: searx/engines/wttr.py:62 searx/searxng.msg
+#: searx/engines/duckduckgo_weather.py:58 searx/engines/wttr.py:62
+#: searx/searxng.msg searx/templates/simple/answer/weather.html:23
 msgid "Wind"
 msgstr "풍속"
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Clear sky"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Cloudy"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Fair"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Fog"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy rain"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy sleet"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Heavy snow"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light rain and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light rain showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light rain showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light rain"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light sleet"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Light snow"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Partly cloudy"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Rain and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Rain showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Rain showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Rain"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Sleet and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Sleet showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Sleet showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Sleet"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Snow and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Snow showers and thunder"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Snow showers"
+msgstr ""
+
+#. WEATHER_CONDITIONS
+#: searx/searxng.msg
+msgid "Snow"
+msgstr ""
 
 #. SOCIAL_MEDIA_TERMS['SUBSCRIBERS']
 #: searx/engines/lemmy.py:85 searx/searxng.msg
@@ -300,7 +508,7 @@ msgid "active users"
 msgstr "활동 사용자"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:78
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:82
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "댓글"
@@ -316,7 +524,7 @@ msgid "community"
 msgstr "커뮤니티"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:78 searx/searxng.msg
+#: searx/engines/hackernews.py:82 searx/searxng.msg
 msgid "points"
 msgstr "점수"
 
@@ -326,7 +534,7 @@ msgid "title"
 msgstr "제목"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:85 searx/searxng.msg
 msgid "author"
 msgstr "작성자"
 
@@ -345,120 +553,112 @@ msgstr "닫힘"
 msgid "answered"
 msgstr "응답"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:292
 msgid "No item found"
 msgstr "검색 결과가 없습니다"
 
-#: searx/engines/qwant.py:288
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:334
+#: searx/engines/qwant.py:291
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:294
 msgid "Source"
 msgstr "소스"
 
-#: searx/webapp.py:336
+#: searx/webapp.py:296
 msgid "Error loading the next page"
 msgstr "다음 페이지를 로드하는 동안 오류가 발생했습니다"
 
-#: searx/webapp.py:495 searx/webapp.py:898
+#: searx/webapp.py:447 searx/webapp.py:845
 msgid "Invalid settings, please edit your preferences"
 msgstr "잘못된 설정입니다, 설정을 수정하세요"
 
-#: searx/webapp.py:511
+#: searx/webapp.py:463
 msgid "Invalid settings"
 msgstr "잘못된 설정"
 
-#: searx/webapp.py:588 searx/webapp.py:670
+#: searx/webapp.py:540 searx/webapp.py:630
 msgid "search error"
 msgstr "검색 오류"
 
-#: searx/webutils.py:36
+#: searx/webutils.py:35
 msgid "timeout"
 msgstr "대기 시간"
 
-#: searx/webutils.py:37
+#: searx/webutils.py:36
 msgid "parsing error"
 msgstr "구문 분석 오류"
 
-#: searx/webutils.py:38
+#: searx/webutils.py:37
 msgid "HTTP protocol error"
 msgstr "HTTP 프로토콜 오류"
 
-#: searx/webutils.py:39
+#: searx/webutils.py:38
 msgid "network error"
 msgstr "네트워크 오류"
 
-#: searx/webutils.py:40
+#: searx/webutils.py:39
 msgid "SSL error: certificate validation has failed"
 msgstr "SSL 에러: 인증서 무효"
 
-#: searx/webutils.py:42
+#: searx/webutils.py:41
 msgid "unexpected crash"
 msgstr "예상치 못한 충돌"
 
-#: searx/webutils.py:49
+#: searx/webutils.py:48
 msgid "HTTP error"
 msgstr "HTTP 오류"
 
-#: searx/webutils.py:50
+#: searx/webutils.py:49
 msgid "HTTP connection error"
 msgstr "HTTP 연결 오류"
 
-#: searx/webutils.py:56
+#: searx/webutils.py:55
 msgid "proxy error"
 msgstr "프록시 오류"
 
-#: searx/webutils.py:57
+#: searx/webutils.py:56
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: searx/webutils.py:58
+#: searx/webutils.py:57
 msgid "too many requests"
 msgstr "너무 많은 요청"
 
-#: searx/webutils.py:59
+#: searx/webutils.py:58
 msgid "access denied"
 msgstr "액세스 거부"
 
-#: searx/webutils.py:60
+#: searx/webutils.py:59
 msgid "server API error"
 msgstr "서버 API 오류"
 
-#: searx/webutils.py:79
+#: searx/webutils.py:78
 msgid "Suspended"
 msgstr "중단됨"
 
-#: searx/webutils.py:314
+#: searx/webutils.py:313
+#, python-brace-format
 msgid "{minutes} minute(s) ago"
 msgstr "{minutes}분 전"
 
-#: searx/webutils.py:315
+#: searx/webutils.py:314
+#, python-brace-format
 msgid "{hours} hour(s), {minutes} minute(s) ago"
 msgstr "{hours}시간 {minutes}분 전"
 
-#: searx/answerers/random/answerer.py:76
-msgid "Random value generator"
-msgstr "난수 생성기"
-
-#: searx/answerers/random/answerer.py:77
+#: searx/answerers/random.py:69
 msgid "Generate different random values"
 msgstr "다른 난수 생성"
 
-#: searx/answerers/statistics/answerer.py:50
-msgid "Statistics functions"
-msgstr "통계 기능"
+#: searx/answerers/statistics.py:36
+#, python-brace-format
+msgid "Compute {func} of the arguments"
+msgstr "인수들의 {func}를 계산하세요"
 
-#: searx/answerers/statistics/answerer.py:51
-msgid "Compute {functions} of the arguments"
-msgstr "{functions} 매개변수 계산"
-
-#: searx/engines/mozhi.py:57
-msgid "Synonyms"
-msgstr ""
-
-#: searx/engines/openstreetmap.py:159
-msgid "Get directions"
-msgstr "길찾기"
+#: searx/engines/openstreetmap.py:158
+msgid "Show route in map .."
+msgstr "지도에서 경로 표시 .."
 
 #: searx/engines/pdbe.py:96
+#, python-brace-format
 msgid "{title} (OBSOLETE)"
 msgstr "{title} (사용되지 않음)"
 
@@ -466,19 +666,19 @@ msgstr "{title} (사용되지 않음)"
 msgid "This entry has been superseded by"
 msgstr "이 항목은 다음으로 대체되었습니다"
 
-#: searx/engines/qwant.py:290
+#: searx/engines/qwant.py:293
 msgid "Channel"
 msgstr "채널"
 
-#: searx/engines/radio_browser.py:105
+#: searx/engines/radio_browser.py:153
 msgid "bitrate"
 msgstr "비트 레이트"
 
-#: searx/engines/radio_browser.py:106
+#: searx/engines/radio_browser.py:154
 msgid "votes"
 msgstr "표"
 
-#: searx/engines/radio_browser.py:107
+#: searx/engines/radio_browser.py:155
 msgid "clicks"
 msgstr "클릭"
 
@@ -487,7 +687,8 @@ msgstr "클릭"
 msgid "Language"
 msgstr "언어"
 
-#: searx/engines/semantic_scholar.py:78
+#: searx/engines/semantic_scholar.py:101
+#, python-brace-format
 msgid ""
 "{numCitations} citations from the year {firstCitationVelocityYear} to "
 "{lastCitationVelocityYear}"
@@ -495,7 +696,7 @@ msgstr ""
 "{firstCitationVelocityYear}년부터 {lastCitationVelocityYear}년까지의 "
 "{numCitations}회 인용"
 
-#: searx/engines/tineye.py:45
+#: searx/engines/tineye.py:48
 msgid ""
 "Could not read that image url. This may be due to an unsupported file "
 "format. TinEye only supports images that are JPEG, PNG, GIF, BMP, TIFF or"
@@ -504,7 +705,7 @@ msgstr ""
 "이미지 주소를 읽을 수 없습니다. 파일 포맷을 지원하지 않아 발생하는 문제일 수도 있습니다. TinEye는 JPEG, PNG, "
 "GIF, BMP, TIFF 그리고 WebP 이미지만 지원합니다."
 
-#: searx/engines/tineye.py:51
+#: searx/engines/tineye.py:54
 msgid ""
 "The image is too simple to find matches. TinEye requires a basic level of"
 " visual detail to successfully identify matches."
@@ -512,7 +713,7 @@ msgstr ""
 "이미지가 너무 단순해 일치하는 항목을 찾을 수 없습니다. TinEye가 일치하는 이미지를 성공적으로 식별하기 위해선 최소 수준의 "
 "시각적 정보가 필요합니다;."
 
-#: searx/engines/tineye.py:57
+#: searx/engines/tineye.py:59
 msgid "The image could not be downloaded."
 msgstr "다운로드할 수 없는 이미지입니다."
 
@@ -524,59 +725,77 @@ msgstr "책 평점"
 msgid "File quality"
 msgstr "파일 품질"
 
-#: searx/plugins/calculator.py:14
+#: searx/plugins/ahmia_filter.py:32
+msgid "Ahmia blacklist"
+msgstr ""
+
+#: searx/plugins/ahmia_filter.py:33
+msgid "Filter out onion results that appear in Ahmia's blacklist."
+msgstr ""
+
+#: searx/plugins/calculator.py:38
+msgid "Basic Calculator"
+msgstr ""
+
+#: searx/plugins/calculator.py:39
 msgid "Calculate mathematical expressions via the search bar"
 msgstr "검색바를 통해 수학연산 계산하기"
 
-#: searx/plugins/hash_plugin.py:10
-msgid "Converts strings to different hash digests."
-msgstr "문자열을 다른 해시 다이제스트 값으로 변환합니다."
+#: searx/plugins/hash_plugin.py:34
+msgid "Hash plugin"
+msgstr "해시 플러그인"
 
-#: searx/plugins/hash_plugin.py:38
+#: searx/plugins/hash_plugin.py:36
+msgid ""
+"Converts strings to different hash digests. Available functions: md5, "
+"sha1, sha224, sha256, sha384, sha512."
+msgstr ""
+
+#: searx/plugins/hash_plugin.py:64
 msgid "hash digest"
 msgstr "해시 다이제스트"
 
-#: searx/plugins/hostnames.py:103
+#: searx/plugins/hostnames.py:123
 msgid "Hostnames plugin"
 msgstr "호스트 이름 플러그인"
 
-#: searx/plugins/hostnames.py:104
-msgid "Rewrite hostnames, remove results or prioritize them based on the hostname"
-msgstr "검색 결과에서 이 호스트 이름을 기준으로 삭제 또는 우선순위에 따라 재작성하기"
+#: searx/plugins/hostnames.py:124
+msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
 
-#: searx/plugins/oa_doi_rewrite.py:12
+#: searx/plugins/oa_doi_rewrite.py:55
 msgid "Open Access DOI rewrite"
 msgstr "오픈 액세스 DOI 재작성"
 
-#: searx/plugins/oa_doi_rewrite.py:13
+#: searx/plugins/oa_doi_rewrite.py:56
 msgid ""
 "Avoid paywalls by redirecting to open-access versions of publications "
 "when available"
 msgstr "가능한 경우 공개 액세스 버전의 출판물로 리디렉션하여 페이월 방지"
 
-#: searx/plugins/self_info.py:9
+#: searx/plugins/self_info.py:37
 msgid "Self Information"
 msgstr "본인 정보"
 
-#: searx/plugins/self_info.py:10
+#: searx/plugins/self_info.py:39
 msgid ""
 "Displays your IP if the query is \"ip\" and your user agent if the query "
-"contains \"user agent\"."
-msgstr "쿼리가 \"ip\"인 경우 사용자의 IP를 표시하고 쿼리에 \"user agent\"가 포함된 경우 사용자 에이전트를 표시합니다."
+"is \"user-agent\"."
+msgstr "쿼리가 'ip'이면 사용자의 IP를 표시하고, 'user-agent'이면 사용자 에이전트를 표시합니다."
 
-#: searx/plugins/self_info.py:28
+#: searx/plugins/self_info.py:52
 msgid "Your IP is: "
 msgstr "당신의 IP는: "
 
-#: searx/plugins/self_info.py:31
+#: searx/plugins/self_info.py:55
 msgid "Your user-agent is: "
 msgstr "당신의 사용자 에이전트는: "
 
-#: searx/plugins/tor_check.py:24
+#: searx/plugins/tor_check.py:42
 msgid "Tor check plugin"
 msgstr "Tor 검사 플러그인"
 
-#: searx/plugins/tor_check.py:27
+#: searx/plugins/tor_check.py:44
 msgid ""
 "This plugin checks if the address of the request is a Tor exit-node, and "
 "informs the user if it is; like check.torproject.org, but from SearXNG."
@@ -584,33 +803,38 @@ msgstr ""
 "이 플러그인은 요청의 주소가 토르 출구 노드 인지 확인하고 사용자에게 check.torproject.org와 같이 "
 "SearchXNG의 주소인지 알려줍니다."
 
-#: searx/plugins/tor_check.py:61
-msgid ""
-"Could not download the list of Tor exit-nodes from: "
-"https://check.torproject.org/exit-addresses"
-msgstr "https://check.torproject.org/exit-addresses 에서 토르 출구 노드를 다운로드 받는데 실패하였습니다"
+#: searx/plugins/tor_check.py:65
+msgid "Could not download the list of Tor exit-nodes from"
+msgstr "Tor 출구 노드 목록을 다운로드할 수 없습니다"
 
-#: searx/plugins/tor_check.py:77
-msgid ""
-"You are using Tor and it looks like you have this external IP address: "
-"{ip_address}"
-msgstr "Tor를 사용하고 있고 외부 IP 주소는 {ip_address} 입니다"
+#: searx/plugins/tor_check.py:72
+msgid "You are using Tor and it looks like you have the external IP address"
+msgstr "Tor를 사용 중이며 외부 IP 주소를 가진 것으로 보입니다"
 
-#: searx/plugins/tor_check.py:85
-msgid "You are not using Tor and you have this external IP address: {ip_address}"
-msgstr "Tor를 사용하고 있지 않고 외부 IP 주소가 {ip_address}인 것 같습니다"
+#: searx/plugins/tor_check.py:76
+msgid "You are not using Tor and you have the external IP address"
+msgstr "Tor를 사용하고 있지 않으며 외부 IP 주소를 가지고 있습니다"
 
-#: searx/plugins/tracker_url_remover.py:16
+#: searx/plugins/tracker_url_remover.py:35
 msgid "Tracker URL remover"
 msgstr "추적기 URL 제거기"
 
-#: searx/plugins/tracker_url_remover.py:17
+#: searx/plugins/tracker_url_remover.py:36
 msgid "Remove trackers arguments from the returned URL"
 msgstr "반환된 URL에서 추적기 매개변수 제거"
 
-#: searx/plugins/unit_converter.py:29
+#: searx/plugins/unit_converter.py:49
+msgid "Unit converter plugin"
+msgstr ""
+
+#: searx/plugins/unit_converter.py:50
 msgid "Convert between units"
 msgstr "단위 환산"
+
+#: searx/result_types/answer.py:224
+#, python-brace-format
+msgid "{location}: {temperature}, {condition}"
+msgstr "{location}: {temperature}, {condition}"
 
 #: searx/templates/simple/404.html:4
 msgid "Page not found"
@@ -625,49 +849,49 @@ msgstr "%(search_page)s로 이동합니다."
 msgid "search page"
 msgstr "검색 페이지"
 
-#: searx/templates/simple/base.html:54
+#: searx/templates/simple/base.html:53
 msgid "Donate"
 msgstr "기부"
 
-#: searx/templates/simple/base.html:58
+#: searx/templates/simple/base.html:57
 #: searx/templates/simple/preferences.html:156
 msgid "Preferences"
 msgstr "설정"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "Powered by"
 msgstr "Powered by"
 
-#: searx/templates/simple/base.html:68
+#: searx/templates/simple/base.html:67
 msgid "a privacy-respecting, open metasearch engine"
 msgstr "개인정보를 존중하는 개방형 메타 검색 엔진"
 
-#: searx/templates/simple/base.html:69
+#: searx/templates/simple/base.html:68
 #: searx/templates/simple/result_templates/packages.html:59
 msgid "Source code"
 msgstr "소스 코드"
 
-#: searx/templates/simple/base.html:70
+#: searx/templates/simple/base.html:69
 msgid "Issue tracker"
 msgstr "이슈 트래커"
 
-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18
+#: searx/templates/simple/base.html:70 searx/templates/simple/stats.html:18
 msgid "Engine stats"
 msgstr "검색 엔진 상태"
 
-#: searx/templates/simple/base.html:73
+#: searx/templates/simple/base.html:72
 msgid "Public instances"
 msgstr "공개 인스턴스"
 
-#: searx/templates/simple/base.html:76
+#: searx/templates/simple/base.html:75
 msgid "Privacy policy"
 msgstr "개인 정보 정책"
 
-#: searx/templates/simple/base.html:79
+#: searx/templates/simple/base.html:78
 msgid "Contact instance maintainer"
 msgstr "인스턴스 관리자에게 문의"
 
-#: searx/templates/simple/categories.html:26
+#: searx/templates/simple/categories.html:30
 msgid "Click on the magnifier to perform search"
 msgstr "돋보기를 클릭하여 검색을 시작하세요"
 
@@ -677,7 +901,7 @@ msgstr "길이"
 
 #: searx/templates/simple/macros.html:41
 msgid "Views"
-msgstr ""
+msgstr "조회수"
 
 #: searx/templates/simple/macros.html:42
 #: searx/templates/simple/result_templates/files.html:34
@@ -690,12 +914,8 @@ msgstr "저자"
 msgid "cached"
 msgstr "캐시"
 
-#: searx/templates/simple/macros.html:50
-msgid "proxied"
-msgstr "프록시됨"
-
 #: searx/templates/simple/new_issue.html:64
-msgid "Start submiting a new issue on GitHub"
+msgid "Start submitting a new issue on GitHub"
 msgstr "GitHub 에서 새 이슈 시작하기"
 
 #: searx/templates/simple/new_issue.html:66
@@ -755,63 +975,55 @@ msgstr "실패한 검사기 테스트: "
 msgid "Errors:"
 msgstr "오류:"
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:163
 msgid "General"
 msgstr "일반"
 
-#: searx/templates/simple/preferences.html:165
+#: searx/templates/simple/preferences.html:166
 msgid "Default categories"
 msgstr "기본 카테고리"
 
-#: searx/templates/simple/preferences.html:190
+#: searx/templates/simple/preferences.html:194
 msgid "User interface"
 msgstr "사용자 인터페이스"
 
-#: searx/templates/simple/preferences.html:211
+#: searx/templates/simple/preferences.html:217
 msgid "Privacy"
 msgstr "개인정보 보호"
 
-#: searx/templates/simple/preferences.html:224
+#: searx/templates/simple/preferences.html:232
 msgid "Engines"
 msgstr "검색엔진"
 
-#: searx/templates/simple/preferences.html:226
+#: searx/templates/simple/preferences.html:234
 msgid "Currently used search engines"
 msgstr "현재 사용중인 검색 엔진"
 
-#: searx/templates/simple/preferences.html:234
+#: searx/templates/simple/preferences.html:243
 msgid "Special Queries"
 msgstr "특수 쿼리"
 
-#: searx/templates/simple/preferences.html:240
+#: searx/templates/simple/preferences.html:251
 msgid "Cookies"
 msgstr "쿠키"
 
-#: searx/templates/simple/results.html:23
-msgid "Answers"
-msgstr "답변"
-
-#: searx/templates/simple/results.html:42
+#: searx/templates/simple/results.html:30
 msgid "Number of results"
 msgstr "결과 수"
 
-#: searx/templates/simple/results.html:48
+#: searx/templates/simple/results.html:36
 msgid "Info"
 msgstr "정보"
 
-#: searx/templates/simple/results.html:75
-msgid "Try searching for:"
-msgstr "다음을 검색 해보세요:"
-
-#: searx/templates/simple/results.html:107
+#: searx/templates/simple/results.html:77
 msgid "Back to top"
 msgstr "위로 돌아가기"
 
-#: searx/templates/simple/results.html:125
+#: searx/templates/simple/results.html:95
 msgid "Previous page"
 msgstr "이전 페이지"
 
-#: searx/templates/simple/results.html:143
+#: searx/templates/simple/results.html:113
 msgid "Next page"
 msgstr "다음 페이지"
 
@@ -923,9 +1135,34 @@ msgstr "테스트 실패"
 msgid "Comment(s)"
 msgstr "댓글"
 
+#: searx/templates/simple/answer/translations.html:12
+#: searx/templates/simple/preferences/answerers.html:8
+msgid "Examples"
+msgstr "예시"
+
+#: searx/templates/simple/answer/translations.html:21
+msgid "Definitions"
+msgstr "정의"
+
+#: searx/templates/simple/answer/translations.html:30
+msgid "Synonyms"
+msgstr "동의어"
+
+#: searx/templates/simple/answer/weather.html:19
+msgid "Feels Like"
+msgstr ""
+
+#: searx/templates/simple/elements/answers.html:2
+msgid "Answers"
+msgstr "답변"
+
 #: searx/templates/simple/elements/apis.html:3
 msgid "Download results"
 msgstr "검색결과 다운로드"
+
+#: searx/templates/simple/elements/corrections.html:2
+msgid "Try searching for:"
+msgstr "다음을 검색 해보세요:"
 
 #: searx/templates/simple/elements/engines_msg.html:4
 msgid "Messages from the search engines"
@@ -933,7 +1170,7 @@ msgstr "검색 엔진에서 발생한 메시지"
 
 #: searx/templates/simple/elements/engines_msg.html:7
 msgid "seconds"
-msgstr ""
+msgstr "초단위"
 
 #: searx/templates/simple/elements/search_url.html:3
 msgid "Search URL"
@@ -1067,8 +1304,8 @@ msgid "Allow"
 msgstr "허용"
 
 #: searx/templates/simple/preferences/answerers.html:5
-msgid "Keywords"
-msgstr "키워드"
+msgid "Keywords (first word in query)"
+msgstr "키워드 (쿼리의 첫 번째 단어)"
 
 #: searx/templates/simple/preferences/answerers.html:6
 #: searx/templates/simple/result_templates/packages.html:7
@@ -1078,10 +1315,6 @@ msgstr "이름"
 #: searx/templates/simple/preferences/answerers.html:7
 msgid "Description"
 msgstr "설명"
-
-#: searx/templates/simple/preferences/answerers.html:8
-msgid "Examples"
-msgstr "예시"
 
 #: searx/templates/simple/preferences/answerers.html:13
 msgid "This is the list of SearXNG's instant answering modules."
@@ -1096,16 +1329,16 @@ msgid "Autocomplete"
 msgstr "자동 완성"
 
 #: searx/templates/simple/preferences/autocomplete.html:15
-msgid "Find stuff as you type"
-msgstr "입력하는 대로 찾으세요"
+msgid "Show possible queries as you type"
+msgstr ""
 
 #: searx/templates/simple/preferences/center_alignment.html:2
 msgid "Center Alignment"
 msgstr "중앙 정렬"
 
 #: searx/templates/simple/preferences/center_alignment.html:14
-msgid "Displays results in the center of the page (Oscar layout)."
-msgstr "페이지 중앙에 결과 표시하기 (Oscar 레이아웃)."
+msgid "Display results in the center of the page (Oscar layout)."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:2
 msgid ""
@@ -1114,8 +1347,8 @@ msgid ""
 msgstr "SearXNG이 컴퓨터에 저장하는 쿠키 목록입니다."
 
 #: searx/templates/simple/preferences/cookies.html:3
-msgid "With that list, you can assess SearXNG transparency."
-msgstr "이 목록으로 SearXNG의 투명성을 판단할 수 있습니다."
+msgid "With this list, you can assess the transparency of SearXNG."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:9
 msgid "Cookie name"
@@ -1141,9 +1374,9 @@ msgstr "다른 브라우저에서 설정을 복구하기 위한 URL"
 
 #: searx/templates/simple/preferences/cookies.html:43
 msgid ""
-"Specifying custom settings in the preferences URL can be used to sync "
-"preferences across devices."
-msgstr "특정 설정이 들어간 URL은 장치 간에 설정을 동기화 하는데 사용할 수 있습니다."
+"A URL containing your preferences. This URL can be used to restore your "
+"settings on a different device."
+msgstr ""
 
 #: searx/templates/simple/preferences/cookies.html:46
 msgid "Copy preferences hash"
@@ -1157,19 +1390,23 @@ msgstr "(URL 제외하여) 설정 해시를 복사해 복원"
 msgid "Preferences hash"
 msgstr "설정 해시"
 
-#: searx/templates/simple/preferences/doi_resolver.html:2
+#: searx/templates/simple/preferences/doi_resolver.html:1
+msgid "Digital Object Identifier (DOI)"
+msgstr "디지털 객체 식별자 (DOI)"
+
+#: searx/templates/simple/preferences/doi_resolver.html:6
 msgid "Open Access DOI resolver"
 msgstr "오픈 엑세스 DOI 리졸버"
 
-#: searx/templates/simple/preferences/doi_resolver.html:14
+#: searx/templates/simple/preferences/doi_resolver.html:18
 msgid "Select service used by DOI rewrite"
 msgstr "DOI 재작성에 사용된 서비스 선택"
 
 #: searx/templates/simple/preferences/engines.html:9
 msgid ""
-"This tab does not exists in the user interface, but you can search in "
-"these engines by its !bangs."
-msgstr "이 탭은 유저 인터페이스에 나타나지 않지만, !bang을 사용하여 이 검색엔진으로 검색할 수 있습니다."
+"This tab does not exist in the user interface, but you can search with "
+"these engines via !bangs."
+msgstr ""
 
 #: searx/templates/simple/preferences/engines.html:15
 msgid "Enable all"
@@ -1205,15 +1442,13 @@ msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:2
 msgid ""
-"These settings are stored in your cookies, this allows us not to store "
+"These settings are stored in your cookies. This allows us not to store "
 "this data about you."
-msgstr "설정은 쿠키에 저장 되기 때문에 서버측에서 설정 관련 사용자 정보를 저장하는 것은 불가능합니다."
+msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:3
-msgid ""
-"These cookies serve your sole convenience, we don't use these cookies to "
-"track you."
-msgstr "이 쿠키는 오직 편의를 위해 쓰이며, 추적에 이용하지 않습니다."
+msgid "These cookies serve your sole convenience; we don't use them to track you."
+msgstr ""
 
 #: searx/templates/simple/preferences/footer.html:6
 msgid "Save"
@@ -1248,16 +1483,18 @@ msgid "Image proxy"
 msgstr "이미지 우회"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
-msgid "Proxying image results through SearXNG"
-msgstr "SearXNG를 통해 이미지 결과 우회"
+msgid "Proxy image results through SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/infinite_scroll.html:2
 msgid "Infinite scroll"
 msgstr "무한 스크롤"
 
 #: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid "Automatically load next page when scrolling to bottom of current page"
-msgstr "현재 페이지 하단까지 스크롤 했을 때 자동으로 다음 페이지 불러오기"
+msgid ""
+"Automatically load the next page when scrolling to the bottom of the "
+"current page"
+msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
 msgid "What language do you prefer for search?"
@@ -1286,12 +1523,12 @@ msgid ""
 msgstr "활성화 할 경우, 결과 페이지 제목에 검색어가 표시 됩니다. 페이지 제목은 브라우저가 기록할 수 있습니다"
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:2
-msgid "Results on new tabs"
-msgstr "새 탭에서 결과 열기"
+msgid "Results in new tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/results_on_new_tab.html:14
-msgid "Open result links on new browser tabs"
-msgstr "새 탭에서 결과 링크를 엽니다"
+msgid "Open result links in new browser tabs"
+msgstr ""
 
 #: searx/templates/simple/preferences/safesearch.html:20
 msgid "Filter content"
@@ -1303,17 +1540,17 @@ msgstr "특정 카테고리 검색"
 
 #: searx/templates/simple/preferences/search_on_category_select.html:14
 msgid ""
-"Perform search immediately if a category selected. Disable to select "
-"multiple categories"
-msgstr "카테고리 선택후 즉시 검색을 합니다. 한개 이상의 카테고리를 선택하면 비활성화됩니다"
+"Perform a search immediately if a category is selected. Disable to select"
+" multiple categories"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:2
 msgid "Theme"
 msgstr "테마"
 
 #: searx/templates/simple/preferences/theme.html:14
-msgid "Change SearXNG layout"
-msgstr "SearXNG 레이아웃 변경"
+msgid "Change the layout of SearXNG"
+msgstr ""
 
 #: searx/templates/simple/preferences/theme.html:19
 msgid "Theme style"
@@ -1339,6 +1576,26 @@ msgstr "인터페이스 언어"
 msgid "Change the language of the layout"
 msgstr "레이아웃 언어 변경"
 
+#: searx/templates/simple/preferences/urlformatting.html:2
+msgid "URL formatting"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:8
+msgid "Pretty"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:13
+msgid "Full"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:18
+msgid "Host"
+msgstr ""
+
+#: searx/templates/simple/preferences/urlformatting.html:23
+msgid "Change result URL formatting"
+msgstr ""
+
 #: searx/templates/simple/result_templates/code.html:13
 msgid "repo"
 msgstr "리포지토리"
@@ -1361,7 +1618,7 @@ msgstr "사이트에서 소개를 제공하지 않았습니다."
 
 #: searx/templates/simple/result_templates/files.html:38
 #: searx/templates/simple/result_templates/images.html:22
-#: searx/templates/simple/result_templates/torrent.html:11
+#: searx/templates/simple/result_templates/torrent.html:18
 msgid "Filesize"
 msgstr "파일 크기"
 
@@ -1471,23 +1728,23 @@ msgstr "PDF"
 msgid "HTML"
 msgstr "HTML"
 
-#: searx/templates/simple/result_templates/torrent.html:6
+#: searx/templates/simple/result_templates/torrent.html:7
 msgid "magnet link"
 msgstr "마그넷 링크"
 
-#: searx/templates/simple/result_templates/torrent.html:7
+#: searx/templates/simple/result_templates/torrent.html:8
 msgid "torrent file"
 msgstr "토렌트 파일"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:13
 msgid "Seeder"
 msgstr "시드"
 
-#: searx/templates/simple/result_templates/torrent.html:9
+#: searx/templates/simple/result_templates/torrent.html:14
 msgid "Leecher"
 msgstr "리치"
 
-#: searx/templates/simple/result_templates/torrent.html:13
+#: searx/templates/simple/result_templates/torrent.html:19
 msgid "Number of Files"
 msgstr "파일 개수"
 
@@ -1614,7 +1871,7 @@ msgstr "비디오 숨기기"
 #~ msgstr ""
 
 #~ msgid "Displays results in the center of the page (Oscar layout)."
-#~ msgstr ""
+#~ msgstr "페이지 중앙에 결과 표시하기 (Oscar 레이아웃)."
 
 #~ msgid "preferences"
 #~ msgstr "설정"
@@ -1793,4 +2050,119 @@ msgstr "비디오 숨기기"
 
 #~ msgid "Engines cannot retrieve results"
 #~ msgstr "결과를 가져올 수 없습니다"
+
+#~ msgid "Start submiting a new issue on GitHub"
+#~ msgstr "GitHub 에서 새 이슈 시작하기"
+
+#~ msgid "dummy"
+#~ msgstr ""
+
+#~ msgid "Random value generator"
+#~ msgstr "난수 생성기"
+
+#~ msgid "Statistics functions"
+#~ msgstr "통계 기능"
+
+#~ msgid "Compute {functions} of the arguments"
+#~ msgstr "{functions} 매개변수 계산"
+
+#~ msgid "Get directions"
+#~ msgstr "길찾기"
+
+#~ msgid ""
+#~ "Displays your IP if the query is"
+#~ " \"ip\" and your user agent if "
+#~ "the query contains \"user agent\"."
+#~ msgstr ""
+#~ "쿼리가 \"ip\"인 경우 사용자의 IP를 표시하고 쿼리에"
+#~ " \"user agent\"가 포함된 경우 사용자 에이전트를 "
+#~ "표시합니다."
+
+#~ msgid ""
+#~ "Could not download the list of Tor"
+#~ " exit-nodes from: https://check.torproject.org"
+#~ "/exit-addresses"
+#~ msgstr ""
+#~ "https://check.torproject.org/exit-addresses 에서 토르"
+#~ " 출구 노드를 다운로드 받는데 실패하였습니다"
+
+#~ msgid ""
+#~ "You are using Tor and it looks "
+#~ "like you have this external IP "
+#~ "address: {ip_address}"
+#~ msgstr "Tor를 사용하고 있고 외부 IP 주소는 {ip_address} 입니다"
+
+#~ msgid ""
+#~ "You are not using Tor and you "
+#~ "have this external IP address: "
+#~ "{ip_address}"
+#~ msgstr "Tor를 사용하고 있지 않고 외부 IP 주소가 {ip_address}인 것 같습니다"
+
+#~ msgid "Keywords"
+#~ msgstr "키워드"
+
+#~ msgid "/"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Specifying custom settings in the "
+#~ "preferences URL can be used to "
+#~ "sync preferences across devices."
+#~ msgstr "특정 설정이 들어간 URL은 장치 간에 설정을 동기화 하는데 사용할 수 있습니다."
+
+#~ msgid "proxied"
+#~ msgstr "프록시됨"
+
+#~ msgid ""
+#~ "This tab does not exists in the"
+#~ " user interface, but you can search"
+#~ " in these engines by its !bangs."
+#~ msgstr "이 탭은 유저 인터페이스에 나타나지 않지만, !bang을 사용하여 이 검색엔진으로 검색할 수 있습니다."
+
+#~ msgid "Results on new tabs"
+#~ msgstr "새 탭에서 결과 열기"
+
+#~ msgid "Open result links on new browser tabs"
+#~ msgstr "새 탭에서 결과 링크를 엽니다"
+
+#~ msgid "Find stuff as you type"
+#~ msgstr "입력하는 대로 찾으세요"
+
+#~ msgid "Converts strings to different hash digests."
+#~ msgstr "문자열을 다른 해시 다이제스트 값으로 변환합니다."
+
+#~ msgid ""
+#~ "Rewrite hostnames, remove results or "
+#~ "prioritize them based on the hostname"
+#~ msgstr "검색 결과에서 이 호스트 이름을 기준으로 삭제 또는 우선순위에 따라 재작성하기"
+
+#~ msgid "With that list, you can assess SearXNG transparency."
+#~ msgstr "이 목록으로 SearXNG의 투명성을 판단할 수 있습니다."
+
+#~ msgid ""
+#~ "These settings are stored in your "
+#~ "cookies, this allows us not to "
+#~ "store this data about you."
+#~ msgstr "설정은 쿠키에 저장 되기 때문에 서버측에서 설정 관련 사용자 정보를 저장하는 것은 불가능합니다."
+
+#~ msgid ""
+#~ "These cookies serve your sole "
+#~ "convenience, we don't use these cookies"
+#~ " to track you."
+#~ msgstr "이 쿠키는 오직 편의를 위해 쓰이며, 추적에 이용하지 않습니다."
+
+#~ msgid "Proxying image results through SearXNG"
+#~ msgstr "SearXNG를 통해 이미지 결과 우회"
+
+#~ msgid "Automatically load next page when scrolling to bottom of current page"
+#~ msgstr "현재 페이지 하단까지 스크롤 했을 때 자동으로 다음 페이지 불러오기"
+
+#~ msgid ""
+#~ "Perform search immediately if a category"
+#~ " selected. Disable to select multiple "
+#~ "categories"
+#~ msgstr "카테고리 선택후 즉시 검색을 합니다. 한개 이상의 카테고리를 선택하면 비활성화됩니다"
+
+#~ msgid "Change SearXNG layout"
+#~ msgstr "SearXNG 레이아웃 변경"
 

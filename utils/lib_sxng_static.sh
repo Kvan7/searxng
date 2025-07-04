@@ -4,18 +4,11 @@
 
 STATIC_BUILD_COMMIT="[build] /static"
 STATIC_BUILT_PATHS=(
-    'searx/static/themes/simple/css'
-    'searx/static/themes/simple/js'
-    'searx/static/themes/simple/src/generated/pygments.less'
-    'searx/static/themes/simple/img'
-    'searx/templates/simple/searxng-wordmark.min.svg'
     'searx/templates/simple/icons.html'
-	'searx/static/themes/kvanDark/css'
-    'searx/static/themes/kvanDark/js'
-    'searx/static/themes/kvanDark/src/generated/pygments.less'
-    'searx/static/themes/kvanDark/img'
-    'searx/templates/kvanDark/searxng-wordmark.min.svg'
-    'searx/templates/kvanDark/icons.html'
+    'searx/static/themes/simple'
+    'client/simple/package-lock.json'
+    'searx/static/themes/kvanDark'
+    'client/kvanDark/package-lock.json'
 )
 
 static.help(){
@@ -102,11 +95,13 @@ static.build.commit() {
         return 1
     fi
 
-    # drop existing commit from previos build
+    # drop existing commit from previous build
     static.build.drop &>/dev/null
 
     (   set -e
-        # build the themes
+        # fix & build the themes
+        themes.fix
+        themes.lint
         themes.all
 
         # add build files

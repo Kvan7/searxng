@@ -4,16 +4,15 @@ DuckDuckGo Extra (images, videos, news)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from typing import TYPE_CHECKING
 from urllib.parse import urlencode
-from searx.utils import get_embeded_stream_url
+from searx.utils import get_embeded_stream_url, html_to_text
 
 from searx.engines.duckduckgo import fetch_traits  # pylint: disable=unused-import
-from searx.engines.duckduckgo import (
-    get_ddg_lang,
-    get_vqd,
-)
+from searx.engines.duckduckgo import get_ddg_lang, get_vqd
 from searx.enginelib.traits import EngineTraits
 
 if TYPE_CHECKING:
@@ -48,15 +47,16 @@ search_path_map = {'images': 'i', 'videos': 'v', 'news': 'news'}
 
 
 def request(query, params):
+    eng_region: str = traits.get_region(params['searxng_locale'], traits.all_locale)  # type: ignore
 
     # request needs a vqd argument
-    vqd = get_vqd(query)
+    vqd = get_vqd(query, eng_region, force_request=True)
+
     if not vqd:
         # some search terms do not have results and therefore no vqd value
         params['url'] = None
         return params
 
-    eng_region = traits.get_region(params['searxng_locale'], traits.all_locale)
     eng_lang = get_ddg_lang(traits, params['searxng_locale'])
 
     args = {
@@ -85,6 +85,12 @@ def request(query, params):
     logger.debug("cookies: %s", params['cookies'])
 
     params['url'] = f'https://duckduckgo.com/{search_path_map[ddg_category]}.js?{urlencode(args)}'
+
+    # sending these two headers prevents rate limiting for the query
+    params['headers'] = {
+        'Referer': 'https://duckduckgo.com/',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
 
     return params
 
@@ -120,9 +126,9 @@ def _news_result(result):
     return {
         'url': result['url'],
         'title': result['title'],
-        'content': result['excerpt'],
+        'content': html_to_text(result['excerpt']),
         'source': result['source'],
-        'publishedDate': datetime.utcfromtimestamp(result['date']),
+        'publishedDate': datetime.fromtimestamp(result['date']),
     }
 
 

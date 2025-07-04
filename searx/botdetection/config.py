@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 
 
 class FALSE:
-    """Class of ``False`` singelton"""
+    """Class of ``False`` singleton"""
 
     # pylint: disable=multiple-statements
     def __init__(self, msg):
@@ -81,7 +81,7 @@ class Config:
         return cfg
 
     def __init__(self, cfg_schema: typing.Dict, deprecated: typing.Dict[str, str]):
-        """Construtor of class Config.
+        """Constructor of class Config.
 
         :param cfg_schema: Schema of the configuration
         :param deprecated: dictionary that maps deprecated configuration names to a messages
@@ -159,7 +159,7 @@ class Config:
         return pathlib.Path(str(val))
 
     def pyobj(self, name, default=UNSET):
-        """Get python object refered by full qualiffied name (FQN) in the config
+        """Get python object referred by full qualiffied name (FQN) in the config
         string."""
 
         fqn = self.get(name, default)
@@ -319,9 +319,9 @@ def dict_deepupdate(base_dict: dict, upd_dict: dict, names=None):
     """
     # pylint: disable=too-many-branches
     if not isinstance(base_dict, dict):
-        raise TypeError("argument 'base_dict' is not a ditionary type")
+        raise TypeError("argument 'base_dict' is not a dictionary type")
     if not isinstance(upd_dict, dict):
-        raise TypeError("argument 'upd_dict' is not a ditionary type")
+        raise TypeError("argument 'upd_dict' is not a dictionary type")
 
     if names is None:
         names = []

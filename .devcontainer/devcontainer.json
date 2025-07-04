@@ -2,15 +2,10 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    "features": {},
-    "mounts": [
-        {
-            // Mount ssh key
-            "source": "${localEnv:HOME}/.ssh",
-            "target": "/home/vscode/.ssh",
-            "type": "bind"
-        }
-    ],
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli": {},
+        "ghcr.io/devcontainers/features/docker-in-docker": {}
+    },
     "customizations": {
         "vscode": {
             "extensions": [
@@ -40,9 +35,5 @@
             "label": "SearXNG"
         }
     },
-    "runArgs": [
-        "--userns=keep-id"
-    ],
-    "containerUser": "vscode", // the value needs to match the value of "remoteUser"
-    "postCreateCommand": "git config --global --add safe.directory /workspaces/searxng && git pull && make install"
+    "postCreateCommand": "git pull && make install"
 }

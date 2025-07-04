@@ -30,7 +30,6 @@ Configured ``brave`` engines:
     brave_category: news
 
   - name: brave.goggles
-    brave_category: goggles
     time_range_support: true
     paging: true
     ...
@@ -130,8 +129,8 @@ from lxml import html
 
 from searx import locales
 from searx.utils import (
-    extract_text,
     extr,
+    extract_text,
     eval_xpath,
     eval_xpath_list,
     eval_xpath_getindex,
@@ -139,6 +138,7 @@ from searx.utils import (
     get_embeded_stream_url,
 )
 from searx.enginelib.traits import EngineTraits
+from searx.result_types import EngineResults
 
 if TYPE_CHECKING:
     import logging
@@ -207,6 +207,7 @@ def request(query, params):
 
     args = {
         'q': query,
+        'source': 'web',
     }
     if brave_spellcheck:
         args['spellcheck'] = '1'
@@ -237,6 +238,11 @@ def request(query, params):
 
     logger.debug("cookies %s", params['cookies'])
 
+    params['headers']['Sec-Fetch-Dest'] = "document"
+    params['headers']['Sec-Fetch-Mode'] = "navigate"
+    params['headers']['Sec-Fetch-Site'] = "same-origin"
+    params['headers']['Sec-Fetch-User'] = "?1"
+
 
 def _extract_published_date(published_date_raw):
     if published_date_raw is None:
@@ -248,18 +254,25 @@ def _extract_published_date(published_date_raw):
         return None
 
 
-def response(resp):
+def response(resp) -> EngineResults:
 
     if brave_category in ('search', 'goggles'):
         return _parse_search(resp)
 
-    datastr = extr(resp.text, "const data = ", ";\n").strip()
+    if brave_category in ('news'):
+        return _parse_news(resp)
 
-    json_data = js_variable_to_python(datastr)
+    # Example script source containing the data:
+    #
+    # kit.start(app, element, {
+    #    node_ids: [0, 19],
+    #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
+    #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    js_object = "[{" + extr(resp.text, "data: [{", "}}],") + "}}]"
+    json_data = js_variable_to_python(js_object)
+
+    # json_data is a list and at the second position (0,1) in this list we find the "response" data we need ..
     json_resp = json_data[1]['data']['body']['response']
-
-    if brave_category == 'news':
-        return _parse_news(json_resp['news'])
 
     if brave_category == 'images':
         return _parse_images(json_resp)
@@ -269,15 +282,19 @@ def response(resp):
     raise ValueError(f"Unsupported brave category: {brave_category}")
 
 
-def _parse_search(resp):
+def _parse_search(resp) -> EngineResults:
+    result_list = EngineResults()
 
-    result_list = []
     dom = html.fromstring(resp.text)
 
+    # I doubt that Brave is still providing the "answer" class / I haven't seen
+    # answers in brave for a long time.
     answer_tag = eval_xpath_getindex(dom, '//div[@class="answer"]', 0, default=None)
     if answer_tag:
         url = eval_xpath_getindex(dom, '//div[@id="featured_snippet"]/a[@class="result-header"]/@href', 0, default=None)
-        result_list.append({'answer': extract_text(answer_tag), 'url': url})
+        answer = extract_text(answer_tag)
+        if answer is not None:
+            result_list.add(result_list.types.Answer(answer=answer, url=url))
 
     # xpath_results = '//div[contains(@class, "snippet fdb") and @data-type="web"]'
     xpath_results = '//div[contains(@class, "snippet ")]'
@@ -291,15 +308,21 @@ def _parse_search(resp):
         if url is None or title_tag is None or not urlparse(url).netloc:  # partial url likely means it's an ad
             continue
 
-        content_tag = eval_xpath_getindex(result, './/div[contains(@class, "snippet-description")]', 0, default='')
+        content: str = extract_text(
+            eval_xpath_getindex(result, './/div[contains(@class, "snippet-description")]', 0, default='')
+        )  # type: ignore
         pub_date_raw = eval_xpath(result, 'substring-before(.//div[contains(@class, "snippet-description")], "-")')
+        pub_date = _extract_published_date(pub_date_raw)
+        if pub_date and content.startswith(pub_date_raw):
+            content = content.lstrip(pub_date_raw).strip("- \n\t")
+
         thumbnail = eval_xpath_getindex(result, './/img[contains(@class, "thumb")]/@src', 0, default='')
 
         item = {
             'url': url,
             'title': extract_text(title_tag),
-            'content': extract_text(content_tag),
-            'publishedDate': _extract_published_date(pub_date_raw),
+            'content': content,
+            'publishedDate': pub_date,
             'thumbnail': thumbnail,
         }
 
@@ -328,25 +351,38 @@ def _parse_search(resp):
     return result_list
 
 
-def _parse_news(json_resp):
-    result_list = []
+def _parse_news(resp) -> EngineResults:
 
-    for result in json_resp["results"]:
+    result_list = EngineResults()
+    dom = html.fromstring(resp.text)
+
+    for result in eval_xpath_list(dom, '//div[contains(@class, "results")]//div[@data-type="news"]'):
+
+        # import pdb
+        # pdb.set_trace()
+
+        url = eval_xpath_getindex(result, './/a[contains(@class, "result-header")]/@href', 0, default=None)
+        if url is None:
+            continue
+
+        title = extract_text(eval_xpath_list(result, './/span[contains(@class, "snippet-title")]'))
+        content = extract_text(eval_xpath_list(result, './/p[contains(@class, "desc")]'))
+        thumbnail = eval_xpath_getindex(result, './/div[contains(@class, "image-wrapper")]//img/@src', 0, default='')
+
         item = {
-            'url': result['url'],
-            'title': result['title'],
-            'content': result['description'],
-            'publishedDate': _extract_published_date(result['age']),
+            "url": url,
+            "title": title,
+            "content": content,
+            "thumbnail": thumbnail,
         }
-        if result['thumbnail'] is not None:
-            item['thumbnail'] = result['thumbnail']['src']
+
         result_list.append(item)
 
     return result_list
 
 
-def _parse_images(json_resp):
-    result_list = []
+def _parse_images(json_resp) -> EngineResults:
+    result_list = EngineResults()
 
     for result in json_resp["results"]:
         item = {
@@ -364,8 +400,8 @@ def _parse_images(json_resp):
     return result_list
 
 
-def _parse_videos(json_resp):
-    result_list = []
+def _parse_videos(json_resp) -> EngineResults:
+    result_list = EngineResults()
 
     for result in json_resp["results"]:
 

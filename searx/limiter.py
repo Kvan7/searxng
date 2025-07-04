@@ -105,12 +105,14 @@ from searx import (
     redisdb,
 )
 from searx import botdetection
+from searx.extended_types import SXNG_Request, sxng_request
 from searx.botdetection import (
     config,
     http_accept,
     http_accept_encoding,
     http_accept_language,
     http_user_agent,
+    http_sec_fetch,
     ip_limit,
     ip_lists,
     get_network,
@@ -144,7 +146,7 @@ def get_cfg() -> config.Config:
     return CFG
 
 
-def filter_request(request: flask.Request) -> werkzeug.Response | None:
+def filter_request(request: SXNG_Request) -> werkzeug.Response | None:
     # pylint: disable=too-many-return-statements
 
     cfg = get_cfg()
@@ -178,16 +180,17 @@ def filter_request(request: flask.Request) -> werkzeug.Response | None:
         logger.error("BLOCK %s: matched BLOCKLIST - %s", network.compressed, msg)
         return flask.make_response(('IP is on BLOCKLIST - %s' % msg, 429))
 
-    # methods applied on /
+    # methods applied on all requests
 
     for func in [
         http_user_agent,
     ]:
         val = func.filter_request(network, request, cfg)
         if val is not None:
+            logger.debug(f"NOT OK ({func.__name__}): {network}: %s", dump_request(sxng_request))
             return val
 
-    # methods applied on /search
+    # methods applied on /search requests
 
     if request.path == '/search':
 
@@ -196,18 +199,21 @@ def filter_request(request: flask.Request) -> werkzeug.Response | None:
             http_accept_encoding,
             http_accept_language,
             http_user_agent,
+            http_sec_fetch,
             ip_limit,
         ]:
             val = func.filter_request(network, request, cfg)
             if val is not None:
+                logger.debug(f"NOT OK ({func.__name__}): {network}: %s", dump_request(sxng_request))
                 return val
-    logger.debug(f"OK {network}: %s", dump_request(flask.request))
+
+    logger.debug(f"OK {network}: %s", dump_request(sxng_request))
     return None
 
 
 def pre_request():
     """See :py:obj:`flask.Flask.before_request`"""
-    return filter_request(flask.request)
+    return filter_request(sxng_request)
 
 
 def is_installed():

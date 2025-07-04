@@ -21,6 +21,7 @@
        simple_style: auto
      search_on_category_select: true
      hotkeys: default
+     url_formatting: pretty
 
 .. _static_use_hash:
 
@@ -43,7 +44,7 @@
 ``center_alignment`` : default ``false``
   When enabled, the results are centered instead of being in the left (or RTL)
   side of the screen.  This setting only affects the *desktop layout*
-  (:origin:`min-width: @tablet <searx/static/themes/simple/src/less/definitions.less>`)
+  (:origin:`min-width: @tablet <client/simple/src/less/definitions.less>`)
 
 .. cache_url:
 
@@ -68,3 +69,6 @@
 
 ``hotkeys``:
   Hotkeys to use in the search interface: ``default``, ``vim`` (Vim-like).
+
+``url_formatting``:
+  Formatting type to use for result URLs: ``pretty``, ``full`` or ``host``.

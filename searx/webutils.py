@@ -9,7 +9,6 @@ import csv
 import hashlib
 import hmac
 import re
-import inspect
 import itertools
 import json
 from datetime import datetime, timedelta
@@ -123,17 +122,18 @@ def write_csv_response(csv: CSVWriter, rc: ResultContainer) -> None:  # pylint: 
 
     """
 
-    results = rc.get_ordered_results()
     keys = ('title', 'url', 'content', 'host', 'engine', 'score', 'type')
     csv.writerow(keys)
 
-    for row in results:
+    for res in rc.get_ordered_results():
+        row = res.as_dict()
         row['host'] = row['parsed_url'].netloc
         row['type'] = 'result'
         csv.writerow([row.get(key, '') for key in keys])
 
     for a in rc.answers:
-        row = {'title': a, 'type': 'answer'}
+        row = a.as_dict()
+        row['host'] = row['parsed_url'].netloc
         csv.writerow([row.get(key, '') for key in keys])
 
     for a in rc.suggestions:
@@ -158,18 +158,17 @@ class JSONEncoder(json.JSONEncoder):  # pylint: disable=missing-class-docstring
 
 def get_json_response(sq: SearchQuery, rc: ResultContainer) -> str:
     """Returns the JSON string of the results to a query (``application/json``)"""
-    results = rc.number_of_results
-    x = {
+    data = {
         'query': sq.query,
-        'number_of_results': results,
-        'results': rc.get_ordered_results(),
-        'answers': list(rc.answers),
+        'number_of_results': rc.number_of_results,
+        'results': [_.as_dict() for _ in rc.get_ordered_results()],
+        'answers': [_.as_dict() for _ in rc.answers],
         'corrections': list(rc.corrections),
         'infoboxes': rc.infoboxes,
         'suggestions': list(rc.suggestions),
         'unresponsive_engines': get_translated_errors(rc.unresponsive_engines),
     }
-    response = json.dumps(x, cls=JSONEncoder)
+    response = json.dumps(data, cls=JSONEncoder)
     return response
 
 
@@ -314,21 +313,6 @@ def searxng_l10n_timespan(dt: datetime) -> str:  # pylint: disable=invalid-name
             return gettext('{minutes} minute(s) ago').format(minutes=minutes)
         return gettext('{hours} hour(s), {minutes} minute(s) ago').format(hours=hours, minutes=minutes)
     return format_date(dt)
-
-
-def is_flask_run_cmdline():
-    """Check if the application was started using "flask run" command line
-
-    Inspect the callstack.
-    See https://github.com/pallets/flask/blob/master/src/flask/__main__.py
-
-    Returns:
-        bool: True if the application was started using "flask run".
-    """
-    frames = inspect.stack()
-    if len(frames) < 2:
-        return False
-    return frames[-2].filename.endswith('flask/cli.py')
 
 
 NO_SUBGROUPING = 'without further subgrouping'
