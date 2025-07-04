@@ -16,6 +16,7 @@ EOF
 }
 
 VITE_SIMPLE_THEME="${REPO_ROOT}/client/simple"
+VITE_KVANDARK_THEME="${REPO_ROOT}/client/kvanDark"
 
 # ToDo: vite server is not implemented yet / will be done in a follow up PR
 #
@@ -58,6 +59,57 @@ vite.simple.lint() {
 }
 
 templates.simple.pygments() {
+    build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
+    pyenv.cmd python searxng_extra/update/update_pygments.py \
+        | prefix_stdout "${_Blue}PYGMENTS ${_creset} "
+    if [ "${PIPESTATUS[0]}" -ne "0" ]; then
+        build_msg PYGMENTS "building LESS files for pygments failed"
+        return 1
+    fi
+    return 0
+}
+
+# ToDo: vite server is not implemented yet / will be done in a follow up PR
+#
+# vite.kvanDark.dev() {
+#     (   set -e
+#         build_msg SIMPLE "start server for FE development of: ${VITE_KVANDARK_THEME}"
+#         pushd "${VITE_KVANDARK_THEME}"
+#         npm install
+#         npm exec -- vite
+#         popd &> /dev/null
+#     )
+# }
+
+vite.kvanDark.build() {
+    (   set -e
+        templates.kvanDark.pygments
+
+        node.env
+        build_msg SIMPLE "run build of theme from: ${VITE_KVANDARK_THEME}"
+
+        pushd "${VITE_KVANDARK_THEME}"
+        npm install
+        npm run build
+        popd &> /dev/null
+    )
+}
+
+vite.kvanDark.fix() {
+    (   set -e
+        node.env
+        npm --prefix client/kvanDark run fix
+    )
+}
+
+vite.kvanDark.lint() {
+    (   set -e
+        node.env
+        npm --prefix client/kvanDark run lint
+    )
+}
+
+templates.kvanDark.pygments() {
     build_msg PYGMENTS "searxng_extra/update/update_pygments.py"
     pyenv.cmd python searxng_extra/update/update_pygments.py \
         | prefix_stdout "${_Blue}PYGMENTS ${_creset} "
