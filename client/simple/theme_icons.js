@@ -45,6 +45,7 @@ const simple_icons = [
       appstore: "apps-outline.svg",
       book: "book-outline.svg",
       close: "close-outline.svg",
+      "code-outline": "code-outline.svg",
       download: "download-outline.svg",
       "ellipsis-vertical": "ellipsis-vertical-outline.svg",
       "file-tray-full": "file-tray-full-outline.svg",
