@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Simple implementation to store currencies data in a SQL database."""
 
-from __future__ import annotations
 
 __all__ = ["CurrenciesDB"]
 
@@ -24,8 +23,9 @@ class CurrenciesDB:
 
     def init(self):
         if self.cache.properties("currencies loaded") != "OK":
-            self.load()
+            # To avoid parallel initializations, the property is set first
             self.cache.properties.set("currencies loaded", "OK")
+            self.load()
         # F I X M E:
         #     do we need a maintenance .. rember: database is stored
         #     in /tmp and will be rebuild during the reboot anyway
